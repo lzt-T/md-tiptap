@@ -8,6 +8,7 @@ export interface CommandItem {
   description?: string
   icon?: string
   command: ({ editor }: { editor: Editor }) => void
+  mathType?: 'inline' | 'block'
 }
 
 export interface SlashCommandsOptions {
@@ -16,6 +17,7 @@ export interface SlashCommandsOptions {
   onIndexChange: (index: number) => void
   onExit: () => void
   onClientRect: (rect: DOMRect | null) => void
+  onMathDialog?: (type: 'inline' | 'block', initialValue: string, callback: (latex: string) => void) => void
 }
 
 export const defaultCommands: CommandItem[] = [
@@ -83,6 +85,26 @@ export const defaultCommands: CommandItem[] = [
       editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()
     },
   },
+  {
+    title: '行内公式',
+    description: '插入数学公式',
+    icon: '∑',
+    mathType: 'inline',
+    command: ({ editor }) => {
+      // This will be handled by the custom dialog
+      editor.chain().focus().run()
+    },
+  },
+  {
+    title: '块级公式',
+    description: '插入数学公式块',
+    icon: '∫',
+    mathType: 'block',
+    command: ({ editor }) => {
+      // This will be handled by the custom dialog
+      editor.chain().focus().run()
+    },
+  },
 ]
 
 export const SlashCommands = Extension.create<SlashCommandsOptions>({
@@ -94,6 +116,7 @@ export const SlashCommands = Extension.create<SlashCommandsOptions>({
       onIndexChange: () => {},
       onExit: () => {},
       onClientRect: () => {},
+      onMathDialog: undefined,
     }
   },
   addProseMirrorPlugins() {
@@ -163,7 +186,21 @@ export const SlashCommands = Extension.create<SlashCommandsOptions>({
                 case 'Enter':
                   if (items[currentIndex]) {
                     currentEditor.chain().focus().deleteRange(currentRange).run()
-                    items[currentIndex].command({ editor: currentEditor })
+                    const item = items[currentIndex]
+                    
+                    // Check if it's a math command
+                    if (item.mathType && this.options.onMathDialog) {
+                      const defaultValue = item.mathType === 'inline' ? 'E = mc^2' : '\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}'
+                      this.options.onMathDialog(item.mathType, defaultValue, (latex) => {
+                        if (item.mathType === 'inline') {
+                          currentEditor.chain().focus().insertInlineMath({ latex }).run()
+                        } else {
+                          currentEditor.chain().focus().insertBlockMath({ latex }).run()
+                        }
+                      })
+                    } else {
+                      item.command({ editor: currentEditor })
+                    }
                   }
                   return true
                 case 'Escape':

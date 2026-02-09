@@ -185,3 +185,46 @@
 .editor-wrapper .ProseMirror [data-node-view-wrapper] {
   outline: none;
 }
+
+/* Mathematics styles */
+.editor-wrapper .ProseMirror .tiptap-mathematics-render {
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.editor-wrapper .ProseMirror .tiptap-mathematics-render:hover {
+  background-color: #f1f5f9;
+}
+
+.editor-wrapper .ProseMirror .tiptap-mathematics-render[data-type="inline-math"] {
+  display: inline-block;
+  padding: 0 2px;
+}
+
+.editor-wrapper .ProseMirror .tiptap-mathematics-render[data-type="block-math"] {
+  display: block;
+  margin: 1em 0;
+  padding: 1em;
+  background: #f8fafc;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+.editor-wrapper .ProseMirror .tiptap-mathematics-render[data-type="block-math"]:hover {
+  background-color: #f1f5f9;
+}
+
+.editor-wrapper .ProseMirror .tiptap-mathematics-render.ProseMirror-selectednode {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* KaTeX font adjustments */
+.editor-wrapper .ProseMirror .katex {
+  font-size: 1.1em;
+}
+
+.editor-wrapper .ProseMirror .tiptap-mathematics-render[data-type="block-math"] .katex-display {
+  margin: 0;
+}

@@ -1,0 +1,212 @@
+.math-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+}
+
+.math-dialog {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.2s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.math-dialog-header {
+  display: flex;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.math-dialog-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.math-dialog-body {
+  padding: 24px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.math-dialog-body label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #475569;
+}
+
+.math-dialog-input {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  resize: vertical;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.math-dialog-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+.math-dialog-preview-section {
+  margin-top: 16px;
+}
+
+.math-dialog-preview-section label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #475569;
+}
+
+.math-dialog-preview {
+  min-height: 80px;
+  padding: 16px;
+  background: #fafafa;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow-x: auto;
+  transition: border-color 0.2s;
+}
+
+.math-dialog-preview:hover {
+  border-color: #cbd5e1;
+}
+
+.math-dialog-preview-content {
+  text-align: center;
+  font-size: 18px;
+  width: 100%;
+}
+
+.math-dialog-preview-content .katex-display {
+  margin: 0;
+}
+
+.math-dialog-preview-placeholder {
+  color: #94a3b8;
+  font-size: 14px;
+  font-style: italic;
+}
+
+.math-dialog-preview-error {
+  color: #dc2626;
+  font-size: 12px;
+  padding: 8px;
+  background: #fee2e2;
+  border-radius: 4px;
+  text-align: left;
+  width: 100%;
+}
+
+.math-dialog-hint {
+  margin-top: 16px;
+  padding: 12px;
+  background: #f8fafc;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #475569;
+}
+
+.math-dialog-hint p {
+  margin: 0 0 8px 0;
+}
+
+.math-dialog-hint p:last-child {
+  margin-bottom: 4px;
+}
+
+.math-dialog-hint ul {
+  margin: 8px 0 0 0;
+  padding-left: 20px;
+}
+
+.math-dialog-hint li {
+  margin: 4px 0;
+  list-style: disc;
+}
+
+.math-dialog-hint code {
+  background: #e2e8f0;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 12px;
+}
+
+.math-dialog-footer {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  padding: 16px 24px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.math-dialog-button {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.math-dialog-button-cancel {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.math-dialog-button-cancel:hover {
+  background: #e2e8f0;
+}
+
+.math-dialog-button-confirm {
+  background: #3b82f6;
+  color: white;
+}
+
+.math-dialog-button-confirm:hover {
+  background: #2563eb;
+}
+
+.math-dialog-button:active {
+  transform: scale(0.98);
+}
