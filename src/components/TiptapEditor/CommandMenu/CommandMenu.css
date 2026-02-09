@@ -6,9 +6,40 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   padding: 8px 0;
   min-width: 280px;
+  max-width: 400px;
   max-height: 400px;
   overflow-y: auto;
-  z-index: 1000;
+  z-index: 10000;
+  /* 添加平滑过渡 */
+  transition: top 0.2s ease-out, left 0.2s ease-out;
+  /* 确保菜单不会被裁剪 */
+  will-change: top, left;
+}
+
+/* 美化滚动条 */
+.command-menu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.command-menu::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 8px 0;
+}
+
+.command-menu::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+  transition: background 0.2s;
+}
+
+.command-menu::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Firefox 滚动条样式 */
+.command-menu {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
 }
 
 .command-menu-header {
