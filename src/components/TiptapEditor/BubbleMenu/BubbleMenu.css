@@ -1,0 +1,90 @@
+.bubble-menu {
+  display: flex;
+  background: #1e293b;
+  border-radius: 8px;
+  padding: 4px;
+  gap: 2px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.bubble-menu button {
+  background: transparent;
+  border: none;
+  color: #e2e8f0;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.15s ease;
+  min-width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bubble-menu button:hover {
+  background: #334155;
+  color: white;
+}
+
+.bubble-menu button.is-active {
+  background: #3b82f6;
+  color: white;
+}
+
+.bubble-menu button strong,
+.bubble-menu button em,
+.bubble-menu button u,
+.bubble-menu button s {
+  font-style: normal;
+  text-decoration: none;
+}
+
+.bubble-menu button em {
+  font-style: italic;
+}
+
+.bubble-menu button u {
+  text-decoration: underline;
+}
+
+.bubble-menu button s {
+  text-decoration: line-through;
+}
+
+.bubble-menu .separator {
+  width: 1px;
+  background: #475569;
+  margin: 4px 4px;
+  align-self: stretch;
+}
+
+.color-picker-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10000;
+  background: transparent;
+}
+
+.color-picker-container {
+  position: fixed;
+  z-index: 10001;
+  animation: fadeIn 0.15s ease;
+  /* 位置通过内联样式动态设置 */
+}

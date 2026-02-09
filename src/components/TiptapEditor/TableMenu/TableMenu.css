@@ -1,0 +1,46 @@
+.table-menu {
+  position: fixed;
+  background: white;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.table-menu button {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  color: #475569;
+  font-weight: 500;
+  min-width: 32px;
+}
+
+.table-menu button:hover:not(:disabled) {
+  background: #e0e7ff;
+  border-color: #818cf8;
+}
+
+.table-menu button:active:not(:disabled) {
+  background: #c7d2fe;
+  transform: scale(0.95);
+}
+
+.table-menu button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.table-menu .separator {
+  color: #cbd5e1;
+  margin: 0 2px;
+  font-size: 14px;
+}

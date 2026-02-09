@@ -1,0 +1,68 @@
+.command-menu {
+  position: fixed;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 8px 0;
+  min-width: 280px;
+  max-height: 400px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.command-menu-header {
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.command-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 8px 16px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.15s ease;
+}
+
+.command-menu-item:hover,
+.command-menu-item.is-selected {
+  background-color: #f1f5f9;
+}
+
+.command-menu-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #475569;
+}
+
+.command-menu-content {
+  flex: 1;
+}
+
+.command-menu-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.command-menu-description {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 2px;
+}

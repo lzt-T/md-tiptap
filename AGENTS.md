@@ -22,6 +22,35 @@ pnpm preview
 ## Tech Stack
 - **Framework**: React 19 + Vite 7
 - **Language**: TypeScript 5.9 (strict mode)
+- **Styling**: Tailwind CSS v4
+- **Editor**: Tiptap 3.x (rich text editor based on ProseMirror)
+
+## Tiptap Extensions Used
+
+### Core Extensions (via StarterKit)
+- Bold, Italic, Strike, Code
+- Heading (H1, H2, H3)
+- Bullet List, Ordered List
+- Blockquote, Code Block
+- History (Undo/Redo)
+
+### Additional Extensions
+- **Image**: URL-based image insertion
+- **Table**: Full table operations (insert/delete rows/columns, toggle header)
+- **Underline**: Text underlining
+- **Subscript/Superscript**: Mathematical formatting
+- **Color**: Text color picker
+- **Highlight**: Background highlighting
+- **TextAlign**: Left, center, right, justify alignment
+- **TaskList**: Checkbox task lists
+- **Placeholder**: Empty state placeholder
+
+### Notion-like Features
+- **Slash Commands**: Type `/` to open command menu
+- **Command Menu**: Quick insertion of blocks (headings, lists, tables, etc.)
+- **Block-based Editing**: Each paragraph is a separate block
+- **Empty Placeholder**: Shows hint when editor is empty
+
 - **Package Manager**: pnpm
 - **Module System**: ES Modules
 
@@ -85,9 +114,10 @@ pnpm preview
 ## Common Tasks
 
 ### Adding a New Component
-1. Create file in `src/components/ComponentName.tsx`
-2. Add corresponding CSS: `src/components/ComponentName.css`
-3. Export component and import where needed
+1. Create folder in `src/components/ComponentName/`
+2. Create component file: `src/components/ComponentName/index.tsx`
+3. Add corresponding CSS: `src/components/ComponentName/ComponentName.css`
+4. Export component and import where needed
 
 ### Adding Type Definitions
 - Place shared types in `src/types/` directory
@@ -103,6 +133,15 @@ src/
 ├── App.tsx           # Root component
 ├── App.css           # App styles
 ├── index.css         # Global styles
+├── components/       # React components
+│   └── TiptapEditor/
+│       ├── index.tsx                  # Main editor component
+│       ├── TiptapEditor.css           # Editor styles
+│       ├── CommandMenu/               # Slash command menu
+│       │   ├── index.tsx              # Command menu component
+│       │   └── CommandMenu.css        # Command menu styles
+│       └── extensions/                # Custom Tiptap extensions
+│           └── SlashCommands.ts       # Slash command extension
 └── assets/           # Static assets
 public/               # Public static files
 ```
