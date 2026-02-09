@@ -26,7 +26,12 @@ import './TiptapEditor.css'
 import 'katex/dist/katex.min.css'
 import { useState, useCallback, useRef, useEffect } from 'react'
 
-const TiptapEditor = () => {
+interface TiptapEditorProps {
+  value?: string
+  onChange?: (html: string) => void
+}
+
+const TiptapEditor = ({ value, onChange }: TiptapEditorProps) => {
   const [showCommandMenu, setShowCommandMenu] = useState(false)
   const [commandQuery, setCommandQuery] = useState('')
   const [selectedIndex, setSelectedIndex] = useState(0)
@@ -38,6 +43,7 @@ const TiptapEditor = () => {
   const [mathDialogInitialValue, setMathDialogInitialValue] = useState('')
   const [mathDialogCallback, setMathDialogCallback] = useState<((latex: string) => void) | null>(null)
   const editorRef = useRef<ReturnType<typeof useEditor>>(null)
+  const isExternalUpdateRef = useRef(false) // 标记是否为外部更新
 
   const handleStart = useCallback(() => {
     setShowCommandMenu(true)
@@ -160,13 +166,35 @@ const TiptapEditor = () => {
         onMathDialog: handleMathDialogFromSlash,
       }),
     ],
-    content: '<p></p>',
+    content: value || '<p></p>',
+    onUpdate: ({ editor }) => {
+      // 只有在非外部更新时才触发 onChange
+      if (!isExternalUpdateRef.current) {
+        onChange?.(editor.getHTML())
+      }
+    },
   })
 
   // Update editor ref after editor is created
   useEffect(() => {
     editorRef.current = editor
   }, [editor])
+
+  // Sync external value changes to editor
+  useEffect(() => {
+    if (editor && value !== undefined) {
+      const currentContent = editor.getHTML()
+      if (currentContent !== value) {
+        // 标记为外部更新
+        isExternalUpdateRef.current = true
+        editor.commands.setContent(value, false)
+        // 使用 setTimeout 确保更新完成后再重置标志
+        setTimeout(() => {
+          isExternalUpdateRef.current = false
+        }, 0)
+      }
+    }
+  }, [editor, value])
 
   const filteredCommands = defaultCommands.filter((item) =>
     item.title.toLowerCase().includes(commandQuery.toLowerCase())
