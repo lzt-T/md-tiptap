@@ -1,7 +1,8 @@
 import type { CommandItem } from '../extensions/SlashCommands'
 import './CommandMenu.css'
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useMemo } from 'react'
 import { createPortal } from 'react-dom'
+import { useFloating, flip, shift, offset, size } from '@floating-ui/react'
 
 interface CommandMenuProps {
   items: CommandItem[]
@@ -12,8 +13,6 @@ interface CommandMenuProps {
 
 const CommandMenu = ({ items, command, selectedIndex, position }: CommandMenuProps) => {
   const selectedRef = useRef<HTMLButtonElement>(null)
-  const menuRef = useRef<HTMLDivElement>(null)
-  const [menuHeight, setMenuHeight] = useState(0)
 
   // 自动滚动选中项
   useEffect(() => {
@@ -25,34 +24,48 @@ const CommandMenu = ({ items, command, selectedIndex, position }: CommandMenuPro
     }
   }, [selectedIndex])
 
-  // 获取菜单高度用于位置计算
-  useLayoutEffect(() => {
-    if (menuRef.current) {
-      setMenuHeight(menuRef.current.getBoundingClientRect().height)
-    }
-  }, [items.length]) // 只在菜单项数量变化时重新计算
+  // 创建虚拟参考元素（基于传入的 position）
+  const virtualElement = useMemo(() => ({
+    getBoundingClientRect: () => ({
+      width: 0,
+      height: 0,
+      x: position.left,
+      y: position.top,
+      top: position.top,
+      left: position.left,
+      right: position.left,
+      bottom: position.top,
+    }),
+  }), [position.left, position.top]) as unknown as Element
 
-  // 计算调整后的位置（在渲染时计算，不使用 effect）
-  const getAdjustedPosition = () => {
-    const viewportHeight = window.innerHeight
-    
-    let newTop = position.top
-
-    // 检查是否超出底部
-    if (menuHeight > 0 && position.top + menuHeight > viewportHeight) {
-      // 显示在光标上方，增加间距到 24px
-      newTop = position.top - menuHeight - 32
-      
-      // 如果上方也放不下，则固定在视口底部
-      if (newTop < 16) {
-        newTop = Math.max(16, viewportHeight - menuHeight - 16)
-      }
-    }
-
-    return { top: newTop, left: position.left }
-  }
-
-  const adjustedPosition = getAdjustedPosition()
+  // 使用 Floating UI 处理定位
+  const { refs, floatingStyles } = useFloating({
+    elements: {
+      reference: virtualElement,
+    },
+    placement: 'bottom-start',
+    middleware: [
+      offset(({ placement }) => {
+        // 根据菜单位置返回不同的偏移值
+        return placement.startsWith('top') ? 32 : 8 // 上方 32px，下方 8px
+      }),
+      flip({
+        padding: 16, // 翻转时保持视口边距
+        fallbackPlacements: ['top-start', 'bottom-start'], // 优先翻转到上方
+      }),
+      shift({ padding: 16 }), // 水平方向保持在视口内
+      size({
+        padding: 16,
+        apply({ availableHeight, elements }) {
+          // 限制菜单最大高度，取可用高度和 320px 中的较小值
+          const maxHeight = Math.min(availableHeight, 320)
+          Object.assign(elements.floating.style, {
+            maxHeight: `${maxHeight}px`,
+          })
+        },
+      }),
+    ],
+  })
 
   if (items.length === 0) {
     return null
@@ -61,12 +74,10 @@ const CommandMenu = ({ items, command, selectedIndex, position }: CommandMenuPro
   // 使用 Portal 将菜单渲染到 body 下，避免被父容器裁剪
   return createPortal(
     <div 
-      ref={menuRef}
+      // eslint-disable-next-line
+      ref={refs.setFloating}
       className="command-menu"
-      style={{
-        top: `${adjustedPosition.top}px`,
-        left: `${adjustedPosition.left}px`,
-      }}
+      style={floatingStyles}
     >
       <div className="command-menu-header">基础块</div>
       {items.map((item, index) => (

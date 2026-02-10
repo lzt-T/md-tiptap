@@ -4,6 +4,8 @@ import './ColorPicker.css'
 interface ColorPickerProps {
   onColorSelect: (color: string) => void
   type: 'text' | 'highlight'
+  style?: React.CSSProperties
+  className?: string
 }
 
 const TEXT_COLORS = [
@@ -32,12 +34,12 @@ const HIGHLIGHT_COLORS = [
   { name: '红色', value: '#FECACA' },
 ]
 
-const ColorPicker = ({ onColorSelect, type }: ColorPickerProps) => {
+const ColorPicker = ({ onColorSelect, type, style }: ColorPickerProps) => {
   const colors = type === 'text' ? TEXT_COLORS : HIGHLIGHT_COLORS
   const [showCustomInput, setShowCustomInput] = useState(false)
 
   return (
-    <div className="color-picker">
+    <div className="color-picker" style={style}>
       <div className="color-picker-title">
         {type === 'text' ? '文字颜色' : '高亮颜色'}
       </div>
