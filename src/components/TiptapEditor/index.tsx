@@ -276,7 +276,7 @@ const TiptapEditor = ({ value, onChange, onImageUpload, commandMenuMaxHeight = C
   return (
     <div className="editor-container">
       <div className="editor-wrapper notion-editor" ref={editorWrapperRef}>
-        {editor && <TableMenu editor={editor} />}
+        {editor && <TableMenu editor={editor} editorWrapperRef={editorWrapperRef} />}
         <EditorContent editor={editor} />
         {editor && <BubbleMenu editor={editor} />}
         {showCommandMenu && editor && menuPosition && (

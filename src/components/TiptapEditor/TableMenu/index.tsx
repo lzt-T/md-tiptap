@@ -1,22 +1,24 @@
 import { Editor } from '@tiptap/react'
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import './TableMenu.css'
 
 interface TableMenuProps {
   editor: Editor
+  editorWrapperRef: React.RefObject<HTMLDivElement | null>
 }
 
-const TableMenu = ({ editor }: TableMenuProps) => {
+const TableMenu = ({ editor, editorWrapperRef }: TableMenuProps) => {
   const [position, setPosition] = useState<{ top: number; left: number } | null>(null)
+  const menuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const updatePosition = () => {
-      if (!editor.isActive('table')) {
+      const wrapper = editorWrapperRef.current
+      if (!editor.isActive('table') || !wrapper) {
         setPosition(null)
         return
       }
 
-      // 获取当前选中的单元格
       const { view } = editor
       const { from } = view.state.selection
       const domAtPos = view.domAtPos(from)
@@ -24,41 +26,59 @@ const TableMenu = ({ editor }: TableMenuProps) => {
 
       if (tableElement) {
         const tableRect = tableElement.getBoundingClientRect()
-        
-        setPosition({
-          top: tableRect.top - 40, // 工具栏显示在表格上方
-          left: tableRect.left,
-        })
+        const wrapperRect = wrapper.getBoundingClientRect()
+
+        // 与 CommandMenu 一样：坐标转换为相对 wrapper 的绝对定位，加上滚动偏移
+        const tableTopInWrapper = tableRect.top - wrapperRect.top + wrapper.scrollTop
+        const tableLeftInWrapper = tableRect.left - wrapperRect.left
+
+        // 默认显示在表格上方 40px，空间不足时翻到下方
+        const MENU_HEIGHT = 40
+        const top =
+          tableTopInWrapper - MENU_HEIGHT >= 0
+            ? tableTopInWrapper - MENU_HEIGHT
+            : tableTopInWrapper + tableRect.height + 4
+
+        setPosition({ top, left: tableLeftInWrapper })
       }
     }
 
     updatePosition()
 
-    // 监听编辑器更新
     editor.on('selectionUpdate', updatePosition)
     editor.on('update', updatePosition)
 
-    // 监听滚动事件
-    const editorWrapper = document.querySelector('.editor-wrapper')
-    if (editorWrapper) {
-      editorWrapper.addEventListener('scroll', updatePosition)
-    }
+    const wrapper = editorWrapperRef.current
+    wrapper?.addEventListener('scroll', updatePosition)
 
     return () => {
       editor.off('selectionUpdate', updatePosition)
       editor.off('update', updatePosition)
-      if (editorWrapper) {
-        editorWrapper.removeEventListener('scroll', updatePosition)
-      }
+      wrapper?.removeEventListener('scroll', updatePosition)
     }
-  }, [editor])
+  }, [editor, editorWrapperRef])
+
+  // 渲染后修正水平溢出，确保不超出 wrapper 右边界
+  useLayoutEffect(() => {
+    const wrapper = editorWrapperRef.current
+    if (!menuRef.current || !position || !wrapper) return
+
+    const menuWidth = menuRef.current.offsetWidth
+    const wrapperWidth = wrapper.clientWidth
+    const maxLeft = wrapperWidth - menuWidth - 8
+
+    if (position.left > maxLeft) {
+      setPosition(prev => prev ? { ...prev, left: Math.max(0, maxLeft) } : prev)
+    }
+  }, [position, editorWrapperRef])
 
   if (!editor.isActive('table') || !position) {
     return null
   }
 
   return (
-    <div 
+    <div
+      ref={menuRef}
       className="table-menu"
       style={{
         top: `${position.top}px`,
