@@ -25,13 +25,18 @@ import MathDialog from './MathDialog'
 import ImageUploadDialog from './ImageUploadDialog'
 import './TiptapEditor.css'
 import { useState, useCallback, useRef, useEffect } from 'react'
+import { MenuPlacement } from './types'
 import type { TiptapEditorProps } from './types'
 
-const TiptapEditor = ({ value, onChange, onImageUpload }: TiptapEditorProps) => {
+const COMMAND_MENU_DEFAULT_MAX_HEIGHT = 240
+const COMMAND_MENU_DEFAULT_MIN_HEIGHT = 160
+const DEFAULT_PLACEHOLDER = "输入 '/' 查看命令..."
+
+const TiptapEditor = ({ value, onChange, onImageUpload, commandMenuMaxHeight = COMMAND_MENU_DEFAULT_MAX_HEIGHT, commandMenuMinHeight = COMMAND_MENU_DEFAULT_MIN_HEIGHT, placeholder = DEFAULT_PLACEHOLDER }: TiptapEditorProps) => {
   const [showCommandMenu, setShowCommandMenu] = useState(false)
   const [commandQuery, setCommandQuery] = useState('')
   const [selectedIndex, setSelectedIndex] = useState(0)
-  const [menuPosition, setMenuPosition] = useState<{ top: number; left: number } | null>(null)
+  const [menuPosition, setMenuPosition] = useState<{ top: number; left: number; placement: MenuPlacement } | null>(null)
   
   // Math dialog states
   const [showMathDialog, setShowMathDialog] = useState(false)
@@ -44,6 +49,7 @@ const TiptapEditor = ({ value, onChange, onImageUpload }: TiptapEditorProps) => 
   const [imageDialogCallback, setImageDialogCallback] = useState<((src: string, alt?: string) => void) | null>(null)
   
   const editorRef = useRef<ReturnType<typeof useEditor>>(null)
+  const editorWrapperRef = useRef<HTMLDivElement>(null)
   const isExternalUpdateRef = useRef(false) // 标记是否为外部更新
 
   const handleStart = useCallback(() => {
@@ -60,14 +66,22 @@ const TiptapEditor = ({ value, onChange, onImageUpload }: TiptapEditorProps) => 
   }, [])
 
   const handleClientRect = useCallback((rect: DOMRect | null) => {
-    if (rect) {
-      // rect 是相对于视口的，使用 fixed 定位直接使用视口坐标
+    if (rect && editorWrapperRef.current) {
+      const wrapper = editorWrapperRef.current
+      const wrapperRect = wrapper.getBoundingClientRect()
+      // 判断下方可视空间是否足够，以编辑器容器底部为边界
+      const spaceBelow = wrapperRect.bottom - rect.bottom
+      const placement = spaceBelow < commandMenuMaxHeight ? MenuPlacement.Top : MenuPlacement.Bottom
+      const cursorTopInWrapper = rect.top - wrapperRect.top + wrapper.scrollTop
+      const cursorBottomInWrapper = rect.bottom - wrapperRect.top + wrapper.scrollTop
       setMenuPosition({
-        top: rect.bottom + 4, // 添加4px间距
-        left: rect.left,
+        // bottom 时：菜单顶部在光标下方 4px；top 时：通过 translateY(-100%) 将菜单底部对齐光标上方 4px
+        top: placement === 'bottom' ? cursorBottomInWrapper + 4 : cursorTopInWrapper - 4,
+        left: rect.left - wrapperRect.left,
+        placement,
       })
     }
-  }, [])
+  }, [commandMenuMaxHeight])
 
   const handleExit = useCallback(() => {
     setShowCommandMenu(false)
@@ -164,7 +178,7 @@ const TiptapEditor = ({ value, onChange, onImageUpload }: TiptapEditorProps) => 
         nested: true,
       }),
       Placeholder.configure({
-        placeholder: "输入 '/' 查看命令...",
+        placeholder,
       }),
       Mathematics.configure({
         inlineOptions: {
@@ -261,7 +275,7 @@ const TiptapEditor = ({ value, onChange, onImageUpload }: TiptapEditorProps) => 
 
   return (
     <div className="editor-container">
-      <div className="editor-wrapper notion-editor">
+      <div className="editor-wrapper notion-editor" ref={editorWrapperRef}>
         {editor && <TableMenu editor={editor} />}
         <EditorContent editor={editor} />
         {editor && <BubbleMenu editor={editor} />}
@@ -271,6 +285,8 @@ const TiptapEditor = ({ value, onChange, onImageUpload }: TiptapEditorProps) => 
             command={handleCommand}
             selectedIndex={selectedIndex}
             position={menuPosition}
+            maxHeight={commandMenuMaxHeight}
+            minHeight={commandMenuMinHeight}
           />
         )}
       </div>

@@ -25,8 +25,6 @@ const HIGHLIGHT_COLORS = [
   { name: '默认', value: '#FEF08A' },
   { name: '灰色', value: '#E5E7EB' },
   { name: '棕色', value: '#FED7AA' },
-  { name: '橙色', value: '#FED7AA' },
-  { name: '黄色', value: '#FEF08A' },
   { name: '绿色', value: '#BBF7D0' },
   { name: '蓝色', value: '#BFDBFE' },
   { name: '紫色', value: '#E9D5FF' },
