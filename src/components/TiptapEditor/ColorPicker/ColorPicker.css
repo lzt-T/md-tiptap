@@ -39,6 +39,25 @@
   box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
 }
 
+.color-picker-swatch--transparent {
+  background: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.color-picker-swatch--transparent::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom right,
+    transparent calc(50% - 1px),
+    #ef4444 calc(50% - 1px),
+    #ef4444 calc(50% + 1px),
+    transparent calc(50% + 1px)
+  );
+}
+
 .color-picker-custom-btn {
   width: 100%;
   padding: 6px 12px;

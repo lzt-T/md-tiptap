@@ -93,7 +93,11 @@ const BubbleMenu = ({ editor }: BubbleMenuProps) => {
   };
 
   const handleHighlightColorSelect = (color: string) => {
-    handleFormat(() => editor.chain().focus().setHighlight({ color }).run());
+    if (color === '') {
+      handleFormat(() => editor.chain().focus().unsetHighlight().run());
+    } else {
+      handleFormat(() => editor.chain().focus().setHighlight({ color }).run());
+    }
     setShowColorPicker(null);
   };
 

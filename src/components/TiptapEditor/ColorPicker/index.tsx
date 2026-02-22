@@ -22,7 +22,8 @@ const TEXT_COLORS = [
 ]
 
 const HIGHLIGHT_COLORS = [
-  { name: '默认', value: '#FEF08A' },
+  { name: '无色', value: '' },
+  { name: '黄色', value: '#FEF08A' },
   { name: '灰色', value: '#E5E7EB' },
   { name: '棕色', value: '#FED7AA' },
   { name: '绿色', value: '#BBF7D0' },
@@ -44,9 +45,9 @@ const ColorPicker = ({ onColorSelect, type, style }: ColorPickerProps) => {
       <div className="color-picker-grid">
         {colors.map((color) => (
           <button
-            key={color.value}
-            className="color-picker-swatch"
-            style={{ backgroundColor: color.value }}
+            key={color.value || 'transparent'}
+            className={`color-picker-swatch${color.value === '' ? ' color-picker-swatch--transparent' : ''}`}
+            style={color.value ? { backgroundColor: color.value } : undefined}
             onClick={() => onColorSelect(color.value)}
             title={color.name}
           />
