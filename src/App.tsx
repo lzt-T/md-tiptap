@@ -51,16 +51,17 @@ function App() {
       <h1>Tiptap Markdown Editor</h1>
 
       <div className="h-[500px] overflow-y-auto">
-        <div
-          className="flex-1"
-          style={{ height: "calc(100vh - 400px)", width: "600px" }}
-        >
-          <TiptapEditor
-            // disabled={true}
-            value={content}
-            onChange={handleEditorChange}
-            onImageUpload={handleImageUpload}
-          />
+      <div
+        className="flex-1"
+        style={{ height: "calc(100vh - 400px)", width: "600px" }}
+      >
+        <TiptapEditor
+          // border={false}
+          // disabled={true}
+          value={content}
+          onChange={handleEditorChange}
+          onImageUpload={handleImageUpload}
+        />
         </div>
       </div>
       <div className="h-[900px]"></div>

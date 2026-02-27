@@ -15,6 +15,7 @@ import {
   useTiptapEditor,
 } from "@/hooks";
 import { config } from "@/config";
+import { cn } from "@/lib/utils";
 
 const TiptapEditor = ({
   value,
@@ -25,6 +26,7 @@ const TiptapEditor = ({
   placeholder = config.DEFAULT_PLACEHOLDER,
   disabled = false,
   onChangeDebounceMs = config.DEFAULT_ON_CHANGE_DEBOUNCE_MS,
+  border = true,
 }: TiptapEditorProps) => {
   const editorRef = useRef<ReturnType<typeof useEditor>>(null);
   const editorWrapperRef = useRef<HTMLDivElement>(null);
@@ -111,7 +113,7 @@ const TiptapEditor = ({
   );
 
   return (
-    <div className={`editor-container${disabled ? " is-disabled" : ""}`}>
+    <div className={cn("editor-container", disabled && "is-disabled", !border && "no-border")}>
       <div className="editor-wrapper notion-editor" ref={editorWrapperRef}>
         {editor && !disabled && (
           <TableMenu editor={editor} editorWrapperRef={editorWrapperRef} />

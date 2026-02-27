@@ -8,6 +8,10 @@
   overflow: hidden;
 }
 
+.editor-container.no-border {
+  border: none;
+}
+
 .editor-wrapper {
   position: relative;
   padding: 1rem;
@@ -219,11 +223,12 @@
 
 .editor-wrapper .ProseMirror .tiptap-mathematics-render[data-type="block-math"] {
   display: block;
-  margin: 1em 0;
+  margin: 1em auto;
   padding: 1em;
   background: #f8fafc;
   border-radius: 8px;
   overflow-x: auto;
+  text-align: center;
 }
 
 .editor-wrapper .ProseMirror .tiptap-mathematics-render[data-type="block-math"]:hover {
@@ -258,5 +263,5 @@
 }
 
 .editor-wrapper .ProseMirror .tiptap-mathematics-render[data-type="block-math"] .katex-display {
-  margin: 0;
+  margin: 0 auto;
 }
