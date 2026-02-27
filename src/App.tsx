@@ -53,7 +53,7 @@ function App() {
       <div className="h-[500px] overflow-y-auto">
       <div
         className="flex-1"
-        style={{ height: "calc(100vh - 400px)", width: "600px" }}
+        style={{ height: "calc(100vh - 400px)" }}
       >
         <TiptapEditor
           // border={false}

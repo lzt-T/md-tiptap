@@ -1,7 +1,7 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import { defaultCommands } from "./extensions/SlashCommands";
 import CommandMenu from "./CommandMenu";
-import TableMenu from "./TableMenu";
+import TableRowActions from "./TableRowActions";
 import BubbleMenu from "./BubbleMenu/index";
 import MathDialog from "./MathDialog";
 import ImageUploadDialog from "./ImageUploadDialog";
@@ -116,7 +116,9 @@ const TiptapEditor = ({
     <div className={cn("editor-container", disabled && "is-disabled", !border && "no-border")}>
       <div className="editor-wrapper notion-editor" ref={editorWrapperRef}>
         {editor && !disabled && (
-          <TableMenu editor={editor} editorWrapperRef={editorWrapperRef} />
+          <>
+            <TableRowActions editor={editor} editorWrapperRef={editorWrapperRef} />
+          </>
         )}
         <EditorContent editor={editor} />
         {editor && !disabled && <BubbleMenu editor={editor} />}

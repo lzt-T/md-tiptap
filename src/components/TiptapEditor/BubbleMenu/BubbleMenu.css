@@ -7,6 +7,9 @@
   gap: 2px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
   animation: fadeIn 0.15s ease;
+  /* 避免被表格等编辑器内容遮挡 */
+  z-index: 10002;
+  position: relative;
 }
 
 @keyframes fadeIn {

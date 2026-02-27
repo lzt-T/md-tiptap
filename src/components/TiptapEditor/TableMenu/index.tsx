@@ -1,5 +1,16 @@
+// 已废弃，使用 TableRowActions 代替
 import { Editor } from '@tiptap/react'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import {
+  ArrowLeft,
+  ArrowRight,
+  ArrowUp,
+  ArrowDown,
+  Trash2,
+  Merge,
+  SplitSquareVertical,
+  LayoutList,
+} from 'lucide-react'
 import './TableMenu.css'
 
 interface TableMenuProps {
@@ -23,23 +34,22 @@ const TableMenu = ({ editor, editorWrapperRef }: TableMenuProps) => {
       const { from } = view.state.selection
       const domAtPos = view.domAtPos(from)
       const tableElement = (domAtPos.node as Element).closest('table')
+      const cellElement = (domAtPos.node as Element).closest('td, th')
 
       if (tableElement) {
-        const tableRect = tableElement.getBoundingClientRect()
         const wrapperRect = wrapper.getBoundingClientRect()
-
-        // 与 CommandMenu 一样：坐标转换为相对 wrapper 的绝对定位，加上滚动偏移
-        const tableTopInWrapper = tableRect.top - wrapperRect.top + wrapper.scrollTop
-        const tableLeftInWrapper = tableRect.left - wrapperRect.left
-
-        // 默认显示在表格上方 40px，空间不足时翻到下方
         const MENU_HEIGHT = 40
-        const top =
-          tableTopInWrapper - MENU_HEIGHT >= 0
-            ? tableTopInWrapper - MENU_HEIGHT
-            : tableTopInWrapper + tableRect.height + 4
 
-        setPosition({ top, left: tableLeftInWrapper })
+        const rect = cellElement
+          ? cellElement.getBoundingClientRect()
+          : tableElement.getBoundingClientRect()
+        const rectTopInWrapper = rect.top - wrapperRect.top + wrapper.scrollTop
+        const rectLeftInWrapper = rect.left - wrapperRect.left + wrapper.scrollLeft
+
+        /* 始终显示在单元格/表格上方，不翻到底部 */
+        const top = rectTopInWrapper - MENU_HEIGHT
+
+        setPosition({ top, left: rectLeftInWrapper })
       }
     }
 
@@ -58,7 +68,7 @@ const TableMenu = ({ editor, editorWrapperRef }: TableMenuProps) => {
     }
   }, [editor, editorWrapperRef])
 
-  // 渲染后修正水平溢出，确保不超出 wrapper 右边界
+  // 渲染后修正水平溢出，确保不超出 wrapper 右边界（仅当需要修正时才 setState，避免无限循环）
   useLayoutEffect(() => {
     const wrapper = editorWrapperRef.current
     if (!menuRef.current || !position || !wrapper) return
@@ -66,9 +76,10 @@ const TableMenu = ({ editor, editorWrapperRef }: TableMenuProps) => {
     const menuWidth = menuRef.current.offsetWidth
     const wrapperWidth = wrapper.clientWidth
     const maxLeft = wrapperWidth - menuWidth - 8
+    const clampedLeft = Math.max(0, maxLeft)
 
-    if (position.left > maxLeft) {
-      setPosition(prev => prev ? { ...prev, left: Math.max(0, maxLeft) } : prev)
+    if (position.left !== clampedLeft && position.left > maxLeft) {
+      setPosition(prev => prev ? { ...prev, left: clampedLeft } : prev)
     }
   }, [position, editorWrapperRef])
 
@@ -89,53 +100,68 @@ const TableMenu = ({ editor, editorWrapperRef }: TableMenuProps) => {
         onClick={() => editor.chain().focus().addColumnBefore().run()}
         title="在左侧插入列"
       >
-        ⬅️ 列
+        <ArrowLeft size={16} />
       </button>
       <button
         onClick={() => editor.chain().focus().addColumnAfter().run()}
         title="在右侧插入列"
       >
-        列 ➡️
+        <ArrowRight size={16} />
       </button>
       <button
         onClick={() => editor.chain().focus().deleteColumn().run()}
         title="删除当前列"
         disabled={!editor.can().deleteColumn()}
       >
-        🗑️ 列
+        <Trash2 size={16} />
       </button>
       <span className="separator">|</span>
       <button
         onClick={() => editor.chain().focus().addRowBefore().run()}
         title="在上方插入行"
       >
-        ⬆️ 行
+        <ArrowUp size={16} />
       </button>
       <button
         onClick={() => editor.chain().focus().addRowAfter().run()}
         title="在下方插入行"
       >
-        行 ⬇️
+        <ArrowDown size={16} />
       </button>
       <button
         onClick={() => editor.chain().focus().deleteRow().run()}
         title="删除当前行"
         disabled={!editor.can().deleteRow()}
       >
-        🗑️ 行
+        <Trash2 size={16} />
+      </button>
+      <span className="separator">|</span>
+      <button
+        onClick={() => editor.chain().focus().mergeCells().run()}
+        title="合并单元格（需先选中多个单元格）"
+        disabled={!('mergeCells' in editor.commands) || !editor.can().mergeCells?.()}
+      >
+        <Merge size={16} />
+      </button>
+      <button
+        onClick={() => editor.chain().focus().splitCell().run()}
+        title="拆分单元格"
+        disabled={!('splitCell' in editor.commands) || !editor.can().splitCell?.()}
+      >
+        <SplitSquareVertical size={16} />
       </button>
       <span className="separator">|</span>
       <button
         onClick={() => editor.chain().focus().toggleHeaderRow().run()}
         title="切换表头行"
       >
-        📋
+        <LayoutList size={16} />
       </button>
       <button
         onClick={() => editor.chain().focus().deleteTable().run()}
         title="删除整个表格"
       >
-        🗑️
+        <Trash2 size={16} />
       </button>
     </div>
   )

@@ -12,16 +12,18 @@
 }
 
 .table-menu button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
   border-radius: 4px;
-  padding: 4px 8px;
-  font-size: 12px;
+  padding: 6px;
   cursor: pointer;
   transition: all 0.15s ease;
   color: #475569;
-  font-weight: 500;
-  min-width: 32px;
+  width: 28px;
+  height: 28px;
 }
 
 .table-menu button:hover:not(:disabled) {
