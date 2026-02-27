@@ -3,9 +3,7 @@
 一个基于 TipTap 的强大 Markdown 编辑器组件，具有类似 Notion 的功能。
 
 [![npm version](https://img.shields.io/npm/v/md-tiptap.svg)](https://www.npmjs.com/package/md-tiptap)
-[![license](https://img.shields.io/npm/l/md-tiptap.svg)](https://github.com/yourusername/md-tiptap/blob/master/LICENSE)
-
-📖 [快速开始](./QUICK_START.md) | 💡 [使用示例](./EXAMPLE.md) | 📦 [发布指南](./PUBLISH.md) | 🎨 [shadcn 依赖说明](./SHADCN_DEPENDENCIES_SUMMARY.md)
+[![license](https://img.shields.io/npm/l/md-tiptap.svg)](https://www.npmjs.com/package/md-tiptap)
 
 ## 特性
 
@@ -135,7 +133,13 @@ function EditorExample() {
 |------|------|------|--------|------|
 | `value` | `string` | 否 | - | 编辑器的 HTML 内容 |
 | `onChange` | `(html: string) => void` | 否 | - | 内容变化时的回调函数，参数为 HTML 字符串 |
-| `onImageUpload` | `(file: File) => Promise<string>` | 否 | - | 图片上传处理函数，需返回图片 URL。如果不提供，图片将以 Base64 格式插入 |
+| `onImageUpload` | `(file: File) => Promise<string>` | 否 | - | 图片上传处理函数，需返回图片 URL。若不提供，图片将以 Base64 格式插入 |
+| `commandMenuMaxHeight` | `number` | 否 | `240` | 斜杠命令菜单最大高度（px） |
+| `commandMenuMinHeight` | `number` | 否 | `160` | 斜杠命令菜单最小高度（px） |
+| `placeholder` | `string` | 否 | `"输入 '/' 查看命令..."` | 编辑器为空时的占位文本 |
+| `disabled` | `boolean` | 否 | `false` | 是否禁用编辑器（只读） |
+| `onChangeDebounceMs` | `number` | 否 | `300` | `onChange` 防抖延迟（毫秒） |
+| `border` | `boolean` | 否 | `true` | 是否显示编辑器容器边框 |
 
 ## 功能说明
 
@@ -257,9 +261,9 @@ import 'md-tiptap/style.css'
 
 4. **弹层/对话框**：插入图片、公式等弹层通过 Portal 渲染到 `document.body`，库的样式为全局样式。若仍被覆盖，检查是否有全局 reset 或更高优先级的选择器影响弹层
 
-📖 详细说明请查看 [SHADCN_GUIDE.md](./SHADCN_GUIDE.md)
-
 ## 开发
+
+本项目使用 pnpm、React 19、Vite 7、TypeScript 5.9、Tailwind CSS v4、TipTap 3.x。
 
 ```bash
 # 安装依赖
@@ -268,11 +272,17 @@ pnpm install
 # 开发模式（启动示例应用）
 pnpm dev
 
-# 构建库（用于发布）
+# 构建示例应用
+pnpm build
+
+# 构建库（用于发布到 npm）
 pnpm build:lib
 
 # 代码检查
 pnpm lint
+
+# 预览构建结果
+pnpm preview
 ```
 
 ## License
