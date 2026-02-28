@@ -57,6 +57,7 @@ const TiptapEditor = ({
   onChangeDebounceMs = config.DEFAULT_ON_CHANGE_DEBOUNCE_MS,
   border = true,
   imageMaxSizeBytes = config.IMAGE_MAX_SIZE_BYTES,
+  formulaCategories,
 }: TiptapEditorProps) => {
   // --- Refs & 状态 ---
   const editorRef = useRef<ReturnType<typeof useEditor>>(null);
@@ -290,6 +291,7 @@ const TiptapEditor = ({
         initialValue={mathDialog.mathDialogInitialValue}
         onConfirm={mathDialog.handleMathConfirm}
         onCancel={mathDialog.handleMathCancel}
+        formulaCategories={formulaCategories}
       />
       <ImageUploadDialog
         isOpen={imageDialog.showImageDialog}

@@ -89,12 +89,14 @@ export function useEditorCommands(
             setHeading: noop as (level: 1 | 2 | 3) => void,
             toggleBulletList: noop,
             toggleOrderedList: noop,
+            toggleTaskList: noop,
             insertTable: noop,
           }
         : {
             setHeading: (level: 1 | 2 | 3) => cmd.setHeading(editor, level),
             toggleBulletList: () => cmd.toggleBulletList(editor),
             toggleOrderedList: () => cmd.toggleOrderedList(editor),
+            toggleTaskList: () => cmd.toggleTaskList(editor),
             insertTable: () => cmd.insertTable(editor),
           },
     [editor]

@@ -119,3 +119,112 @@
 [data-slot="dialog-footer"] [data-slot="button"][data-variant="default"]:hover {
   background: color-mix(in oklch, var(--primary, #171717) 90%, black);
 }
+
+/* 常用公式 - 使用 shadcn Tabs */
+.math-dialog-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0; /* 允许在窄容器内收缩，配合子元素滚动 */
+}
+
+/* 标签栏：宽度够时占满一行均分，宽度小时自动换行 */
+.math-dialog-tabs-list {
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  height: auto;
+  min-height: 2.25rem;
+}
+
+/* 每个标签：同排内均分宽度占满，有最小宽度；排不下时换行；极窄时省略号 */
+.math-dialog-tabs-list [data-slot="tabs-trigger"] {
+  flex: 1 1 0;
+  min-width: 7rem;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.math-dialog-tabs-content {
+  padding: 0.75rem;
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: calc(var(--radius, 0.5rem) - 2px);
+  background: color-mix(in oklch, var(--muted, #f5f5f5) 18%, transparent);
+  min-height: 3rem;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: visible; /* 不裁切，靠网格换行 */
+}
+
+.math-dialog-snippets-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  width: 100%;
+  min-width: 0; /* 允许在窄容器内收缩，从而触发换行 */
+  box-sizing: border-box;
+}
+
+.math-dialog-snippet {
+  appearance: none;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  border: 1px solid var(--border, #e5e7eb);
+  background: var(--background, #fff);
+  color: var(--foreground, #171717);
+  border-radius: calc(var(--radius, 0.5rem) - 2px);
+  padding: 0.5rem 0.65rem;
+  min-width: 2.5rem;
+  min-height: 2.25rem;
+  font-size: 0.8125rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.05s;
+  user-select: none;
+}
+
+.math-dialog-snippet-katex {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.math-dialog-snippet-katex .katex {
+  font-size: 0.95rem;
+}
+
+.math-dialog-snippet-katex .katex-display {
+  margin: 0;
+  display: inline-block;
+}
+
+.math-dialog-snippet-label {
+  font-size: 0.65rem;
+  line-height: 1;
+  color: var(--muted-foreground, #737373);
+}
+
+.math-dialog-snippet:hover {
+  background: var(--accent, #f5f5f5);
+  border-color: color-mix(in oklch, var(--border, #e5e7eb) 75%, currentColor);
+}
+
+.math-dialog-snippet:active {
+  transform: translateY(0.5px);
+}
+
+.math-dialog-snippet:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--ring, #3b82f6) 20%, transparent);
+  border-color: var(--ring, #3b82f6);
+}

@@ -19,6 +19,7 @@ import {
   ChevronDown,
   List,
   ListOrdered,
+  ListTodo,
   Table,
   Sigma,
   SquareFunction,
@@ -194,6 +195,14 @@ const Toolbar = ({
           title="有序列表"
         >
           <ListOrdered size={16} />
+        </button>
+        <button
+          type="button"
+          className={cn("editor-toolbar-btn", editor.isActive("taskList") && "is-active")}
+          onClick={() => block.toggleTaskList()}
+          title="任务列表"
+        >
+          <ListTodo size={16} />
         </button>
         <button
           type="button"

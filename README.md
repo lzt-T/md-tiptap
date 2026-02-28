@@ -142,6 +142,8 @@ function EditorExample() {
 | `disabled` | `boolean` | 否 | `false` | 是否禁用编辑器（只读） |
 | `onChangeDebounceMs` | `number` | 否 | `300` | `onChange` 防抖延迟（毫秒） |
 | `border` | `boolean` | 否 | `true` | 是否显示编辑器容器边框 |
+| `imageMaxSizeBytes` | `number` | 否 | `5242880`（5MB） | 图片上传最大体积（字节），超过则拒绝并提示 |
+| `formulaCategories` | `FormulaPickerCategory[]` | 否 | 内置默认分类 | 公式选择器的分类列表。不传则使用内置分类；传入时可完全自定义或在默认基础上扩展（见下方「扩展公式分类」） |
 
 ### Headless 模式下的工具栏显示
 
@@ -211,6 +213,30 @@ function EditorExample() {
   ```
 - **编辑公式**：点击已插入的公式可以打开编辑对话框修改
 - **实时预览**：编辑时实时渲染公式效果
+
+**扩展公式分类**：可通过 `formulaCategories` 自定义或扩展公式选择器中的分类与片段。库会导出 `FORMULA_CATEGORIES`、`FormulaPickerCategory`、`FormulaSnippetItem`，便于在默认基础上追加分类：
+
+```tsx
+import {
+  TiptapEditor,
+  FORMULA_CATEGORIES,
+  type FormulaPickerCategory,
+  type FormulaSnippetItem,
+} from 'md-tiptap'
+import 'md-tiptap/style.css'
+
+const customCategory: FormulaPickerCategory = {
+  id: 'custom',
+  title: '自定义',
+  items: [
+    { id: 'my-1', label: '我的公式', latex: '\\mycommand{x}' },
+  ] as FormulaSnippetItem[],
+}
+
+<TiptapEditor
+  formulaCategories={[...FORMULA_CATEGORIES, customCategory]}
+/>
+```
 
 ### 图片上传
 

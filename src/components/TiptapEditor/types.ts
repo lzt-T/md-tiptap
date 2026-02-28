@@ -1,3 +1,5 @@
+import type { FormulaPickerCategory } from '@/config/formulaCategories'
+
 export const MenuPlacement = {
   Top: 'top',
   Bottom: 'bottom',
@@ -91,5 +93,11 @@ export interface TiptapEditorProps {
    * @default config.IMAGE_MAX_SIZE_BYTES（5MB）
    */
   imageMaxSizeBytes?: number
+
+  /**
+   * 公式选择器的分类列表。不传则使用默认 FORMULA_CATEGORIES；
+   * 传入时可完全自定义或通过 [...FORMULA_CATEGORIES, ...extra] 扩展默认列表。
+   */
+  formulaCategories?: FormulaPickerCategory[]
 }
 

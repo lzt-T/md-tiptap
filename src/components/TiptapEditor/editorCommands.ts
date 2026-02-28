@@ -64,6 +64,10 @@ export function toggleOrderedList(editor: Editor): void {
   editor.chain().focus().toggleOrderedList().run();
 }
 
+export function toggleTaskList(editor: Editor): void {
+  editor.chain().focus().toggleTaskList().run();
+}
+
 export function insertTable(editor: Editor): void {
   editor
     .chain()

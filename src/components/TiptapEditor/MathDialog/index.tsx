@@ -1,92 +1,126 @@
-import { useState, useEffect, useRef } from 'react'
-import katex from 'katex'
+import { useMemo, useState, useEffect, useRef } from "react";
+import katex from "katex";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
-import './MathDialog.css'
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { FormulaPicker } from "./FormulaPicker";
+import type { FormulaPickerCategory } from "@/config/formulaCategories";
+import "./MathDialog.css";
 
 interface MathDialogProps {
-  isOpen: boolean
-  initialValue?: string
-  type: 'inline' | 'block'
-  onConfirm: (latex: string) => void
-  onCancel: () => void
+  isOpen: boolean;
+  initialValue?: string;
+  type: "inline" | "block";
+  onConfirm: (latex: string) => void;
+  onCancel: () => void;
+  formulaCategories?: FormulaPickerCategory[];
 }
 
-const MathDialog = ({ isOpen, initialValue = '', type, onConfirm, onCancel }: MathDialogProps) => {
-  const [latex, setLatex] = useState('')
-  const [previewError, setPreviewError] = useState<string | null>(null)
-  const inputRef = useRef<HTMLTextAreaElement>(null)
-  const previewRef = useRef<HTMLDivElement>(null)
+const MathDialog = ({
+  isOpen,
+  initialValue = "",
+  type,
+  onConfirm,
+  onCancel,
+  formulaCategories,
+}: MathDialogProps) => {
+  const [latex, setLatex] = useState("");
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   // Reset latex when dialog opens with new initial value
   useEffect(() => {
     if (isOpen) {
       requestAnimationFrame(() => {
-        setLatex(initialValue)
-      })
+        setLatex(initialValue);
+      });
     }
-  }, [isOpen, initialValue])
+  }, [isOpen, initialValue]);
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
-      inputRef.current.focus()
-      inputRef.current.select()
+      inputRef.current.focus();
+      inputRef.current.select();
     }
-  }, [isOpen])
+  }, [isOpen]);
 
-  // Update preview when latex changes
-  useEffect(() => {
-    if (previewRef.current && latex) {
-      try {
-        katex.render(latex, previewRef.current, {
-          displayMode: type === 'block',
-          throwOnError: false,
-          errorColor: '#dc2626',
-        })
-        setPreviewError(null)
-      } catch (error) {
-        setPreviewError((error as Error).message)
-      }
-    } else if (previewRef.current) {
-      previewRef.current.innerHTML = ''
-      setPreviewError(null)
+  const previewResult = useMemo(() => {
+    if (!latex) return { html: "", error: null as string | null };
+    try {
+      const html = katex.renderToString(latex, {
+        displayMode: type === "block",
+        throwOnError: false,
+        errorColor: "#dc2626",
+      });
+      return { html, error: null as string | null };
+    } catch (error) {
+      return { html: "", error: (error as Error).message };
     }
-  }, [latex, type])
+  }, [latex, type]);
 
   const handleConfirm = () => {
-    onConfirm(latex)
-    setLatex('')
-  }
+    onConfirm(latex);
+    setLatex("");
+  };
 
   const handleCancel = () => {
-    onCancel()
-    setLatex('')
-  }
+    onCancel();
+    setLatex("");
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
-      e.preventDefault()
-      handleConfirm()
+    if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      handleConfirm();
     }
-  }
+  };
+
+  const handleInsertSnippet = (snippetLatex: string) => {
+    const textarea = inputRef.current;
+    if (!textarea) {
+      setLatex(snippetLatex);
+      return;
+    }
+
+    const start = textarea.selectionStart ?? latex.length;
+    const end = textarea.selectionEnd ?? latex.length;
+    const next = latex.slice(0, start) + snippetLatex + latex.slice(end);
+    setLatex(next);
+
+    requestAnimationFrame(() => {
+      textarea.focus();
+      const cursor = start + snippetLatex.length;
+      textarea.setSelectionRange(cursor, cursor);
+    });
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && handleCancel()}>
-      <DialogContent className="max-w-2xl max-h-[90vh] flex flex-col overflow-hidden" showCloseButton={false}>
+      <DialogContent
+        className="max-w-[calc(100%-2rem)] sm:max-w-3xl max-h-[90vh] flex flex-col overflow-hidden"
+        showCloseButton={false}
+      >
         <DialogHeader className="shrink-0">
-          <DialogTitle>{type === 'inline' ? '插入行内公式' : '插入块级公式'}</DialogTitle>
+          <DialogTitle>
+            {type === "inline" ? "插入行内公式" : "插入块级公式"}
+          </DialogTitle>
         </DialogHeader>
 
         <div className="math-dialog-body space-y-4 min-h-0 flex-1 overflow-y-auto">
+          <div className="math-dialog-snippets space-y-2">
+            <FormulaPicker
+              handlePickSnippet={handleInsertSnippet}
+              categories={formulaCategories}
+            />
+          </div>
+
           <div className="space-y-2">
             <label htmlFor="latex-input" className="text-sm font-medium">
-              LaTeX 公式:
+              Formula:
             </label>
             <textarea
               ref={inputRef}
@@ -95,17 +129,32 @@ const MathDialog = ({ isOpen, initialValue = '', type, onConfirm, onCancel }: Ma
               value={latex}
               onChange={(e) => setLatex(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder={type === 'inline' ? 'E = mc^2' : '\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}'}
-              rows={type === 'inline' ? 3 : 5}
+              placeholder={
+                type === "inline"
+                  ? "E = mc^2"
+                  : "\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}"
+              }
+              rows={type === "inline" ? 3 : 5}
             />
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium">预览:</label>
+            <label className="text-sm font-medium">Preview:</label>
             <div className="math-dialog-preview">
-              <div ref={previewRef} className="math-dialog-preview-content"></div>
-              {!latex && <div className="math-dialog-preview-placeholder">输入公式后将显示预览...</div>}
-              {previewError && <div className="math-dialog-preview-error">预览错误: {previewError}</div>}
+              <div
+                className="math-dialog-preview-content"
+                dangerouslySetInnerHTML={{ __html: previewResult.html }}
+              />
+              {!latex && (
+                <div className="math-dialog-preview-placeholder">
+                  After entering the formula, the preview will be displayed...
+                </div>
+              )}
+              {previewResult.error && (
+                <div className="math-dialog-preview-error">
+                  Preview error: {previewResult.error}
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -114,13 +163,11 @@ const MathDialog = ({ isOpen, initialValue = '', type, onConfirm, onCancel }: Ma
           <Button variant="outline" onClick={handleCancel}>
             取消
           </Button>
-          <Button onClick={handleConfirm}>
-            确定
-          </Button>
+          <Button onClick={handleConfirm}>确定</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};
 
-export default MathDialog
+export default MathDialog;

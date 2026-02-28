@@ -6,6 +6,7 @@ import {
   setHeading,
   toggleBulletList,
   toggleOrderedList,
+  toggleTaskList,
   toggleCode,
   insertTable,
 } from '../editorCommands'
@@ -15,6 +16,7 @@ import {
   Heading3,
   List,
   ListOrdered,
+  ListTodo,
   Code,
   Table,
   Sigma,
@@ -72,6 +74,12 @@ export const defaultCommands: CommandItem[] = [
     description: 'Numbered list',
     icon: ListOrdered,
     command: ({ editor }) => toggleOrderedList(editor),
+  },
+  {
+    title: 'Task List',
+    description: 'Todo list with checkboxes',
+    icon: ListTodo,
+    command: ({ editor }) => toggleTaskList(editor),
   },
   {
     title: 'Inline Code',

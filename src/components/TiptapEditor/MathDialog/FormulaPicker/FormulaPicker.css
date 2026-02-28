@@ -1,0 +1,4 @@
+/* 与 MathDialog.css 的 .math-dialog-tabs 共用布局，此处保留 formula-picker 命名空间以便扩展 */
+.formula-picker {
+  /* 扩展点 */
+}
