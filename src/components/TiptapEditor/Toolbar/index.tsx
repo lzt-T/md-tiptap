@@ -24,6 +24,7 @@ import {
   SquareFunction,
   Image,
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { useEditorCommands } from "@/hooks";
 import ColorPicker from "../ColorPicker";
 import "./Toolbar.css";
@@ -168,9 +169,10 @@ const Toolbar = ({
             if (showHeadingMenu) headingRefs.setReference(el);
           }}
           onClick={() => setShowHeadingMenu(!showHeadingMenu)}
-          className={
-            showHeadingMenu || currentHeadingLevel !== null ? "is-active" : ""
-          }
+          className={cn(
+            "editor-toolbar-btn",
+            (showHeadingMenu || currentHeadingLevel !== null) && "is-active"
+          )}
           title="标题"
         >
           <span className="editor-toolbar-heading-btn">H</span>
@@ -179,22 +181,23 @@ const Toolbar = ({
         <span className="editor-toolbar-separator" />
         <button
           type="button"
+          className={cn("editor-toolbar-btn", editor.isActive("bulletList") && "is-active")}
           onClick={() => block.toggleBulletList()}
-          className={editor.isActive("bulletList") ? "is-active" : ""}
           title="无序列表"
         >
           <List size={16} />
         </button>
         <button
           type="button"
+          className={cn("editor-toolbar-btn", editor.isActive("orderedList") && "is-active")}
           onClick={() => block.toggleOrderedList()}
-          className={editor.isActive("orderedList") ? "is-active" : ""}
           title="有序列表"
         >
           <ListOrdered size={16} />
         </button>
         <button
           type="button"
+          className="editor-toolbar-btn"
           onClick={() => block.insertTable()}
           title="插入表格"
         >
@@ -202,6 +205,7 @@ const Toolbar = ({
         </button>
         <button
           type="button"
+          className="editor-toolbar-btn"
           onClick={() => dialogs.openInlineMath()}
           disabled={!onOpenMathDialog}
           title="行内公式"
@@ -210,6 +214,7 @@ const Toolbar = ({
         </button>
         <button
           type="button"
+          className="editor-toolbar-btn"
           onClick={() => dialogs.openBlockMath()}
           disabled={!onOpenMathDialog}
           title="块公式"
@@ -218,6 +223,7 @@ const Toolbar = ({
         </button>
         <button
           type="button"
+          className="editor-toolbar-btn"
           onClick={() => dialogs.openImage()}
           disabled={!onOpenImageDialog}
           title="图片"
@@ -227,40 +233,40 @@ const Toolbar = ({
         <span className="editor-toolbar-separator" />
         <button
           type="button"
+          className={cn("editor-toolbar-btn", editor.isActive("bold") && "is-active")}
           onClick={() => format.toggleBold()}
-          className={editor.isActive("bold") ? "is-active" : ""}
           title="粗体 (Ctrl+B)"
         >
           <Bold size={16} />
         </button>
         <button
           type="button"
+          className={cn("editor-toolbar-btn", editor.isActive("italic") && "is-active")}
           onClick={() => format.toggleItalic()}
-          className={editor.isActive("italic") ? "is-active" : ""}
           title="斜体 (Ctrl+I)"
         >
           <Italic size={16} />
         </button>
         <button
           type="button"
+          className={cn("editor-toolbar-btn", editor.isActive("underline") && "is-active")}
           onClick={() => format.toggleUnderline()}
-          className={editor.isActive("underline") ? "is-active" : ""}
           title="下划线 (Ctrl+U)"
         >
           <Underline size={16} />
         </button>
         <button
           type="button"
+          className={cn("editor-toolbar-btn", editor.isActive("strike") && "is-active")}
           onClick={() => format.toggleStrike()}
-          className={editor.isActive("strike") ? "is-active" : ""}
           title="删除线"
         >
           <Strikethrough size={16} />
         </button>
         <button
           type="button"
+          className={cn("editor-toolbar-btn", editor.isActive("code") && "is-active")}
           onClick={() => format.toggleCode()}
-          className={editor.isActive("code") ? "is-active" : ""}
           title="行内代码"
         >
           <Code size={16} />
@@ -278,7 +284,7 @@ const Toolbar = ({
               showColorPicker === "highlight" ? null : "highlight"
             )
           }
-          className={editor.isActive("highlight") ? "is-active" : ""}
+          className={cn("editor-toolbar-btn", editor.isActive("highlight") && "is-active")}
           title="高亮颜色"
         >
           <Highlighter size={16} />
@@ -293,6 +299,7 @@ const Toolbar = ({
           onClick={() =>
             setShowColorPicker(showColorPicker === "text" ? null : "text")
           }
+          className="editor-toolbar-btn"
           title="文字颜色"
         >
           <Palette size={16} />
@@ -306,7 +313,7 @@ const Toolbar = ({
             }
           }}
           onClick={() => setShowMoreMenu(!showMoreMenu)}
-          className={showMoreMenu ? "is-active" : ""}
+          className={cn("editor-toolbar-btn", showMoreMenu && "is-active")}
           title="更多"
         >
           <MoreHorizontal size={16} />
@@ -359,22 +366,22 @@ const Toolbar = ({
           >
             <button
               type="button"
+              className={cn("editor-toolbar-btn", editor.isActive("superscript") && "is-active")}
               onClick={() => {
                 format.toggleSuperscript();
                 setShowMoreMenu(false);
               }}
-              className={editor.isActive("superscript") ? "is-active" : ""}
               title="上标"
             >
               <Superscript size={16} />
             </button>
             <button
               type="button"
+              className={cn("editor-toolbar-btn", editor.isActive("subscript") && "is-active")}
               onClick={() => {
                 format.toggleSubscript();
                 setShowMoreMenu(false);
               }}
-              className={editor.isActive("subscript") ? "is-active" : ""}
               title="下标"
             >
               <Subscript size={16} />
@@ -382,52 +389,56 @@ const Toolbar = ({
             <div className="editor-toolbar-more-separator" />
             <button
               type="button"
+              className={cn(
+                "editor-toolbar-btn",
+                editor.isActive({ textAlign: "left" }) && "is-active"
+              )}
               onClick={() => {
                 format.setTextAlign("left");
                 setShowMoreMenu(false);
               }}
-              className={
-                editor.isActive({ textAlign: "left" }) ? "is-active" : ""
-              }
               title="左对齐"
             >
               <AlignLeft size={16} />
             </button>
             <button
               type="button"
+              className={cn(
+                "editor-toolbar-btn",
+                editor.isActive({ textAlign: "center" }) && "is-active"
+              )}
               onClick={() => {
                 format.setTextAlign("center");
                 setShowMoreMenu(false);
               }}
-              className={
-                editor.isActive({ textAlign: "center" }) ? "is-active" : ""
-              }
               title="居中对齐"
             >
               <AlignCenter size={16} />
             </button>
             <button
               type="button"
+              className={cn(
+                "editor-toolbar-btn",
+                editor.isActive({ textAlign: "right" }) && "is-active"
+              )}
               onClick={() => {
                 format.setTextAlign("right");
                 setShowMoreMenu(false);
               }}
-              className={
-                editor.isActive({ textAlign: "right" }) ? "is-active" : ""
-              }
               title="右对齐"
             >
               <AlignRight size={16} />
             </button>
             <button
               type="button"
+              className={cn(
+                "editor-toolbar-btn",
+                editor.isActive({ textAlign: "justify" }) && "is-active"
+              )}
               onClick={() => {
                 format.setTextAlign("justify");
                 setShowMoreMenu(false);
               }}
-              className={
-                editor.isActive({ textAlign: "justify" }) ? "is-active" : ""
-              }
               title="两端对齐"
             >
               <AlignJustify size={16} />

@@ -6,15 +6,6 @@
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
-.color-picker-title {
-  font-size: 12px;
-  font-weight: 600;
-  color: #64748b;
-  margin-bottom: 8px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
 .color-picker-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -34,7 +25,7 @@
 }
 
 .color-picker-swatch:hover {
-  transform: scale(1.15);
+  transform: scale(1.05);
   border-color: #3b82f6;
   box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
 }
@@ -70,6 +61,7 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.15s ease;
+  text-align: center;
 }
 
 .color-picker-custom-btn:hover {
