@@ -85,5 +85,11 @@ export interface TiptapEditorProps {
    * @default 'always'
    */
   headlessToolbarMode?: HeadlessToolbarMode
+
+  /**
+   * 图片上传最大体积（字节），超过则拒绝并提示
+   * @default config.IMAGE_MAX_SIZE_BYTES（5MB）
+   */
+  imageMaxSizeBytes?: number
 }
 

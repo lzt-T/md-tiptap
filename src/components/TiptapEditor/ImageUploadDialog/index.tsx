@@ -8,6 +8,9 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
+import { Loader2, ImagePlus, AlertCircle, ImageOff } from 'lucide-react'
+import { config } from '@/config'
+import { formatFileSize } from '@/lib/utils'
 import './ImageUploadDialog.css'
 
 interface ImageUploadDialogProps {
@@ -15,12 +18,20 @@ interface ImageUploadDialogProps {
   onConfirm: (src: string, alt?: string) => void
   onCancel: () => void
   onUpload?: (file: File) => Promise<string>
+  /** 图片最大体积（字节），超过则拒绝 */
+  imageMaxSizeBytes?: number
 }
 
-const ImageUploadDialog = ({ isOpen, onConfirm, onCancel, onUpload }: ImageUploadDialogProps) => {
+const ImageUploadDialog = ({
+  isOpen,
+  onConfirm,
+  onCancel,
+  onUpload,
+  imageMaxSizeBytes = config.IMAGE_MAX_SIZE_BYTES,
+}: ImageUploadDialogProps) => {
   const [uploadType, setUploadType] = useState<'file' | 'url'>('file')
   const [imageUrl, setImageUrl] = useState('')
-  const [previewUrl, setPreviewUrl] = useState('')
+  const [previewLoadError, setPreviewLoadError] = useState(false)
   const [error, setError] = useState('')
   const [isUploading, setIsUploading] = useState(false)
   const [isDragOver, setIsDragOver] = useState(false)
@@ -30,7 +41,7 @@ const ImageUploadDialog = ({ isOpen, onConfirm, onCancel, onUpload }: ImageUploa
   const resetStates = useCallback(() => {
     setUploadType('file')
     setImageUrl('')
-    setPreviewUrl('')
+    setPreviewLoadError(false)
     setError('')
     setIsUploading(false)
     setIsDragOver(false)
@@ -42,8 +53,9 @@ const ImageUploadDialog = ({ isOpen, onConfirm, onCancel, onUpload }: ImageUploa
       return
     }
 
-    if (file.size > 5 * 1024 * 1024) {
-      setError('图片大小不能超过 5MB')
+    const maxBytes = imageMaxSizeBytes
+    if (file.size > maxBytes) {
+      setError(`图片大小不能超过 ${formatFileSize(maxBytes)}`)
       return
     }
 
@@ -53,8 +65,8 @@ const ImageUploadDialog = ({ isOpen, onConfirm, onCancel, onUpload }: ImageUploa
       try {
         setIsUploading(true)
         const url = await onUpload(file)
+        setPreviewLoadError(false)
         setImageUrl(url)
-        setPreviewUrl(url)
         setIsUploading(false)
       } catch (err) {
         setIsUploading(false)
@@ -64,7 +76,7 @@ const ImageUploadDialog = ({ isOpen, onConfirm, onCancel, onUpload }: ImageUploa
       const reader = new FileReader()
       reader.onload = (event) => {
         const base64 = event.target?.result as string
-        setPreviewUrl(base64)
+        setPreviewLoadError(false)
         setImageUrl(base64)
       }
       reader.onerror = () => {
@@ -72,7 +84,7 @@ const ImageUploadDialog = ({ isOpen, onConfirm, onCancel, onUpload }: ImageUploa
       }
       reader.readAsDataURL(file)
     }
-  }, [onUpload])
+  }, [onUpload, imageMaxSizeBytes])
 
   const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -106,18 +118,17 @@ const ImageUploadDialog = ({ isOpen, onConfirm, onCancel, onUpload }: ImageUploa
 
   const handleUrlChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const url = e.target.value
+    setPreviewLoadError(false)
     setImageUrl(url)
 
     if (url) {
       try {
         new URL(url)
-        setPreviewUrl(url)
         setError('')
       } catch {
         setError('请输入有效的图片 URL')
       }
     } else {
-      setPreviewUrl('')
       setError('')
     }
   }, [])
@@ -166,7 +177,7 @@ const ImageUploadDialog = ({ isOpen, onConfirm, onCancel, onUpload }: ImageUploa
         onKeyDown={handleKeyDown}
       >
         <DialogHeader>
-          <DialogTitle>插入图片</DialogTitle>
+          <DialogTitle>图片上传</DialogTitle>
         </DialogHeader>
 
         <div className="image-upload-tabs">
@@ -199,28 +210,53 @@ const ImageUploadDialog = ({ isOpen, onConfirm, onCancel, onUpload }: ImageUploa
               />
               <label
                 htmlFor="imageFileInput"
-                className={`image-upload-file-label ${isDragOver ? 'is-drag-over' : ''}`}
+                className={`image-upload-file-label ${isDragOver ? 'is-drag-over' : ''} ${imageUrl ? 'has-preview' : ''}`}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
               >
                 {isUploading ? (
                   <>
-                    <div className="image-upload-file-icon">⏳</div>
+                    <div className="image-upload-file-icon">
+                      <Loader2 size={40} className="image-upload-file-icon-spin" />
+                    </div>
                     <div className="image-upload-file-text">正在上传图片...</div>
                   </>
+                ) : imageUrl ? (
+                  <div className="image-upload-file-preview">
+                    {previewLoadError ? (
+                      <div className="image-upload-file-preview-error">
+                        <ImageOff size={40} />
+                        <span>图片无法加载</span>
+                      </div>
+                    ) : (
+                      <img
+                        src={imageUrl}
+                        alt=""
+                        onLoad={() => setPreviewLoadError(false)}
+                        onError={() => setPreviewLoadError(true)}
+                      />
+                    )}
+                  </div>
                 ) : (
                   <>
-                    <div className="image-upload-file-icon">📁</div>
+                    <div className="image-upload-file-icon">
+                      <ImagePlus size={40} />
+                    </div>
                     <div className="image-upload-file-text">
                       点击选择图片或拖拽图片到此处
                     </div>
                     <div className="image-upload-file-hint">
-                      支持 JPG、PNG、GIF 等格式，最大 5MB
+                      支持 JPG、PNG、GIF 等格式，最大 {formatFileSize(imageMaxSizeBytes)}
                     </div>
                   </>
                 )}
               </label>
+              {uploadType === 'file' && imageUrl && (
+                <div className="image-upload-file-hint image-upload-file-reselect-hint">
+                  点击或拖拽可重新选择
+                </div>
+              )}
             </div>
           ) : (
             <div className="image-upload-url space-y-2">
@@ -239,16 +275,8 @@ const ImageUploadDialog = ({ isOpen, onConfirm, onCancel, onUpload }: ImageUploa
 
           {error && (
             <div className="image-upload-error" role="alert">
-              ⚠️ {error}
-            </div>
-          )}
-
-          {previewUrl && (
-            <div className="image-upload-preview space-y-2">
-              <Label>预览</Label>
-              <div className="image-upload-preview-wrapper">
-                <img src={previewUrl} alt="图片预览" />
-              </div>
+              <AlertCircle size={16} className="image-upload-error-icon" />
+              {error}
             </div>
           )}
         </div>
@@ -261,7 +289,7 @@ const ImageUploadDialog = ({ isOpen, onConfirm, onCancel, onUpload }: ImageUploa
             onClick={handleConfirm}
             disabled={!imageUrl || !!error || isUploading}
           >
-            {isUploading ? '上传中...' : '插入图片'}
+            {isUploading ? '上传中...' : '确定'}
           </Button>
         </DialogFooter>
       </DialogContent>

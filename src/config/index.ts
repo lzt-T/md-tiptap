@@ -16,6 +16,8 @@ export const config = {
   DEFAULT_PLACEHOLDER: "输入 '/' 查看命令...",
   /* Headless 模式下的默认占位文本 */
   PLACEHOLDER_HEADLESS: "开始输入...",
+  /* 图片上传最大体积（字节），默认 5MB */
+  IMAGE_MAX_SIZE_BYTES: 5 * 1024 * 1024,
   /* 文字颜色预设（ColorPicker type="text"） */
   TEXT_COLORS: [
     { name: "默认", value: "#000000" },

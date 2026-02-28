@@ -56,6 +56,7 @@ const TiptapEditor = ({
   disabled = false,
   onChangeDebounceMs = config.DEFAULT_ON_CHANGE_DEBOUNCE_MS,
   border = true,
+  imageMaxSizeBytes = config.IMAGE_MAX_SIZE_BYTES,
 }: TiptapEditorProps) => {
   // --- Refs & 状态 ---
   const editorRef = useRef<ReturnType<typeof useEditor>>(null);
@@ -295,6 +296,7 @@ const TiptapEditor = ({
         onConfirm={imageDialog.handleImageConfirm}
         onCancel={imageDialog.handleImageCancel}
         onUpload={onImageUpload}
+        imageMaxSizeBytes={imageMaxSizeBytes}
       />
     </div>
   );

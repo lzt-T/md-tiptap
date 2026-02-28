@@ -62,6 +62,7 @@
 /* 文件上传区 */
 .image-upload-file {
   position: relative;
+  width: 100%;
 }
 
 .image-upload-input-hidden {
@@ -78,6 +79,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 100%;
   padding: 3rem 1.5rem;
   border: 2px dashed var(--border, #e5e7eb);
   border-radius: calc(var(--radius, 0.5rem) - 2px);
@@ -97,8 +99,20 @@
 }
 
 .image-upload-file-icon {
-  font-size: 3rem;
   margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted-foreground, #737373);
+}
+
+.image-upload-file-icon-spin {
+  animation: image-upload-spin 0.8s linear infinite;
+}
+
+@keyframes image-upload-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .image-upload-file-text {
@@ -111,6 +125,53 @@
 .image-upload-file-hint {
   font-size: 0.875rem;
   color: var(--muted-foreground, #737373);
+}
+
+.image-upload-file-preview {
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+  display: block;
+}
+
+.image-upload-file-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+  display: block;
+  vertical-align: top;
+}
+
+.image-upload-file-preview-error {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--muted, #f5f5f5);
+  color: var(--muted-foreground, #64748b);
+  font-size: 0.875rem;
+  border-radius: 4px;
+}
+
+.image-upload-file-preview-error svg {
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.image-upload-file-label.has-preview {
+  padding: 0;
+  min-height: 0;
+}
+
+.image-upload-file-reselect-hint {
+  margin-top: 0.5rem;
+  color: var(--muted-foreground, #64748b);
+  font-size: 0.8125rem;
+  text-align: center;
 }
 
 /* 输入框 */
@@ -148,22 +209,8 @@
   gap: 0.5rem;
 }
 
-/* 预览 */
-.image-upload-preview-wrapper {
-  border: 1px solid var(--border, #e5e7eb);
-  border-radius: calc(var(--radius, 0.5rem) - 2px);
-  padding: 1rem;
-  background: color-mix(in oklch, var(--muted, #f5f5f5) 20%, transparent);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.image-upload-preview-wrapper img {
-  max-width: 100%;
-  max-height: 300px;
-  border-radius: 4px;
-  object-fit: contain;
+.image-upload-error-icon {
+  flex-shrink: 0;
 }
 
 /* 对话框内按钮样式增强（与 MathDialog 一致） */
@@ -231,9 +278,5 @@
 
   .image-upload-file-label {
     padding: 2rem 1rem;
-  }
-
-  .image-upload-file-icon {
-    font-size: 2.25rem;
   }
 }
