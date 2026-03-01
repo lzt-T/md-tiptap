@@ -1,3 +1,4 @@
+import type { Editor } from "@tiptap/react";
 import type { CommandItem as SlashCommandItem } from "@/extensions/SlashCommands";
 import { useEffect, useRef } from "react";
 import { Command, CommandList, CommandItem } from "@/components/ui/command";
@@ -12,6 +13,8 @@ interface CommandMenuProps {
   position: { top: number; left: number; placement: MenuPlacement };
   maxHeight: number;
   minHeight: number;
+  /** 用于判断是否禁用「表格」等依赖上下文的选项（如在表格内禁用插入表格） */
+  editor?: Editor | null;
 }
 
 const CommandMenu = ({
@@ -21,6 +24,7 @@ const CommandMenu = ({
   position,
   maxHeight,
   minHeight,
+  editor,
 }: CommandMenuProps) => {
   const selectedRef = useRef<HTMLDivElement>(null);
 
@@ -43,7 +47,7 @@ const CommandMenu = ({
         position: "absolute",
         top: position.top,
         left: position.left,
-        zIndex: 10000,
+        zIndex: 40,
         // 空间不足时向上弹出：translateY(-100%) 使菜单底部对齐 top 坐标
         transform:
           position.placement === MenuPlacement.Top
@@ -55,12 +59,19 @@ const CommandMenu = ({
         <CommandList style={{ maxHeight: `${maxHeight}px`, minHeight: minHeight > 0 ? `${minHeight}px` : undefined, minWidth: "160px" }}>
           {items.map((item, index) => {
             const Icon = item.icon;
+            const isTableDisabled =
+              item.title === "Table" && editor?.isActive?.("table");
+            const disabled = isTableDisabled;
             return (
               <CommandItem
                 key={item.title}
                 ref={index === selectedIndex ? selectedRef : null}
                 value={item.title}
-                onSelect={() => command(item)}
+                disabled={disabled}
+                onSelect={() => {
+                  if (disabled) return;
+                  command(item);
+                }}
                 className={cn(
                   index === selectedIndex && "bg-accent text-accent-foreground"
                 )}

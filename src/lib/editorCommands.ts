@@ -68,7 +68,9 @@ export function toggleTaskList(editor: Editor): void {
   editor.chain().focus().toggleTaskList().run();
 }
 
+/** 不允许在表格内部再插入表格（与 EditorMode 无关） */
 export function insertTable(editor: Editor): void {
+  if (editor.isActive('table')) return;
   editor
     .chain()
     .focus()

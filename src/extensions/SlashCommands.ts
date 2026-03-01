@@ -32,6 +32,8 @@ export interface CommandItem {
   command: ({ editor }: { editor: Editor }) => void
   mathType?: 'inline' | 'block'
   imageUpload?: boolean
+  /** 为 true 时在斜杠菜单中灰显，且方向键会跳过该项 */
+  disabled?: boolean
 }
 
 export interface SlashCommandsOptions {
@@ -42,6 +44,11 @@ export interface SlashCommandsOptions {
   onClientRect: (rect: DOMRect | null) => void
   onMathDialog?: (type: 'inline' | 'block', initialValue: string, callback: (latex: string) => void) => void
   onImageUpload?: (callback: (src: string, alt?: string) => void) => void
+}
+
+function findFirstEnabledIndex(items: CommandItem[]): number {
+  const i = items.findIndex((item) => !item.disabled)
+  return i >= 0 ? i : 0
 }
 
 export const defaultCommands: CommandItem[] = [
@@ -144,9 +151,16 @@ export const SlashCommands = Extension.create<SlashCommandsOptions>({
         editor: this.editor,
         char: '/',
         items: ({ query }: { query: string }) => {
-          return defaultCommands.filter((item) =>
-            item.title.toLowerCase().includes(query.toLowerCase())
-          )
+          const insideTable = this.editor.isActive('table')
+          return defaultCommands
+            .filter((item) =>
+              item.title.toLowerCase().includes(query.toLowerCase())
+            )
+            .map((item) => ({
+              ...item,
+              disabled:
+                item.title === 'Table' && insideTable,
+            }))
         },
         command: ({ editor, range, props }: { editor: Editor; range: { from: number; to: number }; props: CommandItem }) => {
           editor.chain().focus().deleteRange(range).run()
@@ -160,13 +174,13 @@ export const SlashCommands = Extension.create<SlashCommandsOptions>({
 
           return {
             onStart: (props: SuggestionProps<CommandItem>) => {
-              currentIndex = 0
               items = props.items
               currentEditor = props.editor
               currentRange = props.range
+              currentIndex = findFirstEnabledIndex(items)
               this.options.onStart()
               this.options.onUpdate(props.query)
-              this.options.onIndexChange(0)
+              this.options.onIndexChange(currentIndex)
               if (props.clientRect) {
                 const rect = props.clientRect()
                 this.options.onClientRect(rect)
@@ -176,9 +190,9 @@ export const SlashCommands = Extension.create<SlashCommandsOptions>({
               items = props.items
               currentEditor = props.editor
               currentRange = props.range
-              currentIndex = 0
+              currentIndex = findFirstEnabledIndex(items)
               this.options.onUpdate(props.query)
-              this.options.onIndexChange(0)
+              this.options.onIndexChange(currentIndex)
               if (props.clientRect) {
                 const rect = props.clientRect()
                 this.options.onClientRect(rect)
@@ -194,18 +208,37 @@ export const SlashCommands = Extension.create<SlashCommandsOptions>({
               props.event.stopPropagation()
 
               switch (props.event.key) {
-                case 'ArrowUp':
-                  currentIndex = (currentIndex + items.length - 1) % items.length
+                case 'ArrowUp': {
+                  let next = (currentIndex + items.length - 1) % items.length
+                  let steps = 0
+                  while (items[next].disabled && steps < items.length) {
+                    next = (next + items.length - 1) % items.length
+                    steps += 1
+                  }
+                  currentIndex = items[next].disabled ? currentIndex : next
                   this.options.onIndexChange(currentIndex)
                   return true
-                case 'ArrowDown':
-                  currentIndex = (currentIndex + 1) % items.length
+                }
+                case 'ArrowDown': {
+                  let next = (currentIndex + 1) % items.length
+                  let steps = 0
+                  while (items[next].disabled && steps < items.length) {
+                    next = (next + 1) % items.length
+                    steps += 1
+                  }
+                  currentIndex = items[next].disabled ? currentIndex : next
                   this.options.onIndexChange(currentIndex)
                   return true
+                }
                 case 'Enter':
                   if (items[currentIndex]) {
-                    currentEditor.chain().focus().deleteRange(currentRange).run()
                     const item = items[currentIndex]
+                    const isTableDisabled = item.title === 'Table' && currentEditor.isActive('table')
+                    if (isTableDisabled) {
+                      this.options.onExit()
+                      return true
+                    }
+                    currentEditor.chain().focus().deleteRange(currentRange).run()
                     
                     // Check if it's a math command
                     if (item.mathType && this.options.onMathDialog) {

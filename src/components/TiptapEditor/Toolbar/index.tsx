@@ -132,14 +132,13 @@ const Toolbar = ({
     onOpenImageDialog,
   });
 
-  const currentHeadingLevel =
-    editor.isActive("heading", { level: 1 })
-      ? 1
-      : editor.isActive("heading", { level: 2 })
-        ? 2
-        : editor.isActive("heading", { level: 3 })
-          ? 3
-          : null;
+  const currentHeadingLevel = editor.isActive("heading", { level: 1 })
+    ? 1
+    : editor.isActive("heading", { level: 2 })
+    ? 2
+    : editor.isActive("heading", { level: 3 })
+    ? 3
+    : null;
 
   const onTextColorSelect = (color: string) => {
     format.setColor(color);
@@ -182,7 +181,10 @@ const Toolbar = ({
         <span className="editor-toolbar-separator" />
         <button
           type="button"
-          className={cn("editor-toolbar-btn", editor.isActive("bulletList") && "is-active")}
+          className={cn(
+            "editor-toolbar-btn",
+            editor.isActive("bulletList") && "is-active"
+          )}
           onClick={() => block.toggleBulletList()}
           title="无序列表"
         >
@@ -190,7 +192,10 @@ const Toolbar = ({
         </button>
         <button
           type="button"
-          className={cn("editor-toolbar-btn", editor.isActive("orderedList") && "is-active")}
+          className={cn(
+            "editor-toolbar-btn",
+            editor.isActive("orderedList") && "is-active"
+          )}
           onClick={() => block.toggleOrderedList()}
           title="有序列表"
         >
@@ -198,7 +203,10 @@ const Toolbar = ({
         </button>
         <button
           type="button"
-          className={cn("editor-toolbar-btn", editor.isActive("taskList") && "is-active")}
+          className={cn(
+            "editor-toolbar-btn",
+            editor.isActive("taskList") && "is-active"
+          )}
           onClick={() => block.toggleTaskList()}
           title="任务列表"
         >
@@ -206,8 +214,14 @@ const Toolbar = ({
         </button>
         <button
           type="button"
-          className="editor-toolbar-btn"
-          onClick={() => block.insertTable()}
+          className={cn(
+            "editor-toolbar-btn",
+            editor.isActive("table") && "is-disabled"
+          )}
+          onClick={() => {
+            if (editor.isActive("table")) return;
+            block.insertTable();
+          }}
           title="插入表格"
         >
           <Table size={16} />
@@ -242,7 +256,10 @@ const Toolbar = ({
         <span className="editor-toolbar-separator" />
         <button
           type="button"
-          className={cn("editor-toolbar-btn", editor.isActive("bold") && "is-active")}
+          className={cn(
+            "editor-toolbar-btn",
+            editor.isActive("bold") && "is-active"
+          )}
           onClick={() => format.toggleBold()}
           title="粗体 (Ctrl+B)"
         >
@@ -250,7 +267,10 @@ const Toolbar = ({
         </button>
         <button
           type="button"
-          className={cn("editor-toolbar-btn", editor.isActive("italic") && "is-active")}
+          className={cn(
+            "editor-toolbar-btn",
+            editor.isActive("italic") && "is-active"
+          )}
           onClick={() => format.toggleItalic()}
           title="斜体 (Ctrl+I)"
         >
@@ -258,7 +278,10 @@ const Toolbar = ({
         </button>
         <button
           type="button"
-          className={cn("editor-toolbar-btn", editor.isActive("underline") && "is-active")}
+          className={cn(
+            "editor-toolbar-btn",
+            editor.isActive("underline") && "is-active"
+          )}
           onClick={() => format.toggleUnderline()}
           title="下划线 (Ctrl+U)"
         >
@@ -266,7 +289,10 @@ const Toolbar = ({
         </button>
         <button
           type="button"
-          className={cn("editor-toolbar-btn", editor.isActive("strike") && "is-active")}
+          className={cn(
+            "editor-toolbar-btn",
+            editor.isActive("strike") && "is-active"
+          )}
           onClick={() => format.toggleStrike()}
           title="删除线"
         >
@@ -274,7 +300,10 @@ const Toolbar = ({
         </button>
         <button
           type="button"
-          className={cn("editor-toolbar-btn", editor.isActive("code") && "is-active")}
+          className={cn(
+            "editor-toolbar-btn",
+            editor.isActive("code") && "is-active"
+          )}
           onClick={() => format.toggleCode()}
           title="行内代码"
         >
@@ -293,7 +322,10 @@ const Toolbar = ({
               showColorPicker === "highlight" ? null : "highlight"
             )
           }
-          className={cn("editor-toolbar-btn", editor.isActive("highlight") && "is-active")}
+          className={cn(
+            "editor-toolbar-btn",
+            editor.isActive("highlight") && "is-active"
+          )}
           title="高亮颜色"
         >
           <Highlighter size={16} />
@@ -375,7 +407,10 @@ const Toolbar = ({
           >
             <button
               type="button"
-              className={cn("editor-toolbar-btn", editor.isActive("superscript") && "is-active")}
+              className={cn(
+                "editor-toolbar-btn",
+                editor.isActive("superscript") && "is-active"
+              )}
               onClick={() => {
                 format.toggleSuperscript();
                 setShowMoreMenu(false);
@@ -386,7 +421,10 @@ const Toolbar = ({
             </button>
             <button
               type="button"
-              className={cn("editor-toolbar-btn", editor.isActive("subscript") && "is-active")}
+              className={cn(
+                "editor-toolbar-btn",
+                editor.isActive("subscript") && "is-active"
+              )}
               onClick={() => {
                 format.toggleSubscript();
                 setShowMoreMenu(false);
@@ -476,7 +514,9 @@ const Toolbar = ({
               <button
                 key={level}
                 type="button"
-                className={`editor-toolbar-heading-item ${currentHeadingLevel === level ? "is-active" : ""}`}
+                className={`editor-toolbar-heading-item ${
+                  currentHeadingLevel === level ? "is-active" : ""
+                }`}
                 onClick={() => onHeadingSelect(level)}
                 title={`Heading ${level}`}
               >
@@ -489,7 +529,6 @@ const Toolbar = ({
           </div>
         </>
       )}
-
     </div>
   );
 };

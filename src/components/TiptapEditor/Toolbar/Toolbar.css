@@ -46,7 +46,8 @@
   color: white;
 }
 
-.editor-toolbar-btn:disabled {
+.editor-toolbar-btn:disabled,
+.editor-toolbar-btn.is-disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
@@ -71,7 +72,7 @@
 
 .editor-toolbar-heading-menu {
   position: fixed;
-  z-index: 10001;
+  z-index: 40;
   background: white;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
@@ -116,18 +117,18 @@
 .editor-toolbar-overlay {
   position: fixed;
   inset: 0;
-  z-index: 10000;
+  z-index: 40;
   background: transparent;
 }
 
 .editor-toolbar-dropdown {
   position: fixed;
-  z-index: 10001;
+  z-index: 40;
 }
 
 .editor-toolbar-more-menu {
   position: fixed;
-  z-index: 10001;
+  z-index: 40;
   background: white;
   border: 1px solid #e5e7eb;
   border-radius: 8px;

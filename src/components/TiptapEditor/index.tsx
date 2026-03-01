@@ -281,6 +281,7 @@ const TiptapEditor = ({
               position={commandMenu.menuPosition}
               maxHeight={commandMenuMaxHeight}
               minHeight={commandMenuMinHeight}
+              editor={editor}
             />
           )}
       </div>

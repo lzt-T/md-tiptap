@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import TiptapEditor from "@/components/TiptapEditor";
-import { HeadlessToolbarMode } from "@/components/TiptapEditor/types";
+import { EditorMode, HeadlessToolbarMode } from "@/components/TiptapEditor/types";
 import "./App.css";
 
 function App() {
