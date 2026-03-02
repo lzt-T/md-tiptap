@@ -260,6 +260,20 @@ const TableRowActions = ({ editor, editorWrapperRef }: TableRowActionsProps) => 
     return key === focusedRowKey || key === openMenuKey
   })
 
+  /** 当前打开菜单所在表格的行数、列数（仅一行/一列时“删除行/列”改为删除整个表格） */
+  let currentTableRowCount = 0
+  let currentTableColCount = 0
+  if (openMenuKey && editorWrapperRef.current) {
+    const tIdx = parseInt(openMenuKey.split('-')[0], 10)
+    currentTableRowCount = rows.filter(r => r.tableIndex === tIdx).length
+    const proseMirror = editorWrapperRef.current.querySelector('.ProseMirror')
+    const tables = proseMirror?.querySelectorAll('table')
+    const table = tables?.[tIdx] as HTMLTableElement | undefined
+    if (table?.rows[0]) {
+      currentTableColCount = table.rows[0].cells.length
+    }
+  }
+
   return (
     <>
       {visibleRows.map(item => {
@@ -316,10 +330,18 @@ const TableRowActions = ({ editor, editorWrapperRef }: TableRowActionsProps) => 
           <button
             type="button"
             role="menuitem"
-            title="删除当前行"
-            disabled={!editor.can().deleteRow()}
+            title={currentTableRowCount <= 1 ? '删除整个表格' : '删除当前行'}
+            disabled={
+              currentTableRowCount <= 1
+                ? false
+                : !editor.can().deleteRow()
+            }
             onClick={() =>
-              runAndClose(() => editor.chain().focus().deleteRow().run())
+              runAndClose(() =>
+                currentTableRowCount <= 1
+                  ? editor.chain().focus().deleteTable().run()
+                  : editor.chain().focus().deleteRow().run()
+              )
             }
           >
             <Trash2 size={16} />
@@ -348,10 +370,20 @@ const TableRowActions = ({ editor, editorWrapperRef }: TableRowActionsProps) => 
           <button
             type="button"
             role="menuitem"
-            title="删除当前列"
-            disabled={!editor.can().deleteColumn()}
+            title={currentTableColCount <= 1 ? '删除整个表格' : '删除当前列'}
+            disabled={
+              currentTableColCount <= 1
+                ? false
+                : !editor.can().deleteColumn()
+            }
             onClick={() =>
-              runAndClose(() => editor.chain().focus().deleteColumn().run(), false)
+              runAndClose(
+                () =>
+                  currentTableColCount <= 1
+                    ? editor.chain().focus().deleteTable().run()
+                    : editor.chain().focus().deleteColumn().run(),
+                false
+              )
             }
           >
             <Trash2 size={16} />
