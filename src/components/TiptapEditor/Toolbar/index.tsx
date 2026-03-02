@@ -58,9 +58,27 @@ const Toolbar = ({
   /** 选区/内容变化时自增，用于让工具栏根据当前选区重新计算 isActive 并重渲染 */
   const [selectionKey, setSelectionKey] = useState(0);
 
+  /* 是否聚焦公式或图片（此时禁用格式/块级操作按钮） */
+  const isFocusNodeOnly =
+    !!editor &&
+    (editor.isActive("inlineMath") ||
+      editor.isActive("blockMath") ||
+      editor.isActive("image"));
+
   useEffect(() => {
     if (!editor) return;
-    const onSelectionUpdate = () => setSelectionKey((k) => k + 1);
+    const onSelectionUpdate = () => {
+      setSelectionKey((k) => k + 1);
+      if (
+        editor.isActive("inlineMath") ||
+        editor.isActive("blockMath") ||
+        editor.isActive("image")
+      ) {
+        setShowHeadingMenu(false);
+        setShowMoreMenu(false);
+        setShowColorPicker(null);
+      }
+    };
     editor.on("selectionUpdate", onSelectionUpdate);
     editor.on("transaction", onSelectionUpdate);
     return () => {
@@ -172,10 +190,14 @@ const Toolbar = ({
           ref={(el) => {
             if (showHeadingMenu) headingRefs.setReference(el);
           }}
-          onClick={() => setShowHeadingMenu(!showHeadingMenu)}
+          onClick={() => {
+            if (isFocusNodeOnly) return;
+            setShowHeadingMenu(!showHeadingMenu);
+          }}
           className={cn(
             "editor-toolbar-btn",
-            (showHeadingMenu || currentHeadingLevel !== null) && "is-active"
+            (showHeadingMenu || currentHeadingLevel !== null) && "is-active",
+            isFocusNodeOnly && "is-disabled"
           )}
           title="标题"
         >
@@ -187,9 +209,13 @@ const Toolbar = ({
           type="button"
           className={cn(
             "editor-toolbar-btn",
-            editor.isActive("bulletList") && "is-active"
+            editor.isActive("bulletList") && "is-active",
+            isFocusNodeOnly && "is-disabled"
           )}
-          onClick={() => block.toggleBulletList()}
+          onClick={() => {
+            if (isFocusNodeOnly) return;
+            block.toggleBulletList();
+          }}
           title="无序列表"
         >
           <List size={16} />
@@ -198,9 +224,13 @@ const Toolbar = ({
           type="button"
           className={cn(
             "editor-toolbar-btn",
-            editor.isActive("orderedList") && "is-active"
+            editor.isActive("orderedList") && "is-active",
+            isFocusNodeOnly && "is-disabled"
           )}
-          onClick={() => block.toggleOrderedList()}
+          onClick={() => {
+            if (isFocusNodeOnly) return;
+            block.toggleOrderedList();
+          }}
           title="有序列表"
         >
           <ListOrdered size={16} />
@@ -209,9 +239,13 @@ const Toolbar = ({
           type="button"
           className={cn(
             "editor-toolbar-btn",
-            editor.isActive("taskList") && "is-active"
+            editor.isActive("taskList") && "is-active",
+            isFocusNodeOnly && "is-disabled"
           )}
-          onClick={() => block.toggleTaskList()}
+          onClick={() => {
+            if (isFocusNodeOnly) return;
+            block.toggleTaskList();
+          }}
           title="任务列表"
         >
           <ListTodo size={16} />
@@ -220,10 +254,10 @@ const Toolbar = ({
           type="button"
           className={cn(
             "editor-toolbar-btn",
-            editor.isActive("table") && "is-disabled"
+            (editor.isActive("table") || isFocusNodeOnly) && "is-disabled"
           )}
           onClick={() => {
-            if (editor.isActive("table")) return;
+            if (editor.isActive("table") || isFocusNodeOnly) return;
             block.insertTable();
           }}
           title="插入表格"
@@ -232,27 +266,42 @@ const Toolbar = ({
         </button>
         <button
           type="button"
-          className="editor-toolbar-btn"
-          onClick={() => dialogs.openInlineMath()}
-          disabled={!onOpenMathDialog}
+          className={cn(
+            "editor-toolbar-btn",
+            (!onOpenMathDialog || isFocusNodeOnly) && "is-disabled"
+          )}
+          onClick={() => {
+            if (!onOpenMathDialog || isFocusNodeOnly) return;
+            dialogs.openInlineMath();
+          }}
           title="行内公式"
         >
           <Sigma size={16} />
         </button>
         <button
           type="button"
-          className="editor-toolbar-btn"
-          onClick={() => dialogs.openBlockMath()}
-          disabled={!onOpenMathDialog}
+          className={cn(
+            "editor-toolbar-btn",
+            (!onOpenMathDialog || isFocusNodeOnly) && "is-disabled"
+          )}
+          onClick={() => {
+            if (!onOpenMathDialog || isFocusNodeOnly) return;
+            dialogs.openBlockMath();
+          }}
           title="块公式"
         >
           <SquareFunction size={16} />
         </button>
         <button
           type="button"
-          className="editor-toolbar-btn"
-          onClick={() => dialogs.openImage()}
-          disabled={!onOpenImageDialog}
+          className={cn(
+            "editor-toolbar-btn",
+            (!onOpenImageDialog || isFocusNodeOnly) && "is-disabled"
+          )}
+          onClick={() => {
+            if (!onOpenImageDialog || isFocusNodeOnly) return;
+            dialogs.openImage();
+          }}
           title="图片"
         >
           <Image size={16} />
@@ -262,9 +311,13 @@ const Toolbar = ({
           type="button"
           className={cn(
             "editor-toolbar-btn",
-            editor.isActive("bold") && "is-active"
+            editor.isActive("bold") && "is-active",
+            isFocusNodeOnly && "is-disabled"
           )}
-          onClick={() => format.toggleBold()}
+          onClick={() => {
+            if (isFocusNodeOnly) return;
+            format.toggleBold();
+          }}
           title="粗体 (Ctrl+B)"
         >
           <Bold size={16} />
@@ -273,9 +326,13 @@ const Toolbar = ({
           type="button"
           className={cn(
             "editor-toolbar-btn",
-            editor.isActive("italic") && "is-active"
+            editor.isActive("italic") && "is-active",
+            isFocusNodeOnly && "is-disabled"
           )}
-          onClick={() => format.toggleItalic()}
+          onClick={() => {
+            if (isFocusNodeOnly) return;
+            format.toggleItalic();
+          }}
           title="斜体 (Ctrl+I)"
         >
           <Italic size={16} />
@@ -284,9 +341,13 @@ const Toolbar = ({
           type="button"
           className={cn(
             "editor-toolbar-btn",
-            editor.isActive("underline") && "is-active"
+            editor.isActive("underline") && "is-active",
+            isFocusNodeOnly && "is-disabled"
           )}
-          onClick={() => format.toggleUnderline()}
+          onClick={() => {
+            if (isFocusNodeOnly) return;
+            format.toggleUnderline();
+          }}
           title="下划线 (Ctrl+U)"
         >
           <Underline size={16} />
@@ -295,9 +356,13 @@ const Toolbar = ({
           type="button"
           className={cn(
             "editor-toolbar-btn",
-            editor.isActive("strike") && "is-active"
+            editor.isActive("strike") && "is-active",
+            isFocusNodeOnly && "is-disabled"
           )}
-          onClick={() => format.toggleStrike()}
+          onClick={() => {
+            if (isFocusNodeOnly) return;
+            format.toggleStrike();
+          }}
           title="删除线"
         >
           <Strikethrough size={16} />
@@ -306,9 +371,13 @@ const Toolbar = ({
           type="button"
           className={cn(
             "editor-toolbar-btn",
-            editor.isActive("code") && "is-active"
+            editor.isActive("code") && "is-active",
+            isFocusNodeOnly && "is-disabled"
           )}
-          onClick={() => format.toggleCode()}
+          onClick={() => {
+            if (isFocusNodeOnly) return;
+            format.toggleCode();
+          }}
           title="行内代码"
         >
           <Code size={16} />
@@ -321,14 +390,16 @@ const Toolbar = ({
               refs.setReference(el);
             }
           }}
-          onClick={() =>
+          onClick={() => {
+            if (isFocusNodeOnly) return;
             setShowColorPicker(
               showColorPicker === "highlight" ? null : "highlight"
-            )
-          }
+            );
+          }}
           className={cn(
             "editor-toolbar-btn",
-            editor.isActive("highlight") && "is-active"
+            editor.isActive("highlight") && "is-active",
+            isFocusNodeOnly && "is-disabled"
           )}
           title="高亮颜色"
         >
@@ -341,10 +412,14 @@ const Toolbar = ({
               refs.setReference(el);
             }
           }}
-          onClick={() =>
-            setShowColorPicker(showColorPicker === "text" ? null : "text")
-          }
-          className="editor-toolbar-btn"
+          onClick={() => {
+            if (isFocusNodeOnly) return;
+            setShowColorPicker(showColorPicker === "text" ? null : "text");
+          }}
+          className={cn(
+            "editor-toolbar-btn",
+            isFocusNodeOnly && "is-disabled"
+          )}
           title="文字颜色"
         >
           <Palette size={16} />
@@ -357,8 +432,15 @@ const Toolbar = ({
               moreRefs.setReference(el);
             }
           }}
-          onClick={() => setShowMoreMenu(!showMoreMenu)}
-          className={cn("editor-toolbar-btn", showMoreMenu && "is-active")}
+          onClick={() => {
+            if (isFocusNodeOnly) return;
+            setShowMoreMenu(!showMoreMenu);
+          }}
+          className={cn(
+            "editor-toolbar-btn",
+            showMoreMenu && "is-active",
+            isFocusNodeOnly && "is-disabled"
+          )}
           title="更多"
         >
           <MoreHorizontal size={16} />
