@@ -212,13 +212,12 @@
   gap: 8px;
 }
 
-/* label 高度与首行一致，并与段落上边距对齐，使复选框与第一行文字垂直居中 */
+/* label 约束在首行行高内，使复选框与第一行文字垂直居中 */
 .editor-wrapper .ProseMirror ul[data-type="taskList"] li > label {
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  height: 1.5em;
-  margin-top: 0.5em; /* 与 .ProseMirror p 的 margin-top 一致，首行中心对齐 */
+  height: 1.5em; /* 与行高一致，checkbox 由 align-items: center 居中 */
 }
 
 .editor-wrapper .ProseMirror ul[data-type="taskList"] li > div {

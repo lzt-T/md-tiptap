@@ -5,26 +5,39 @@ import './ColorPicker.css'
 interface ColorPickerProps {
   onColorSelect: (color: string) => void
   type: 'text' | 'highlight'
+  /** 当前选中的颜色（与预设或自定义色值一致时，对应色块显示蓝色边框） */
+  selectedColor?: string
   style?: React.CSSProperties
   className?: string
 }
 
-const ColorPicker = ({ onColorSelect, type, style }: ColorPickerProps) => {
+/** 规范化色值便于比较（小写，无空格） */
+function normalizeColor(value: string): string {
+  return value ? value.trim().toLowerCase() : ''
+}
+
+const ColorPicker = ({ onColorSelect, type, selectedColor, style }: ColorPickerProps) => {
   const colors = type === 'text' ? config.TEXT_COLORS : config.HIGHLIGHT_COLORS
   const [showCustomInput, setShowCustomInput] = useState(false)
+  const normalizedSelected = normalizeColor(selectedColor ?? '')
 
   return (
     <div className="color-picker" style={style}>
       <div className="color-picker-grid">
-        {colors.map((color) => (
-          <button
-            key={color.value || 'transparent'}
-            className={`color-picker-swatch${color.value === '' ? ' color-picker-swatch--transparent' : ''}`}
-            style={color.value ? { backgroundColor: color.value } : undefined}
-            onClick={() => onColorSelect(color.value)}
-            title={color.name}
-          />
-        ))}
+        {colors.map((color) => {
+          const isSelected = normalizedSelected
+            ? normalizeColor(color.value) === normalizedSelected
+            : false
+          return (
+            <button
+              key={color.value || 'transparent'}
+              className={`color-picker-swatch${color.value === '' ? ' color-picker-swatch--transparent' : ''}${isSelected ? ' color-picker-swatch--selected' : ''}`}
+              style={color.value ? { backgroundColor: color.value } : undefined}
+              onClick={() => onColorSelect(color.value)}
+              title={color.name}
+            />
+          )
+        })}
       </div>
       {!showCustomInput && (
         <button 

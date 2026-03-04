@@ -63,8 +63,8 @@ function App() {
       >
         <TiptapEditor
           // border={false}
-          disabled={disabled}
-          // editorMode={EditorMode.Headless}
+          // disabled={disabled}
+          editorMode={EditorMode.Headless}
           headlessToolbarMode={HeadlessToolbarMode.OnFocus}
           value={content}
           onChange={handleEditorChange}

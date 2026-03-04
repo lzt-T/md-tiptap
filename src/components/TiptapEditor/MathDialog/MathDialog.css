@@ -145,7 +145,7 @@
 /* 每个标签：同排内均分宽度占满，有最小宽度；排不下时换行；极窄时省略号；未选中/选中用显式 fallback */
 .math-dialog-tabs-list [data-slot="tabs-trigger"] {
   flex: 1 1 0;
-  min-width: 7rem;
+  min-width: 8.5rem;
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;

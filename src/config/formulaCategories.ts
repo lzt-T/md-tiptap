@@ -8,6 +8,31 @@ export type FormulaPickerCategory = {
 
 export const FORMULA_CATEGORIES: FormulaPickerCategory[] = [
   {
+    id: 'common',
+    title: 'Classical Functions',
+    items: [
+      { id: 'common-square', label: 'square', latex: 'x^2' },
+      { id: 'common-cube', label: 'cube', latex: 'x^3' },
+      { id: 'common-sqrt', label: 'square root', latex: '\\sqrt{x}' },
+      { id: 'common-frac', label: 'fraction', latex: '\\frac{a}{b}' },
+      { id: 'common-sin', label: 'sin', latex: '\\sin(x)' },
+      { id: 'common-cos', label: 'cos', latex: '\\cos(x)' },
+      { id: 'common-tan', label: 'tan', latex: '\\tan(x)' },
+      { id: 'common-cot', label: 'cot', latex: '\\cot(x)' },
+      { id: 'common-log', label: 'log', latex: '\\log(x)' },
+      { id: 'common-ln', label: 'ln', latex: '\\ln(x)' },
+      { id: 'common-lg', label: 'lg', latex: '\\lg(x)' },
+      { id: 'common-exp', label: 'exponential', latex: 'e^{x}' },
+      { id: 'common-abs', label: 'absolute value', latex: '|x|' },
+      { id: 'common-lim', label: 'limit', latex: '\\lim_{x \\to \\infty} f(x)' },
+      { id: 'common-derivative', label: 'derivative', latex: '\\frac{\\mathrm{d}y}{\\mathrm{d}x}' },
+      { id: 'common-integral', label: 'indefinite integral', latex: '\\int f(x) \\,\\mathrm{d}x' },
+      { id: 'common-definite', label: 'definite integral', latex: '\\int_{a}^{b} f(x) \\,\\mathrm{d}x' },
+      { id: 'common-sum', label: 'summation', latex: '\\sum_{i=1}^{n} x_i' },
+      { id: 'common-product', label: 'product', latex: '\\prod_{i=1}^{n} x_i' },
+    ],
+  },
+  {
     id: 'operators',
     title: 'Operators',
     items: [

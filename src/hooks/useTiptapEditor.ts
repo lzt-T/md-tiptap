@@ -66,13 +66,12 @@ export function useTiptapEditor({
   const isExternalUpdateRef = useRef(false);
   /* 是否是第一次更新 */
   const isFirstUpdateRef = useRef(true);
+  /** 最近一次由本编辑器通过 onChange 抛出的 HTML，用于区分「父组件回传的 value」与「真正的外部更新」，避免回传时误调 setContent 导致光标被移到文末 */
+  const lastEmittedHtmlRef = useRef<string | null>(null);
 
   // 创建防抖后的 onChange
   const debouncedOnChange = useMemo(
-    () =>
-      debounce((html) => {
-        onChange?.(html);
-      }, onChangeDebounceMs),
+    () => debounce((html: string) => onChange?.(html), onChangeDebounceMs),
     [onChange, onChangeDebounceMs]
   );
 
@@ -129,7 +128,9 @@ export function useTiptapEditor({
         return;
       }
       if (!isExternalUpdateRef.current) {
-        debouncedOnChange(ed.getHTML());
+        const html = ed.getHTML();
+        lastEmittedHtmlRef.current = html;
+        debouncedOnChange(html);
       }
     },
   });
@@ -152,16 +153,21 @@ export function useTiptapEditor({
   }, [debouncedOnChange]);
 
   useEffect(() => {
-    if (editor && value !== undefined) {
-      const currentContent = editor.getHTML();
-      if (currentContent !== value) {
-        isExternalUpdateRef.current = true;
-        editor.commands.setContent(value);
-        setTimeout(() => {
-          isExternalUpdateRef.current = false;
-        }, 0);
-      }
-    }
+    if (!editor || value === undefined) return;
+
+    const currentContent = editor.getHTML();
+    // 若 value 与当前内容一致，无需 setContent，避免多余操作
+    if (currentContent === value) return;
+    // 若 value 来自我们刚通过 onChange 抛出的内容（父组件回传），说明是用户编辑触发的更新，
+    // 编辑器已有正确内容和光标，不应 setContent，否则会把光标移到文末
+    if (value === lastEmittedHtmlRef.current) return;
+    
+    lastEmittedHtmlRef.current = null;
+    isExternalUpdateRef.current = true;
+    editor.commands.setContent(value);
+    setTimeout(() => {
+      isExternalUpdateRef.current = false;
+    }, 0);
   }, [editor, value]);
 
   return { editor };

@@ -41,6 +41,10 @@ export function setColor(editor: Editor, color: string): void {
   editor.chain().focus().setColor(color).run();
 }
 
+export function unsetColor(editor: Editor): void {
+  editor.chain().focus().unsetColor().run();
+}
+
 export function setHighlight(editor: Editor, color: string): void {
   editor.chain().focus().setHighlight({ color }).run();
 }
@@ -54,6 +58,21 @@ export function setHeading(
   level: 1 | 2 | 3
 ): void {
   editor.chain().focus().setNode("heading", { level }).run();
+}
+
+/**
+ * 切换标题：若当前已是该级别标题则改为段落，否则设为该级别标题。
+ * 用于工具栏「再次点击同一项可取消」的交互。
+ */
+export function toggleHeading(
+  editor: Editor,
+  level: 1 | 2 | 3
+): void {
+  if (editor.isActive("heading", { level })) {
+    editor.chain().focus().setNode("paragraph").run();
+  } else {
+    editor.chain().focus().setNode("heading", { level }).run();
+  }
 }
 
 export function toggleBulletList(editor: Editor): void {

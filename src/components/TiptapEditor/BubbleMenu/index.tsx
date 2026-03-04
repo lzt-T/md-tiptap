@@ -81,13 +81,26 @@ const BubbleMenu = ({ editor }: BubbleMenuProps) => {
   const { format } = useEditorCommands(editor, {});
 
   const onTextColorSelect = (color: string) => {
-    format.setColor(color);
+    const current = (editor.getAttributes("textStyle").color ?? "").trim().toLowerCase();
+    if (current && color.trim().toLowerCase() === current) {
+      format.unsetColor();
+    } else {
+      format.setColor(color);
+    }
     setShowColorPicker(null);
   };
 
   const onHighlightColorSelect = (color: string) => {
-    if (color === "") format.unsetHighlight();
-    else format.setHighlight(color);
+    if (color === "") {
+      format.unsetHighlight();
+    } else {
+      const current = (editor.getAttributes("highlight").color ?? "").trim().toLowerCase();
+      if (current === color.trim().toLowerCase()) {
+        format.unsetHighlight();
+      } else {
+        format.setHighlight(color);
+      }
+    }
     setShowColorPicker(null);
   };
 
@@ -172,6 +185,7 @@ const BubbleMenu = ({ editor }: BubbleMenuProps) => {
           onClick={() =>
             setShowColorPicker(showColorPicker === "text" ? null : "text")
           }
+          className={!!editor.getAttributes("textStyle").color ? "is-active" : ""}
           title="文字颜色"
         >
           <Palette size={16} />
@@ -209,6 +223,11 @@ const BubbleMenu = ({ editor }: BubbleMenuProps) => {
           >
             <ColorPicker
               type={showColorPicker}
+              selectedColor={
+                showColorPicker === "text"
+                  ? editor.getAttributes("textStyle").color
+                  : editor.getAttributes("highlight").color
+              }
               onColorSelect={
                 showColorPicker === "text"
                   ? onTextColorSelect

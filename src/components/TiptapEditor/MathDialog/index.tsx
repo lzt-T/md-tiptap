@@ -103,7 +103,7 @@ const MathDialog = ({
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && handleCancel()}>
       <DialogContent
-        className="max-w-[calc(100%-2rem)] sm:max-w-3xl max-h-[90vh] flex flex-col overflow-hidden"
+        className="max-w-[calc(100%-2rem)] sm:max-w-4xl max-h-[90vh] flex flex-col overflow-hidden"
         showCloseButton={false}
         onOpenAutoFocus={handleOpenAutoFocus}
       >

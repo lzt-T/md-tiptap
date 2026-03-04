@@ -38,6 +38,7 @@
   position: relative;
   top: 1px;
   outline: none;
+  border-radius: 0;
 }
 
 .image-upload-tab:hover {

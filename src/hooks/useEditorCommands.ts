@@ -30,15 +30,19 @@ export function useEditorCommands(
   const { onOpenMathDialog, onOpenImageDialog } = options;
 
   /**
-   * 执行格式化命令时，尽量保持选区的结束位置不变，
-   * 避免点击按钮后光标跳到行首或选区丢失的体验问题。
+   * 执行行内格式命令（加粗、斜体等）的包装：先执行命令，再在「有选区」时把光标拉回选区末尾，
+   * 避免点击工具栏后选区消失或光标乱跳。
+   * 仅当 from !== to 时才恢复选区；若为纯光标（from === to）则不调 setTextSelection，
+   * 否则会多一次 transaction，把 toggleMark 写入的 storedMarks 冲掉，导致后续输入不带格式。
    */
   const runFormat = useCallback(
     (fn: () => void) => {
       if (!editor) return;
-      const { to } = editor.state.selection;
+      const { from, to } = editor.state.selection;
       fn();
-      editor.commands.setTextSelection(to);
+      if (from !== to) {
+        editor.commands.setTextSelection(to);
+      }
     },
     [editor]
   );
@@ -56,6 +60,7 @@ export function useEditorCommands(
             toggleSubscript: noop,
             setTextAlign: noopAlign,
             setColor: noopStr,
+            unsetColor: noop,
             setHighlight: noopStr,
             unsetHighlight: noop,
           }
@@ -71,6 +76,7 @@ export function useEditorCommands(
             setTextAlign: (align: TextAlignValue) =>
               runFormat(() => cmd.setTextAlign(editor, align)),
             setColor: (color: string) => runFormat(() => cmd.setColor(editor, color)),
+            unsetColor: () => runFormat(() => cmd.unsetColor(editor)),
             setHighlight: (color: string) =>
               runFormat(() => cmd.setHighlight(editor, color)),
             unsetHighlight: () => runFormat(() => cmd.unsetHighlight(editor)),
@@ -87,6 +93,7 @@ export function useEditorCommands(
       !editor
         ? {
             setHeading: noop as (level: 1 | 2 | 3) => void,
+            toggleHeading: noop as (level: 1 | 2 | 3) => void,
             toggleBulletList: noop,
             toggleOrderedList: noop,
             toggleTaskList: noop,
@@ -94,6 +101,7 @@ export function useEditorCommands(
           }
         : {
             setHeading: (level: 1 | 2 | 3) => cmd.setHeading(editor, level),
+            toggleHeading: (level: 1 | 2 | 3) => cmd.toggleHeading(editor, level),
             toggleBulletList: () => cmd.toggleBulletList(editor),
             toggleOrderedList: () => cmd.toggleOrderedList(editor),
             toggleTaskList: () => cmd.toggleTaskList(editor),

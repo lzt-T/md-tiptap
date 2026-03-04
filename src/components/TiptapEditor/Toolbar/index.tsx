@@ -9,7 +9,6 @@ import {
   Code,
   Highlighter,
   Palette,
-  MoreHorizontal,
   Superscript,
   Subscript,
   AlignLeft,
@@ -50,20 +49,28 @@ const Toolbar = ({
   const [showColorPicker, setShowColorPicker] = useState<
     "text" | "highlight" | null
   >(null);
-  const [showMoreMenu, setShowMoreMenu] = useState(false);
   const [showHeadingMenu, setShowHeadingMenu] = useState(false);
   const [isReady, setIsReady] = useState(false);
-  const [isMoreMenuReady, setIsMoreMenuReady] = useState(false);
   const [isHeadingMenuReady, setIsHeadingMenuReady] = useState(false);
   /** 选区/内容变化时自增，用于让工具栏根据当前选区重新计算 isActive 并重渲染 */
   const [selectionKey, setSelectionKey] = useState(0);
 
-  /* 是否聚焦公式或图片（此时禁用格式/块级操作按钮） */
+  /**
+   * 是否聚焦在公式/图片节点内（此时禁用格式/块级操作按钮）。
+   * 仅光标在普通文本时不禁用：Headless 模式下样式从光标位置生效，无需先选中文字。
+   */
   const isFocusNodeOnly =
     !!editor &&
     (editor.isActive("inlineMath") ||
       editor.isActive("blockMath") ||
       editor.isActive("image"));
+
+  /**
+   * 是否处于行内代码（code mark）内。
+   * Code mark 会排斥其他所有 inline mark，此时禁用 bold/italic/underline/strike/
+   * highlight/color/superscript/subscript 等格式按钮（code 按钮本身保持启用）。
+   */
+  const isInsideCode = !!editor && editor.isActive("code");
 
   useEffect(() => {
     if (!editor) return;
@@ -72,10 +79,10 @@ const Toolbar = ({
       if (
         editor.isActive("inlineMath") ||
         editor.isActive("blockMath") ||
-        editor.isActive("image")
+        editor.isActive("image") ||
+        editor.isActive("code")
       ) {
         setShowHeadingMenu(false);
-        setShowMoreMenu(false);
         setShowColorPicker(null);
       }
     };
@@ -89,12 +96,6 @@ const Toolbar = ({
 
   const { refs, floatingStyles } = useFloating({
     open: showColorPicker !== null,
-    placement: "bottom-start",
-    middleware: [offset(8), flip({ padding: 16 }), shift({ padding: 16 })],
-  });
-
-  const { refs: moreRefs, floatingStyles: moreFloatingStyles } = useFloating({
-    open: showMoreMenu,
     placement: "bottom-start",
     middleware: [offset(8), flip({ padding: 16 }), shift({ padding: 16 })],
   });
@@ -118,19 +119,6 @@ const Toolbar = ({
     const t = setTimeout(() => setIsReady(false), 0);
     return () => clearTimeout(t);
   }, [showColorPicker]);
-
-  useEffect(() => {
-    if (showMoreMenu) {
-      const t0 = setTimeout(() => setIsMoreMenuReady(false), 0);
-      const t = setTimeout(() => setIsMoreMenuReady(true), 50);
-      return () => {
-        clearTimeout(t0);
-        clearTimeout(t);
-      };
-    }
-    const t = setTimeout(() => setIsMoreMenuReady(false), 0);
-    return () => clearTimeout(t);
-  }, [showMoreMenu]);
 
   useEffect(() => {
     if (showHeadingMenu) {
@@ -159,18 +147,31 @@ const Toolbar = ({
     : null;
 
   const onTextColorSelect = (color: string) => {
-    format.setColor(color);
+    const current = (editor.getAttributes("textStyle").color ?? "").trim().toLowerCase();
+    if (current && color.trim().toLowerCase() === current) {
+      format.unsetColor();
+    } else {
+      format.setColor(color);
+    }
     setShowColorPicker(null);
   };
 
   const onHighlightColorSelect = (color: string) => {
-    if (color === "") format.unsetHighlight();
-    else format.setHighlight(color);
+    if (color === "") {
+      format.unsetHighlight();
+    } else {
+      const current = (editor.getAttributes("highlight").color ?? "").trim().toLowerCase();
+      if (current === color.trim().toLowerCase()) {
+        format.unsetHighlight();
+      } else {
+        format.setHighlight(color);
+      }
+    }
     setShowColorPicker(null);
   };
 
   const onHeadingSelect = (level: 1 | 2 | 3) => {
-    block.setHeading(level);
+    block.toggleHeading(level);
     setShowHeadingMenu(false);
   };
 
@@ -312,10 +313,10 @@ const Toolbar = ({
           className={cn(
             "editor-toolbar-btn",
             editor.isActive("bold") && "is-active",
-            isFocusNodeOnly && "is-disabled"
+            (isFocusNodeOnly || isInsideCode) && "is-disabled"
           )}
           onClick={() => {
-            if (isFocusNodeOnly) return;
+            if (isFocusNodeOnly || isInsideCode) return;
             format.toggleBold();
           }}
           title="粗体 (Ctrl+B)"
@@ -327,10 +328,10 @@ const Toolbar = ({
           className={cn(
             "editor-toolbar-btn",
             editor.isActive("italic") && "is-active",
-            isFocusNodeOnly && "is-disabled"
+            (isFocusNodeOnly || isInsideCode) && "is-disabled"
           )}
           onClick={() => {
-            if (isFocusNodeOnly) return;
+            if (isFocusNodeOnly || isInsideCode) return;
             format.toggleItalic();
           }}
           title="斜体 (Ctrl+I)"
@@ -342,10 +343,10 @@ const Toolbar = ({
           className={cn(
             "editor-toolbar-btn",
             editor.isActive("underline") && "is-active",
-            isFocusNodeOnly && "is-disabled"
+            (isFocusNodeOnly || isInsideCode) && "is-disabled"
           )}
           onClick={() => {
-            if (isFocusNodeOnly) return;
+            if (isFocusNodeOnly || isInsideCode) return;
             format.toggleUnderline();
           }}
           title="下划线 (Ctrl+U)"
@@ -357,10 +358,10 @@ const Toolbar = ({
           className={cn(
             "editor-toolbar-btn",
             editor.isActive("strike") && "is-active",
-            isFocusNodeOnly && "is-disabled"
+            (isFocusNodeOnly || isInsideCode) && "is-disabled"
           )}
           onClick={() => {
-            if (isFocusNodeOnly) return;
+            if (isFocusNodeOnly || isInsideCode) return;
             format.toggleStrike();
           }}
           title="删除线"
@@ -391,7 +392,7 @@ const Toolbar = ({
             }
           }}
           onClick={() => {
-            if (isFocusNodeOnly) return;
+            if (isFocusNodeOnly || isInsideCode) return;
             setShowColorPicker(
               showColorPicker === "highlight" ? null : "highlight"
             );
@@ -399,7 +400,7 @@ const Toolbar = ({
           className={cn(
             "editor-toolbar-btn",
             editor.isActive("highlight") && "is-active",
-            isFocusNodeOnly && "is-disabled"
+            (isFocusNodeOnly || isInsideCode) && "is-disabled"
           )}
           title="高亮颜色"
         >
@@ -413,12 +414,13 @@ const Toolbar = ({
             }
           }}
           onClick={() => {
-            if (isFocusNodeOnly) return;
+            if (isFocusNodeOnly || isInsideCode) return;
             setShowColorPicker(showColorPicker === "text" ? null : "text");
           }}
           className={cn(
             "editor-toolbar-btn",
-            isFocusNodeOnly && "is-disabled"
+            !!editor.getAttributes("textStyle").color && "is-active",
+            (isFocusNodeOnly || isInsideCode) && "is-disabled"
           )}
           title="文字颜色"
         >
@@ -427,23 +429,94 @@ const Toolbar = ({
         <span className="editor-toolbar-separator" />
         <button
           type="button"
-          ref={(el) => {
-            if (showMoreMenu) {
-              moreRefs.setReference(el);
-            }
-          }}
-          onClick={() => {
-            if (isFocusNodeOnly) return;
-            setShowMoreMenu(!showMoreMenu);
-          }}
           className={cn(
             "editor-toolbar-btn",
-            showMoreMenu && "is-active",
+            editor.isActive("superscript") && "is-active",
+            (isFocusNodeOnly || isInsideCode) && "is-disabled"
+          )}
+          onClick={() => {
+            if (isFocusNodeOnly || isInsideCode) return;
+            format.toggleSuperscript();
+          }}
+          title="上标"
+        >
+          <Superscript size={16} />
+        </button>
+        <button
+          type="button"
+          className={cn(
+            "editor-toolbar-btn",
+            editor.isActive("subscript") && "is-active",
+            (isFocusNodeOnly || isInsideCode) && "is-disabled"
+          )}
+          onClick={() => {
+            if (isFocusNodeOnly || isInsideCode) return;
+            format.toggleSubscript();
+          }}
+          title="下标"
+        >
+          <Subscript size={16} />
+        </button>
+        <span className="editor-toolbar-separator" />
+        <button
+          type="button"
+          className={cn(
+            "editor-toolbar-btn",
+            editor.isActive({ textAlign: "left" }) && "is-active",
             isFocusNodeOnly && "is-disabled"
           )}
-          title="更多"
+          onClick={() => {
+            if (isFocusNodeOnly) return;
+            format.setTextAlign("left");
+          }}
+          title="左对齐"
         >
-          <MoreHorizontal size={16} />
+          <AlignLeft size={16} />
+        </button>
+        <button
+          type="button"
+          className={cn(
+            "editor-toolbar-btn",
+            editor.isActive({ textAlign: "center" }) && "is-active",
+            isFocusNodeOnly && "is-disabled"
+          )}
+          onClick={() => {
+            if (isFocusNodeOnly) return;
+            format.setTextAlign("center");
+          }}
+          title="居中对齐"
+        >
+          <AlignCenter size={16} />
+        </button>
+        <button
+          type="button"
+          className={cn(
+            "editor-toolbar-btn",
+            editor.isActive({ textAlign: "right" }) && "is-active",
+            isFocusNodeOnly && "is-disabled"
+          )}
+          onClick={() => {
+            if (isFocusNodeOnly) return;
+            format.setTextAlign("right");
+          }}
+          title="右对齐"
+        >
+          <AlignRight size={16} />
+        </button>
+        <button
+          type="button"
+          className={cn(
+            "editor-toolbar-btn",
+            editor.isActive({ textAlign: "justify" }) && "is-active",
+            isFocusNodeOnly && "is-disabled"
+          )}
+          onClick={() => {
+            if (isFocusNodeOnly) return;
+            format.setTextAlign("justify");
+          }}
+          title="两端对齐"
+        >
+          <AlignJustify size={16} />
         </button>
       </div>
 
@@ -465,117 +538,17 @@ const Toolbar = ({
           >
             <ColorPicker
               type={showColorPicker}
+              selectedColor={
+                showColorPicker === "text"
+                  ? editor.getAttributes("textStyle").color
+                  : editor.getAttributes("highlight").color
+              }
               onColorSelect={
                 showColorPicker === "text"
                   ? onTextColorSelect
                   : onHighlightColorSelect
               }
             />
-          </div>
-        </>
-      )}
-
-      {showMoreMenu && (
-        <>
-          <div
-            className="editor-toolbar-overlay"
-            onClick={() => setShowMoreMenu(false)}
-            aria-hidden
-          />
-          <div
-            ref={(el) => moreRefs.setFloating(el)}
-            className="editor-toolbar-more-menu"
-            style={{
-              ...moreFloatingStyles,
-              opacity: isMoreMenuReady ? 1 : 0,
-              transition: "opacity 0.1s ease",
-            }}
-          >
-            <button
-              type="button"
-              className={cn(
-                "editor-toolbar-btn",
-                editor.isActive("superscript") && "is-active"
-              )}
-              onClick={() => {
-                format.toggleSuperscript();
-                setShowMoreMenu(false);
-              }}
-              title="上标"
-            >
-              <Superscript size={16} />
-            </button>
-            <button
-              type="button"
-              className={cn(
-                "editor-toolbar-btn",
-                editor.isActive("subscript") && "is-active"
-              )}
-              onClick={() => {
-                format.toggleSubscript();
-                setShowMoreMenu(false);
-              }}
-              title="下标"
-            >
-              <Subscript size={16} />
-            </button>
-            <div className="editor-toolbar-more-separator" />
-            <button
-              type="button"
-              className={cn(
-                "editor-toolbar-btn",
-                editor.isActive({ textAlign: "left" }) && "is-active"
-              )}
-              onClick={() => {
-                format.setTextAlign("left");
-                setShowMoreMenu(false);
-              }}
-              title="左对齐"
-            >
-              <AlignLeft size={16} />
-            </button>
-            <button
-              type="button"
-              className={cn(
-                "editor-toolbar-btn",
-                editor.isActive({ textAlign: "center" }) && "is-active"
-              )}
-              onClick={() => {
-                format.setTextAlign("center");
-                setShowMoreMenu(false);
-              }}
-              title="居中对齐"
-            >
-              <AlignCenter size={16} />
-            </button>
-            <button
-              type="button"
-              className={cn(
-                "editor-toolbar-btn",
-                editor.isActive({ textAlign: "right" }) && "is-active"
-              )}
-              onClick={() => {
-                format.setTextAlign("right");
-                setShowMoreMenu(false);
-              }}
-              title="右对齐"
-            >
-              <AlignRight size={16} />
-            </button>
-            <button
-              type="button"
-              className={cn(
-                "editor-toolbar-btn",
-                editor.isActive({ textAlign: "justify" }) && "is-active"
-              )}
-              onClick={() => {
-                format.setTextAlign("justify");
-                setShowMoreMenu(false);
-              }}
-              title="两端对齐"
-            >
-              <AlignJustify size={16} />
-            </button>
           </div>
         </>
       )}
