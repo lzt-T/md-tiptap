@@ -99,5 +99,12 @@ export interface TiptapEditorProps {
    * 传入时可完全自定义或通过 [...FORMULA_CATEGORIES, ...extra] 扩展默认列表。
    */
   formulaCategories?: FormulaPickerCategory[]
+
+  /**
+   * 编辑器容器的最大高度。不配置时容器为 height: 100%；
+   * 配置后高度限制为该值，内容超出时在编辑区内滚动。
+   * 数字表示像素（如 400），字符串为任意合法 CSS 长度（如 "50vh"、"20rem"）。
+   */
+  maxHeight?: number | string
 }
 

@@ -68,6 +68,7 @@ function App() {
           headlessToolbarMode={HeadlessToolbarMode.OnFocus}
           value={content}
           onChange={handleEditorChange}
+          maxHeight="500px"
           onImageUpload={handleImageUpload}
         />
       </div>

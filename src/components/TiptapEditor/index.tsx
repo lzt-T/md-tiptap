@@ -58,6 +58,7 @@ const TiptapEditor = ({
   border = true,
   imageMaxSizeBytes = config.IMAGE_MAX_SIZE_BYTES,
   formulaCategories,
+  maxHeight,
 }: TiptapEditorProps) => {
   // --- Refs & 状态 ---
   const editorRef = useRef<ReturnType<typeof useEditor>>(null);
@@ -244,8 +245,17 @@ const TiptapEditor = ({
         "editor-container",
         disabled && "is-disabled",
         !border && "no-border",
-        !isNotionLike && "editor-container-headless"
+        !isNotionLike && "editor-container-headless",
+        maxHeight != null && "editor-container-has-max-height"
       )}
+      style={
+        maxHeight != null
+          ? {
+              "--editor-max-height":
+                typeof maxHeight === "number" ? `${maxHeight}px` : maxHeight,
+            } as React.CSSProperties
+          : undefined
+      }
     >
       {editor && !disabled && showHeadlessToolbar && (
         <Toolbar

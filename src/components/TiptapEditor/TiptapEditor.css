@@ -8,6 +8,16 @@
   overflow: hidden;
 }
 
+/* 配置了 maxHeight 时：高度随内容增长，到 maxHeight 后内部滚动 */
+.editor-container.editor-container-has-max-height {
+  height: auto;
+  max-height: var(--editor-max-height);
+}
+
+.editor-container.editor-container-has-max-height .editor-wrapper {
+  min-height: 0; /* 允许在容器被 max-height 限制时收缩并出现滚动 */
+}
+
 .editor-container.no-border {
   border: none;
 }

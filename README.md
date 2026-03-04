@@ -147,6 +147,19 @@ function EditorExample() {
 | `border` | `boolean` | 否 | `true` | 是否显示编辑器容器边框 |
 | `imageMaxSizeBytes` | `number` | 否 | `5242880`（5MB） | 图片上传最大体积（字节），超过则拒绝并提示 |
 | `formulaCategories` | `FormulaPickerCategory[]` | 否 | 内置默认分类 | 公式选择器的分类列表。不传则使用内置分类；传入时可完全自定义或在默认基础上扩展（见下方「扩展公式分类」） |
+| `maxHeight` | `number \| string` | 否 | - | 编辑器容器的最大高度。不配置时容器为 `height: 100%`；配置后高度随内容从较小开始增长，达到该值后不再增高，超出部分在编辑区内滚动。数字表示像素（如 `400`），字符串为任意合法 CSS 长度（如 `"50vh"`、`"20rem"`） |
+
+### 限制编辑器最大高度（maxHeight）
+
+不配置时编辑器容器占满父级高度（`height: 100%`）。传入 `maxHeight` 后，高度会随内容从较小开始增长，达到设定值后不再增高，超出部分在编辑区内滚动。
+
+```tsx
+// 最大高度 400px，内容少时较矮，内容多到 400px 后内部滚动
+<TiptapEditor value={content} onChange={setContent} maxHeight={400} />
+
+// 使用 CSS 长度，如视口高度的一半
+<TiptapEditor value={content} onChange={setContent} maxHeight="50vh" />
+```
 
 ### Headless 模式下的工具栏显示
 
