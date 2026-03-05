@@ -1,5 +1,5 @@
 {
-  "name": "md-tiptap",
+  "name": "@lzt-top/reactjs-tiptap",
   "private": false,
   "version": "0.1.15",
   "type": "module",
@@ -28,16 +28,16 @@
   "sideEffects": [
     "*.css"
   ],
-  "main": "./dist/md-tiptap.umd.cjs",
-  "module": "./dist/md-tiptap.js",
+  "main": "./dist/reactjs-tiptap.umd.cjs",
+  "module": "./dist/reactjs-tiptap.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/md-tiptap.js",
-      "require": "./dist/md-tiptap.umd.cjs"
+      "import": "./dist/reactjs-tiptap.js",
+      "require": "./dist/reactjs-tiptap.umd.cjs"
     },
-    "./style.css": "./dist/md-tiptap.css"
+    "./style.css": "./dist/reactjs-tiptap.css"
   },
   "files": [
     "dist",
