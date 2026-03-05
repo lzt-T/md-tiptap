@@ -1,7 +1,10 @@
 import { useCallback, useMemo } from "react";
 import type { Editor } from "@tiptap/react";
 import * as cmd from "@/lib/editorCommands";
-import type { TextAlignValue } from "@/lib/editorCommands";
+import type {
+  TextAlignValue,
+  InsertTableOptions,
+} from "@/lib/editorCommands";
 import type { CommandItem } from "@/extensions/SlashCommands";
 
 export interface UseEditorCommandsOptions {
@@ -97,7 +100,7 @@ export function useEditorCommands(
             toggleBulletList: noop,
             toggleOrderedList: noop,
             toggleTaskList: noop,
-            insertTable: noop,
+            insertTable: noop as (options?: InsertTableOptions) => void,
           }
         : {
             setHeading: (level: 1 | 2 | 3) => cmd.setHeading(editor, level),
@@ -105,7 +108,8 @@ export function useEditorCommands(
             toggleBulletList: () => cmd.toggleBulletList(editor),
             toggleOrderedList: () => cmd.toggleOrderedList(editor),
             toggleTaskList: () => cmd.toggleTaskList(editor),
-            insertTable: () => cmd.insertTable(editor),
+            insertTable: (options?: InsertTableOptions) =>
+              cmd.insertTable(editor, options),
           },
     [editor]
   );

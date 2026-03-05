@@ -322,6 +322,29 @@
   margin: 0 4px;
   background-color: #f1f5f9;
   border-radius: 4px;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  vertical-align: middle;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+.editor-wrapper .ProseMirror .tiptap-mathematics-render[data-type="inline-math"]::-webkit-scrollbar {
+  height: 3px;
+}
+
+.editor-wrapper .ProseMirror .tiptap-mathematics-render[data-type="inline-math"]::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.editor-wrapper .ProseMirror .tiptap-mathematics-render[data-type="inline-math"]::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 2px;
+}
+
+.editor-wrapper .ProseMirror .tiptap-mathematics-render[data-type="inline-math"]::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
 
 .editor-wrapper .ProseMirror .tiptap-mathematics-render[data-type="block-math"] {
@@ -333,6 +356,26 @@
   overflow-x: auto;
   text-align: center;
   position: relative;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+.editor-wrapper .ProseMirror .tiptap-mathematics-render[data-type="block-math"]::-webkit-scrollbar {
+  height: 4px;
+}
+
+.editor-wrapper .ProseMirror .tiptap-mathematics-render[data-type="block-math"]::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 2px;
+}
+
+.editor-wrapper .ProseMirror .tiptap-mathematics-render[data-type="block-math"]::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 2px;
+}
+
+.editor-wrapper .ProseMirror .tiptap-mathematics-render[data-type="block-math"]::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
 
 .editor-wrapper .ProseMirror .tiptap-mathematics-render[data-type="block-math"]:hover {

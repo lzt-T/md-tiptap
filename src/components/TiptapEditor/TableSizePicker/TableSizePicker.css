@@ -1,0 +1,44 @@
+.table-size-picker {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.table-size-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 10), 1fr);
+  grid-template-rows: repeat(var(--rows, 10), 1fr);
+  gap: 2px;
+  width: min-content;
+}
+
+.table-size-picker-cell {
+  width: 14px;
+  height: 14px;
+  min-width: 14px;
+  min-height: 14px;
+  padding: 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 2px;
+  background: #fff;
+  cursor: pointer;
+  transition: background 0.1s ease, border-color 0.1s ease;
+}
+
+.table-size-picker-cell:hover {
+  border-color: #d1d5db;
+}
+
+.table-size-picker-cell-selected {
+  background: #111827;
+  border-color: #111827;
+}
+
+.table-size-picker-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+  min-height: 1.25em;
+}

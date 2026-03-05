@@ -20,9 +20,15 @@ export interface ColumnActionItem {
   top: number
   left: number
   width: number
+  /** 最左侧选中列的首格 pos（单列时与 lastColumnFirstCellPos 相同） */
   firstCellPos: number
   tableIndex: number
+  /** 最左侧选中列的 index（单列时与 lastColumnIndex 相同） */
   columnIndex: number
+  /** 最右侧选中列的首格 pos */
+  lastColumnFirstCellPos: number
+  /** 最右侧选中列的 index */
+  lastColumnIndex: number
 }
 
 interface TableColumnActionsProps {
@@ -35,31 +41,38 @@ const COL_BUTTON_HEIGHT = config.TABLE_ACTION_BUTTON_SIZE
 const COL_BUTTON_GAP = 2
 
 const TableColumnActions = ({ editor, editorWrapperRef }: TableColumnActionsProps) => {
-  const [columns, setColumns] = useState<ColumnActionItem[]>([])
-  /** 选区所在表格的 index，仅该表显示列操作按钮 */
-  const [focusedTableIndex, setFocusedTableIndex] = useState<number | null>(null)
-  /** 选区所在列 index，仅该列显示列操作按钮 */
-  const [focusedColumnIndex, setFocusedColumnIndex] = useState<number | null>(null)
-  const [openMenuKey, setOpenMenuKey] = useState<string | null>(null)
+  /** 当前焦点所在列（只渲染一个按钮，定位到该列） */
+  const [currentColumn, setCurrentColumn] = useState<ColumnActionItem | null>(null)
+  /** 当前焦点所在表格的列数，用于菜单中「删除列」/「删除表格」 */
+  const [focusedTableColCount, setFocusedTableColCount] = useState(0)
+  const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
-  const buttonRefs = useRef<Map<string, HTMLButtonElement>>(new Map())
-  /** 打开菜单时记录目标列信息，供 useTableInsertColumnRunAndClose 用 */
+  const buttonRef = useRef<HTMLButtonElement>(null)
+  /**
+   * 打开菜单时记录目标列信息，供 useTableInsertColumnRunAndClose 用。
+   * first* 指最左侧选中列（用于「插左侧」），last* 指最右侧选中列（用于「插右侧」）。
+   * 单列选中时 last* 与 first* 相同。
+   */
   const menuTargetRef = useRef<{
     firstCellPos: number
     tableIndex: number
     columnIndex: number
+    lastColumnFirstCellPos: number
+    lastColumnIndex: number
   } | null>(null)
   /** Portal 目标（用 state 以便在 render 中使用，与行操作共用 data-table-actions-wrapper） */
   const [portalTarget, setPortalTarget] = useState<HTMLDivElement | null>(null)
-  /** 在 scrollWrapper 坐标系下的列按钮位置（仅在有 portal 时使用） */
-  const [portalColumnPositions, setPortalColumnPositions] = useState<
-    { item: ColumnActionItem; top: number; left: number; width: number }[]
-  >([])
+  /** 单个按钮在 scrollWrapper 坐标系下的位置（仅在有 portal 时使用） */
+  const [portalButtonPosition, setPortalButtonPosition] = useState<{
+    top: number
+    left: number
+    width: number
+  } | null>(null)
   /** 编辑器边界元素，在 effect 中同步，避免 render 中读 ref */
   const [boundaryElement, setBoundaryElement] = useState<Element | null>(null)
 
   const { refs: floatingRefs, floatingStyles } = useFloating({
-    open: openMenuKey != null,
+    open: menuOpen,
     placement: 'top',
     strategy: 'absolute',
     middleware: [
@@ -71,21 +84,20 @@ const TableColumnActions = ({ editor, editorWrapperRef }: TableColumnActionsProp
   })
 
   useEffect(() => {
-    if (openMenuKey != null) {
-      floatingRefs.setReference(buttonRefs.current.get(openMenuKey) ?? null)
+    if (menuOpen) {
+      floatingRefs.setReference(buttonRef.current)
     } else {
       floatingRefs.setReference(null)
     }
-  }, [openMenuKey, floatingRefs])
+  }, [menuOpen, floatingRefs])
 
   const updatePositions = useCallback(() => {
     const wrapper = editorWrapperRef.current
     if (!editor.isActive('table') || !wrapper) {
-      setColumns([])
-      setFocusedTableIndex(null)
-      setFocusedColumnIndex(null)
+      setCurrentColumn(null)
+      setFocusedTableColCount(0)
       setPortalTarget(null)
-      setPortalColumnPositions([])
+      setPortalButtonPosition(null)
       return
     }
 
@@ -119,6 +131,8 @@ const TableColumnActions = ({ editor, editorWrapperRef }: TableColumnActionsProp
               firstCellPos: pos + 1,
               tableIndex,
               columnIndex: colIndex,
+              lastColumnFirstCellPos: pos + 1,
+              lastColumnIndex: colIndex,
             })
           } catch {
             // posAtDOM may throw
@@ -127,7 +141,6 @@ const TableColumnActions = ({ editor, editorWrapperRef }: TableColumnActionsProp
       }
       tableIndex++
     }
-    setColumns(result)
 
     let nextTableIndex: number | null = null
     let nextColumnIndex: number | null = null
@@ -154,42 +167,106 @@ const TableColumnActions = ({ editor, editorWrapperRef }: TableColumnActionsProp
     } catch {
       // ignore
     }
-    setFocusedTableIndex(nextTableIndex)
-    setFocusedColumnIndex(nextColumnIndex)
+
+    const colCount = nextTableIndex != null ? result.filter(c => c.tableIndex === nextTableIndex).length : 0
+    setFocusedTableColCount(colCount)
+
+    const anchorItem =
+      nextTableIndex != null
+        ? result.find(c => c.tableIndex === nextTableIndex && c.columnIndex === (nextColumnIndex ?? 0)) ?? null
+        : null
+
+    /* 找出选区的最左列单元格和最右列单元格（统一处理单列和多列）
+     * 扫描所有行而非仅第一行，避免选区不含第一行时漏检。
+     * minCol / maxCol 独立于光标列（nextColumnIndex），避免右→左拖选时 span 算错。*/
+    let firstCell: HTMLTableCellElement | null = null
+    let lastCell: HTMLTableCellElement | null = null
+    let minCol: number = nextColumnIndex ?? 0
+    let maxCol: number = nextColumnIndex ?? 0
+
+    if (nextTableIndex != null && anchorItem) {
+      const focusedTable = tables[nextTableIndex] as HTMLTableElement | undefined
+      const firstRow = focusedTable?.rows[0]
+      if (firstRow && focusedTable) {
+        /* 遍历所有行，收集有 selectedCell 的列 index */
+        const selectedColIndices = new Set<number>()
+        for (const row of Array.from(focusedTable.rows)) {
+          for (let i = 0; i < row.cells.length; i++) {
+            if (row.cells[i].classList.contains('selectedCell')) {
+              selectedColIndices.add(i)
+            }
+          }
+        }
+        if (selectedColIndices.size > 0) {
+          /* CellSelection：取最小/最大列 index 对应的第一行单元格 */
+          minCol = Math.min(...selectedColIndices)
+          maxCol = Math.max(...selectedColIndices)
+          firstCell = firstRow.cells[minCol] ?? null
+          lastCell = firstRow.cells[maxCol] ?? null
+        } else {
+          /* 普通光标：以当前列为首尾 */
+          const anchorCell = firstRow.cells[nextColumnIndex ?? 0] ?? null
+          firstCell = anchorCell
+          lastCell = anchorCell
+        }
+      }
+    }
+
+    /* 统一计算 firstCellPos / lastColumnFirstCellPos */
+    let spanFirstCellPos = anchorItem?.firstCellPos ?? 0
+    let lastColFirstCellPos = anchorItem?.firstCellPos ?? 0
+    if (firstCell && lastCell) {
+      try { spanFirstCellPos = view.posAtDOM(firstCell, 0) + 1 } catch { /* ignore */ }
+      try { lastColFirstCellPos = view.posAtDOM(lastCell, 0) + 1 } catch { /* ignore */ }
+    }
+
+    /* 统一计算按钮的 left / width（wrapper 坐标系） */
+    let spanLeft = anchorItem?.left ?? 0
+    let spanWidth = anchorItem?.width ?? 0
+    if (firstCell && lastCell) {
+      const firstRect = firstCell.getBoundingClientRect()
+      const lastRect = lastCell.getBoundingClientRect()
+      spanLeft = firstRect.left - wrapperRect.left + wrapper.scrollLeft
+      spanWidth = lastRect.right - firstRect.left
+    }
+
+    const focusedItem = anchorItem
+      ? {
+          ...anchorItem,
+          left: spanLeft,
+          width: spanWidth,
+          firstCellPos: spanFirstCellPos,
+          columnIndex: minCol,
+          lastColumnFirstCellPos: lastColFirstCellPos,
+          lastColumnIndex: maxCol,
+        }
+      : null
+    setCurrentColumn(focusedItem)
 
     /* 与行操作共用 scroll wrapper，列按钮 relative 其定位，随表格滚动，无需监听 scroll */
-    if (nextTableIndex != null && tables.length) {
+    if (nextTableIndex != null && focusedItem != null && tables.length) {
       const table = tables[nextTableIndex] as HTMLTableElement | undefined
       const target =
         (table?.parentElement?.getAttribute('data-table-actions-wrapper') === 'true'
           ? table.parentElement
           : table?.closest?.('.tableWrapper')) as HTMLDivElement | undefined
       setPortalTarget(target ?? null)
-      if (target) {
+      if (target && firstCell && lastCell) {
         const targetRect = target.getBoundingClientRect()
-        const visibleCols = result.filter(
-          c => c.tableIndex === nextTableIndex && (nextColumnIndex == null || c.columnIndex === nextColumnIndex)
-        )
-        const firstRow = table?.rows[0]
-        /* 与 config.TABLE_ACTION_BUTTON_PADDING 一致，使列按钮落在预留区而非表格内 */
         const tableTopPadding = config.TABLE_ACTION_BUTTON_PADDING
-        const portalPositions = visibleCols.map(item => {
-          const cell = firstRow?.cells[item.columnIndex]
-          const cellRect = cell?.getBoundingClientRect()
-          return {
-            item,
-            top: -tableTopPadding,
-            left: cellRect ? cellRect.left - targetRect.left : item.left,
-            width: item.width,
-          }
+        const firstRect = firstCell.getBoundingClientRect()
+        const lastRect = lastCell.getBoundingClientRect()
+        setPortalButtonPosition({
+          top: -tableTopPadding,
+          left: firstRect.left - targetRect.left,
+          width: lastRect.right - firstRect.left,
         })
-        setPortalColumnPositions(portalPositions)
       } else {
-        setPortalColumnPositions([])
+        setPortalButtonPosition(null)
       }
     } else {
       setPortalTarget(null)
-      setPortalColumnPositions([])
+      setPortalButtonPosition(null)
     }
   }, [editor, editorWrapperRef])
 
@@ -206,27 +283,30 @@ const TableColumnActions = ({ editor, editorWrapperRef }: TableColumnActionsProp
   }, [editor, editorWrapperRef, updatePositions])
 
   const handleColumnButtonClick = useCallback(
-    (e: React.MouseEvent, item: ColumnActionItem) => {
+    (e: React.MouseEvent) => {
       e.preventDefault()
       e.stopPropagation()
-      const key = `${item.tableIndex}-${item.columnIndex}`
+      if (!currentColumn) return
       menuTargetRef.current = {
-        firstCellPos: item.firstCellPos,
-        tableIndex: item.tableIndex,
-        columnIndex: item.columnIndex,
+        firstCellPos: currentColumn.firstCellPos,
+        tableIndex: currentColumn.tableIndex,
+        columnIndex: currentColumn.columnIndex,
+        lastColumnFirstCellPos: currentColumn.lastColumnFirstCellPos,
+        lastColumnIndex: currentColumn.lastColumnIndex,
       }
       setBoundaryElement(editorWrapperRef.current ?? null)
-      floatingRefs.setReference(buttonRefs.current.get(key) ?? null)
-      setOpenMenuKey(key)
+      floatingRefs.setReference(buttonRef.current)
+      setMenuOpen(true)
     },
-    [editorWrapperRef, floatingRefs]
+    [currentColumn, editorWrapperRef, floatingRefs]
   )
 
   const closeMenu = useCallback(() => {
-    setOpenMenuKey(null)
+    setMenuOpen(false)
     menuTargetRef.current = null
   }, [])
 
+  /** 「在左侧插入列」：以最左侧选中列为基准 */
   const runColumnAndClose = useTableInsertColumnRunAndClose(
     editor,
     editorWrapperRef,
@@ -241,20 +321,29 @@ const TableColumnActions = ({ editor, editorWrapperRef }: TableColumnActionsProp
     closeMenu
   )
 
+  /** 「在右侧插入列」：以最右侧选中列为基准，确保新列插在选区最右侧 */
+  const runColumnAndCloseAfter = useTableInsertColumnRunAndClose(
+    editor,
+    editorWrapperRef,
+    () =>
+      menuTargetRef.current
+        ? {
+            columnFirstCellPos: menuTargetRef.current.lastColumnFirstCellPos,
+            tableIndex: menuTargetRef.current.tableIndex,
+            columnIndex: menuTargetRef.current.lastColumnIndex,
+          }
+        : null,
+    closeMenu
+  )
+
   useEffect(() => {
-    if (!openMenuKey) return
+    if (!menuOpen) return
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') closeMenu()
     }
     const onClickOutside = (e: MouseEvent) => {
-      const hitBtn = columns.some(
-        c => buttonRefs.current.get(`${c.tableIndex}-${c.columnIndex}`)?.contains(e.target as Node)
-      )
-      if (
-        menuRef.current &&
-        !menuRef.current.contains(e.target as Node) &&
-        !hitBtn
-      ) {
+      const hitBtn = buttonRef.current?.contains(e.target as Node)
+      if (menuRef.current && !menuRef.current.contains(e.target as Node) && !hitBtn) {
         closeMenu()
       }
     }
@@ -264,81 +353,46 @@ const TableColumnActions = ({ editor, editorWrapperRef }: TableColumnActionsProp
       document.removeEventListener('keydown', onKeyDown)
       document.removeEventListener('click', onClickOutside, true)
     }
-  }, [openMenuKey, closeMenu, columns])
+  }, [menuOpen, closeMenu])
 
-  if (!editor.isActive('table') || columns.length === 0) {
+  if (!editor.isActive('table') || currentColumn == null) {
     return null
   }
 
-  const visibleColumns =
-    focusedTableIndex === null
-      ? []
-      : columns.filter(
-          c =>
-            c.tableIndex === focusedTableIndex &&
-            (focusedColumnIndex == null || c.columnIndex === focusedColumnIndex)
-        )
+  const usePortal = Boolean(portalTarget && portalButtonPosition)
 
-  const tIdx = openMenuKey ? parseInt(openMenuKey.split('-')[0], 10) : -1
-  const currentTableColCount =
-    tIdx >= 0 ? columns.filter(c => c.tableIndex === tIdx).length : 0
-
-  const usePortal = Boolean(portalTarget && portalColumnPositions.length > 0)
-
-  const columnButtons = usePortal
-    ? portalColumnPositions.map(({ item, top, left, width }) => {
-        const key = `${item.tableIndex}-${item.columnIndex}`
-        return (
-          <button
-            key={key}
-            ref={el => {
-              if (el) buttonRefs.current.set(key, el)
-            }}
-            type="button"
-            className="table-column-action-trigger"
-            aria-label="列操作"
-            style={{
-              top: `${top}px`,
-              left: `${left}px`,
-              width: `${width}px`,
+  const singleButton = (
+    <button
+      ref={buttonRef}
+      type="button"
+      className="table-column-action-trigger"
+      aria-label="列操作"
+      style={
+        usePortal && portalButtonPosition
+          ? {
+              top: `${portalButtonPosition.top}px`,
+              left: `${portalButtonPosition.left}px`,
+              width: `${portalButtonPosition.width}px`,
               height: `${COL_BUTTON_HEIGHT}px`,
-            }}
-            onMouseDown={e => e.preventDefault()}
-            onClick={e => handleColumnButtonClick(e, item)}
-          >
-            <Ellipsis className="table-column-action-icon" size={16} aria-hidden="true" />
-          </button>
-        )
-      })
-    : visibleColumns.map(item => {
-        const key = `${item.tableIndex}-${item.columnIndex}`
-        return (
-          <button
-            key={key}
-            ref={el => {
-              if (el) buttonRefs.current.set(key, el)
-            }}
-            type="button"
-            className="table-column-action-trigger"
-            aria-label="列操作"
-            style={{
-              top: `${item.top}px`,
-              left: `${item.left}px`,
-              width: `${item.width}px`,
+            }
+          : {
+              top: `${currentColumn.top}px`,
+              left: `${currentColumn.left}px`,
+              width: `${currentColumn.width}px`,
               height: `${COL_BUTTON_HEIGHT}px`,
-            }}
-            onMouseDown={e => e.preventDefault()}
-            onClick={e => handleColumnButtonClick(e, item)}
-          >
-            <Ellipsis className="table-column-action-icon" size={16} aria-hidden="true" />
-          </button>
-        )
-      })
+            }
+      }
+      onMouseDown={e => e.preventDefault()}
+      onClick={handleColumnButtonClick}
+    >
+      <Ellipsis className="table-column-action-icon" size={16} aria-hidden="true" />
+    </button>
+  )
 
   return (
     <>
-      {usePortal && portalTarget ? createPortal(columnButtons, portalTarget) : columnButtons}
-      {openMenuKey && boundaryElement && (
+      {usePortal && portalTarget ? createPortal(singleButton, portalTarget) : singleButton}
+      {menuOpen && boundaryElement && (
         <FloatingPortal root={boundaryElement as HTMLElement}>
           <div
             ref={el => {
@@ -365,7 +419,7 @@ const TableColumnActions = ({ editor, editorWrapperRef }: TableColumnActionsProp
             role="menuitem"
             title="在右侧插入列"
             onClick={() =>
-              runColumnAndClose(() => editor.chain().focus().addColumnAfter().run(), 'after')
+              runColumnAndCloseAfter(() => editor.chain().focus().addColumnAfter().run(), 'after')
             }
           >
             <BetweenHorizontalEnd size={16} />
@@ -373,19 +427,34 @@ const TableColumnActions = ({ editor, editorWrapperRef }: TableColumnActionsProp
           <button
             type="button"
             role="menuitem"
-            title={currentTableColCount <= 1 ? '删除整个表格' : '删除当前列'}
+            title={(() => {
+              const numCols = currentColumn
+                ? currentColumn.lastColumnIndex - currentColumn.columnIndex + 1
+                : 1
+              if (focusedTableColCount <= numCols) return '删除整个表格'
+              return numCols > 1 ? `删除选中的 ${numCols} 列` : '删除当前列'
+            })()}
             disabled={
-              currentTableColCount <= 1
+              focusedTableColCount <= 1
                 ? false
                 : !editor.can().deleteColumn()
             }
-            onClick={() =>
-              runColumnAndClose(() =>
-                currentTableColCount <= 1
-                  ? editor.chain().focus().deleteTable().run()
-                  : editor.chain().focus().deleteColumn().run()
-              )
-            }
+            onClick={() => {
+              const target = menuTargetRef.current
+              const numCols = target ? target.lastColumnIndex - target.columnIndex + 1 : 1
+              runColumnAndClose(() => {
+                if (focusedTableColCount <= numCols) {
+                  editor.chain().focus().deleteTable().run()
+                } else {
+                  /* 链式删除 numCols 次：每次删除后光标留在同一列位置，下一列顶上来继续删 */
+                  let chain = editor.chain().focus()
+                  for (let i = 0; i < numCols; i++) {
+                    chain = chain.deleteColumn()
+                  }
+                  chain.run()
+                }
+              })
+            }}
           >
             <IconTableDeleteColumn size={16} />
           </button>

@@ -27,6 +27,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useEditorCommands } from "@/hooks";
 import ColorPicker from "../ColorPicker";
+import TableSizePicker from "../TableSizePicker";
 import "./Toolbar.css";
 
 interface ToolbarProps {
@@ -50,8 +51,10 @@ const Toolbar = ({
     "text" | "highlight" | null
   >(null);
   const [showHeadingMenu, setShowHeadingMenu] = useState(false);
+  const [showTableSizePicker, setShowTableSizePicker] = useState(false);
   const [isReady, setIsReady] = useState(false);
   const [isHeadingMenuReady, setIsHeadingMenuReady] = useState(false);
+  const [isTableSizePickerReady, setIsTableSizePickerReady] = useState(false);
   /** 选区/内容变化时自增，用于让工具栏根据当前选区重新计算 isActive 并重渲染 */
   const [selectionKey, setSelectionKey] = useState(0);
 
@@ -84,6 +87,7 @@ const Toolbar = ({
       ) {
         setShowHeadingMenu(false);
         setShowColorPicker(null);
+        setShowTableSizePicker(false);
       }
     };
     editor.on("selectionUpdate", onSelectionUpdate);
@@ -103,6 +107,13 @@ const Toolbar = ({
   const { refs: headingRefs, floatingStyles: headingFloatingStyles } =
     useFloating({
       open: showHeadingMenu,
+      placement: "bottom-start",
+      middleware: [offset(8), flip({ padding: 16 }), shift({ padding: 16 })],
+    });
+
+  const { refs: tableSizePickerRefs, floatingStyles: tableSizePickerFloatingStyles } =
+    useFloating({
+      open: showTableSizePicker,
       placement: "bottom-start",
       middleware: [offset(8), flip({ padding: 16 }), shift({ padding: 16 })],
     });
@@ -132,6 +143,19 @@ const Toolbar = ({
     const t = setTimeout(() => setIsHeadingMenuReady(false), 0);
     return () => clearTimeout(t);
   }, [showHeadingMenu]);
+
+  useEffect(() => {
+    if (showTableSizePicker) {
+      const t0 = setTimeout(() => setIsTableSizePickerReady(false), 0);
+      const t = setTimeout(() => setIsTableSizePickerReady(true), 50);
+      return () => {
+        clearTimeout(t0);
+        clearTimeout(t);
+      };
+    }
+    const t = setTimeout(() => setIsTableSizePickerReady(false), 0);
+    return () => clearTimeout(t);
+  }, [showTableSizePicker]);
 
   const { format, block, dialogs } = useEditorCommands(editor, {
     onOpenMathDialog,
@@ -253,13 +277,18 @@ const Toolbar = ({
         </button>
         <button
           type="button"
+          ref={(el) => {
+            if (showTableSizePicker) {
+              tableSizePickerRefs.setReference(el);
+            }
+          }}
           className={cn(
             "editor-toolbar-btn",
             (editor.isActive("table") || isFocusNodeOnly) && "is-disabled"
           )}
           onClick={() => {
             if (editor.isActive("table") || isFocusNodeOnly) return;
-            block.insertTable();
+            setShowTableSizePicker(true);
           }}
           title="插入表格"
         >
@@ -585,6 +614,32 @@ const Toolbar = ({
                 <span>Heading {level}</span>
               </button>
             ))}
+          </div>
+        </>
+      )}
+
+      {showTableSizePicker && (
+        <>
+          <div
+            className="editor-toolbar-overlay"
+            onClick={() => setShowTableSizePicker(false)}
+            aria-hidden
+          />
+          <div
+            ref={(el) => tableSizePickerRefs.setFloating(el)}
+            className="editor-toolbar-table-size-dropdown"
+            style={{
+              ...tableSizePickerFloatingStyles,
+              opacity: isTableSizePickerReady ? 1 : 0,
+              transition: "opacity 0.1s ease",
+            }}
+          >
+            <TableSizePicker
+              onSelect={(rows, cols) => {
+                block.insertTable({ rows, cols });
+                setShowTableSizePicker(false);
+              }}
+            />
           </div>
         </>
       )}

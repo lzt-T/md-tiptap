@@ -126,3 +126,12 @@
   z-index: 40;
 }
 
+.editor-toolbar-table-size-dropdown {
+  position: fixed;
+  z-index: 40;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
