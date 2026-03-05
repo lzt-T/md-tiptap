@@ -1,7 +1,7 @@
 {
   "name": "@lzt-top/reactjs-tiptap",
   "private": false,
-  "version": "0.1.15",
+  "version": "0.1.16",
   "type": "module",
   "description": "A powerful Markdown editor based on TipTap with Notion-like features",
   "author": "",
