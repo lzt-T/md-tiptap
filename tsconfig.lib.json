@@ -9,6 +9,6 @@
     "allowImportingTsExtensions": false,
     "verbatimModuleSyntax": false
   },
-  "include": ["src/index.ts", "src/components/**/*"],
+  "include": ["src/vite-env.d.ts", "src/index.ts", "src/components/**/*"],
   "exclude": ["src/main.tsx", "src/App.tsx", "**/*.test.ts", "**/*.test.tsx", "**/*.css"]
 }
