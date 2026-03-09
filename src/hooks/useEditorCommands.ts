@@ -14,6 +14,9 @@ export interface UseEditorCommandsOptions {
     callback: (latex: string) => void
   ) => void;
   onOpenImageDialog?: (callback: (src: string, alt?: string) => void) => void;
+  onOpenFileUploadDialog?: (
+    callback: (url: string, name: string) => void
+  ) => void;
 }
 
 const noop = () => {};
@@ -30,7 +33,11 @@ export function useEditorCommands(
   editor: Editor | null,
   options: UseEditorCommandsOptions = {}
 ) {
-  const { onOpenMathDialog, onOpenImageDialog } = options;
+  const {
+    onOpenMathDialog,
+    onOpenImageDialog,
+    onOpenFileUploadDialog,
+  } = options;
 
   /**
    * 执行行内格式命令（加粗、斜体等）的包装：先执行命令，再在「有选区」时把光标拉回选区末尾，
@@ -142,10 +149,19 @@ export function useEditorCommands(
     });
   }, [editor, onOpenImageDialog]);
 
+  /** 打开附件上传弹窗，在回调中向编辑器插入文件块链接。 */
+  const openFileUpload = useCallback(() => {
+    if (!editor || !onOpenFileUploadDialog) return;
+    onOpenFileUploadDialog((url, name) => {
+      (editor as any).chain().focus().insertFileAttachment({ url, name }).run();
+    });
+  }, [editor, onOpenFileUploadDialog]);
+
   /**
    * 运行一个来自斜杠菜单的命令项：
    * - 若包含 `mathType` 则走数学公式弹窗流程；
    * - 若标记为 `imageUpload` 则走图片上传流程；
+   * - 若标记为 `fileAttachment` 则走附件上传流程；
    * - 否则直接调用命令项自身的 `command`。
    */
   const runCommandItem = useCallback(
@@ -167,18 +183,22 @@ export function useEditorCommands(
         onOpenImageDialog((src, alt) => {
           editor.chain().focus().setImage({ src, alt }).run();
         });
+      } else if (item.fileAttachment && onOpenFileUploadDialog) {
+        onOpenFileUploadDialog((url, name) => {
+          (editor as any).chain().focus().insertFileAttachment({ url, name }).run();
+        });
       } else {
         item.command({ editor });
       }
     },
-    [editor, onOpenMathDialog, onOpenImageDialog]
+    [editor, onOpenMathDialog, onOpenImageDialog, onOpenFileUploadDialog]
   );
 
   return {
     runFormat,
     format,
     block,
-    dialogs: { openInlineMath, openBlockMath, openImage },
+    dialogs: { openInlineMath, openBlockMath, openImage, openFileUpload },
     runCommandItem,
   };
 }

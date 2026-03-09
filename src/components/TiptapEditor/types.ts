@@ -45,6 +45,19 @@ export interface TiptapEditorProps {
   onImageUpload?: (file: File) => Promise<string>
 
   /**
+   * 附件上传处理函数（Word/PDF），插入为文件块链接
+   * @param file - 要上传的文件
+   * @returns Promise<{ url: string; name: string }> - 返回文件 URL 与显示名称
+   */
+  onFileUpload?: (file: File) => Promise<{ url: string; name: string }>
+
+  /**
+   * 点击文件块（附件链接）时触发。传入后不再默认打开链接，由你自行处理（如预览、下载、弹窗等）
+   * @param params - { url: 文件地址, name: 显示名称 }
+   */
+  onFileAttachmentClick?: (params: { url: string; name: string }) => void
+
+  /**
    * 斜杠命令菜单的最大高度（px），默认 240
    */
   commandMenuMaxHeight?: number
@@ -93,6 +106,12 @@ export interface TiptapEditorProps {
    * @default config.IMAGE_MAX_SIZE_BYTES（5MB）
    */
   imageMaxSizeBytes?: number
+
+  /**
+   * 附件上传（Word/PDF）最大体积（字节），超过则拒绝并提示
+   * @default config.FILE_UPLOAD_MAX_SIZE_BYTES（10MB）
+   */
+  fileMaxSizeBytes?: number
 
   /**
    * 公式选择器的分类列表。不传则使用默认 FORMULA_CATEGORIES；

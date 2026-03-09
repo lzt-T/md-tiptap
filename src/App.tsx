@@ -40,6 +40,20 @@ function App() {
     });
   };
 
+    const onFileUpload = async (file: File): Promise<{ url: string; name: string }> => {
+    console.log("📤 上传文件:", file.name, file.size, "bytes");
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({ url: "https://example.com/file.pdf", name: file.name });
+      }, 1500);
+    });
+  };
+
+  const onFileAttachmentClick = ({ url, name }: { url: string; name: string }) => {
+    console.log("📤 点击文件:", { url, name });
+  };
+
+
   useEffect(() => {
     console.log("📡 准备从接口加载数据...");
     setTimeout(() => {
@@ -63,13 +77,15 @@ function App() {
       >
         <TiptapEditor
           // border={false}
-          // disabled={disabled}
-          editorMode={EditorMode.Headless}
+          disabled={disabled}
+          // editorMode={EditorMode.Headless}
           headlessToolbarMode={HeadlessToolbarMode.OnFocus}
           value={content}
           onChange={handleEditorChange}
           // maxHeight="500px"
           onImageUpload={handleImageUpload}
+          onFileUpload={onFileUpload}
+          onFileAttachmentClick={onFileAttachmentClick}
         />
       </div>
       {/* </div> */}

@@ -23,6 +23,7 @@ import {
   Sigma,
   SquareFunction,
   Image,
+  FileUp,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEditorCommands } from "@/hooks";
@@ -40,12 +41,17 @@ interface ToolbarProps {
   ) => void;
   /** 打开图片上传弹窗（headless 时由 TiptapEditor 传入） */
   onOpenImageDialog?: (callback: (src: string, alt?: string) => void) => void;
+  /** 打开附件上传弹窗（headless 时由 TiptapEditor 传入） */
+  onOpenFileUploadDialog?: (
+    callback: (url: string, name: string) => void
+  ) => void;
 }
 
 const Toolbar = ({
   editor,
   onOpenMathDialog,
   onOpenImageDialog,
+  onOpenFileUploadDialog,
 }: ToolbarProps) => {
   const [showColorPicker, setShowColorPicker] = useState<
     "text" | "highlight" | null
@@ -66,7 +72,8 @@ const Toolbar = ({
     !!editor &&
     (editor.isActive("inlineMath") ||
       editor.isActive("blockMath") ||
-      editor.isActive("image"));
+      editor.isActive("image") ||
+      editor.isActive("fileAttachment"));
 
   /**
    * 是否处于行内代码（code mark）内。
@@ -83,6 +90,7 @@ const Toolbar = ({
         editor.isActive("inlineMath") ||
         editor.isActive("blockMath") ||
         editor.isActive("image") ||
+        editor.isActive("fileAttachment") ||
         editor.isActive("code")
       ) {
         setShowHeadingMenu(false);
@@ -160,6 +168,7 @@ const Toolbar = ({
   const { format, block, dialogs } = useEditorCommands(editor, {
     onOpenMathDialog,
     onOpenImageDialog,
+    onOpenFileUploadDialog,
   });
 
   const currentHeadingLevel = editor.isActive("heading", { level: 1 })
@@ -336,6 +345,22 @@ const Toolbar = ({
         >
           <Image size={16} />
         </button>
+        {onOpenFileUploadDialog && (
+          <button
+            type="button"
+            className={cn(
+              "editor-toolbar-btn",
+              editor.isActive("fileAttachment") && "is-active"
+            )}
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => {
+              dialogs.openFileUpload();
+            }}
+            title="上传文件 (Word/PDF)"
+          >
+            <FileUp size={16} />
+          </button>
+        )}
         <span className="editor-toolbar-separator" />
         <button
           type="button"

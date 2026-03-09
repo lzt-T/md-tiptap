@@ -1,6 +1,7 @@
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { ImageWithDelete } from "@/extensions/ImageWithDelete";
+import { FileAttachment } from "@/extensions/FileAttachment";
 import { Table } from "@tiptap/extension-table";
 import TableRow from "@tiptap/extension-table-row";
 import TableCell from "@tiptap/extension-table-cell";
@@ -41,6 +42,8 @@ interface UseTiptapEditorOptions {
     callback: (latex: string) => void
   ) => void;
   onImageUpload: (callback: (src: string, alt?: string) => void) => void;
+  onFileUpload?: (callback: (url: string, name: string) => void) => void;
+  onFileAttachmentClick?: (params: { url: string; name: string }) => void;
   onInlineMathClick: MathClickHandler;
   onBlockMathClick: MathClickHandler;
 }
@@ -59,6 +62,8 @@ export function useTiptapEditor({
   onExit,
   onMathDialog,
   onImageUpload,
+  onFileUpload,
+  onFileAttachmentClick,
   onInlineMathClick,
   onBlockMathClick,
 }: UseTiptapEditorOptions) {
@@ -80,6 +85,7 @@ export function useTiptapEditor({
     extensions: [
       StarterKit,
       ImageWithDelete,
+      FileAttachment.configure({ onClick: onFileAttachmentClick }),
       Table.configure({ resizable: true }),
       TableRow,
       TableCell,
@@ -119,6 +125,7 @@ export function useTiptapEditor({
         onExit,
         onMathDialog,
         onImageUpload,
+        onFileUpload,
       }),
     ],
     content: value || "<p></p>",

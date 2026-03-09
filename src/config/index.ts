@@ -18,6 +18,11 @@ export const config = {
   PLACEHOLDER_HEADLESS: "开始输入...",
   /* 图片上传最大体积（字节），默认 5MB */
   IMAGE_MAX_SIZE_BYTES: 5 * 1024 * 1024,
+  /* 附件上传（Word/PDF）最大体积（字节），默认 10MB */
+  FILE_UPLOAD_MAX_SIZE_BYTES: 10 * 1024 * 1024,
+  /* 附件上传接受的 MIME 类型 */
+  FILE_UPLOAD_ACCEPT:
+    '.docx,.pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf',
   /* 表格行/列操作按钮及下方、右侧加号条尺寸（px），默认 10 */
   TABLE_ACTION_BUTTON_SIZE: 10,
   /* 表格左侧/上方操作按钮与表格内容的间距（px），即 tableWrapper 预留区，默认 14 */

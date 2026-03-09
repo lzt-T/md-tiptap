@@ -16,6 +16,7 @@ import TableColumnActions from "./TableColumnActions";
 import BubbleMenu from "./BubbleMenu/index";
 import MathDialog from "./MathDialog";
 import ImageUploadDialog from "./ImageUploadDialog";
+import FileUploadDialog from "./FileUploadDialog";
 import "./TiptapEditor.css";
 import { useRef, useEffect, useCallback, useState } from "react";
 import type { TiptapEditorProps } from "./types";
@@ -24,6 +25,7 @@ import {
   useCommandMenu,
   useMathDialog,
   useImageUploadDialog,
+  useFileUploadDialog,
   useTiptapEditor,
   useEditorCommands,
 } from "@/hooks";
@@ -51,6 +53,8 @@ const TiptapEditor = ({
   value,
   onChange,
   onImageUpload,
+  onFileUpload,
+  onFileAttachmentClick,
   commandMenuMaxHeight = config.COMMAND_MENU_DEFAULT_MAX_HEIGHT,
   commandMenuMinHeight = config.COMMAND_MENU_DEFAULT_MIN_HEIGHT,
   placeholder,
@@ -58,6 +62,7 @@ const TiptapEditor = ({
   onChangeDebounceMs = config.DEFAULT_ON_CHANGE_DEBOUNCE_MS,
   border = true,
   imageMaxSizeBytes = config.IMAGE_MAX_SIZE_BYTES,
+  fileMaxSizeBytes = config.FILE_UPLOAD_MAX_SIZE_BYTES,
   formulaCategories,
   maxHeight,
 }: TiptapEditorProps) => {
@@ -97,6 +102,7 @@ const TiptapEditor = ({
   });
 
   const imageDialog = useImageUploadDialog();
+  const fileUploadDialog = useFileUploadDialog();
 
   const resolvedPlaceholder =
     placeholder !== undefined
@@ -121,6 +127,11 @@ const TiptapEditor = ({
       ? mathDialog.handleMathDialogFromSlash
       : noopMathDialog,
     onImageUpload: isNotionLike ? imageDialog.openImageDialog : noopImageUpload,
+    onFileUpload:
+      isNotionLike && onFileUpload
+        ? fileUploadDialog.openFileUploadDialog
+        : undefined,
+    onFileAttachmentClick,
     onInlineMathClick: mathDialog.handleInlineMathClick,
     onBlockMathClick: mathDialog.handleBlockMathClick,
   });
@@ -128,6 +139,9 @@ const TiptapEditor = ({
   const { runCommandItem } = useEditorCommands(editor, {
     onOpenMathDialog: mathDialog.handleMathDialogFromSlash,
     onOpenImageDialog: imageDialog.openImageDialog,
+    onOpenFileUploadDialog: onFileUpload
+      ? fileUploadDialog.openFileUploadDialog
+      : undefined,
   });
 
   useBlockMathDeleteButton({
@@ -263,6 +277,9 @@ const TiptapEditor = ({
           editor={editor}
           onOpenMathDialog={mathDialog.handleMathDialogFromSlash}
           onOpenImageDialog={imageDialog.openImageDialog}
+          onOpenFileUploadDialog={
+            onFileUpload ? fileUploadDialog.openFileUploadDialog : undefined
+          }
         />
       )}
       {/* 编辑区：表格行操作、ProseMirror 内容、Bubble 菜单、斜杠命令菜单 */}
@@ -318,6 +335,15 @@ const TiptapEditor = ({
         onUpload={onImageUpload}
         imageMaxSizeBytes={imageMaxSizeBytes}
       />
+      {onFileUpload && (
+        <FileUploadDialog
+          isOpen={fileUploadDialog.showFileUploadDialog}
+          onConfirm={fileUploadDialog.handleFileUploadConfirm}
+          onCancel={fileUploadDialog.handleFileUploadCancel}
+          onUpload={onFileUpload}
+          fileMaxSizeBytes={fileMaxSizeBytes}
+        />
+      )}
     </div>
   );
 };

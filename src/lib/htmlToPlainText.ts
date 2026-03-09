@@ -2,6 +2,7 @@ import { generateJSON, generateText } from "@tiptap/core";
 import type { Extensions, TextSerializer } from "@tiptap/core";
 import StarterKit from "@tiptap/starter-kit";
 import { ImageWithDelete } from "@/extensions/ImageWithDelete";
+import { FileAttachment } from "@/extensions/FileAttachment";
 import { Table } from "@tiptap/extension-table";
 import TableRow from "@tiptap/extension-table-row";
 import TableCell from "@tiptap/extension-table-cell";
@@ -23,6 +24,7 @@ import Mathematics from "@tiptap/extension-mathematics";
 const schemaExtensions: Extensions = [
   StarterKit,
   ImageWithDelete,
+  FileAttachment,
   Table.configure({ resizable: true }),
   TableRow,
   TableCell,
@@ -60,6 +62,10 @@ const defaultTextSerializers: Record<string, TextSerializer> = {
   image: ({ node }) => {
     const alt = node.attrs?.alt;
     return typeof alt === "string" && alt ? alt : "[image]";
+  },
+  fileAttachment: ({ node }) => {
+    const name = node.attrs?.name;
+    return typeof name === "string" && name ? `[file: ${name}]` : "[file]";
   },
   inlineMath: ({ node }) => {
     const latex = node.attrs?.latex;

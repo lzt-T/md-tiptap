@@ -2,6 +2,7 @@ export { useBlockMathDeleteButton } from "./useBlockMathDeleteButton";
 export { useCommandMenu } from "./useCommandMenu";
 export { useMathDialog } from "./useMathDialog";
 export { useImageUploadDialog } from "./useImageUploadDialog";
+export { useFileUploadDialog } from "./useFileUploadDialog";
 export { useTiptapEditor } from "./useTiptapEditor";
 export { useEditorCommands } from "./useEditorCommands";
 export { useTableInsertRowRunAndClose } from "./useTableInsertRowRunAndClose";

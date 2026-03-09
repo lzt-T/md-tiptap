@@ -22,6 +22,7 @@ import {
   Sigma,
   SquareFunction,
   Image,
+  FileUp,
   type LucideIcon,
 } from 'lucide-react'
 
@@ -32,6 +33,8 @@ export interface CommandItem {
   command: ({ editor }: { editor: Editor }) => void
   mathType?: 'inline' | 'block'
   imageUpload?: boolean
+  /** 上传附件（Word/PDF），插入文件块链接 */
+  fileAttachment?: boolean
   /** 为 true 时在斜杠菜单中灰显，且方向键会跳过该项 */
   disabled?: boolean
 }
@@ -44,6 +47,7 @@ export interface SlashCommandsOptions {
   onClientRect: (rect: DOMRect | null) => void
   onMathDialog?: (type: 'inline' | 'block', initialValue: string, callback: (latex: string) => void) => void
   onImageUpload?: (callback: (src: string, alt?: string) => void) => void
+  onFileUpload?: (callback: (url: string, name: string) => void) => void
 }
 
 function findFirstEnabledIndex(items: CommandItem[]): number {
@@ -130,6 +134,16 @@ export const defaultCommands: CommandItem[] = [
       editor.chain().focus().run()
     },
   },
+  {
+    title: 'Upload file',
+    description: 'Upload Word or PDF as attachment link',
+    icon: FileUp,
+    fileAttachment: true,
+    command: ({ editor }) => {
+      // This will be handled by the file upload dialog
+      editor.chain().focus().run()
+    },
+  },
 ]
 
 export const SlashCommands = Extension.create<SlashCommandsOptions>({
@@ -143,6 +157,7 @@ export const SlashCommands = Extension.create<SlashCommandsOptions>({
       onClientRect: () => {},
       onMathDialog: undefined,
       onImageUpload: undefined,
+      onFileUpload: undefined,
     }
   },
   addProseMirrorPlugins() {
@@ -153,9 +168,11 @@ export const SlashCommands = Extension.create<SlashCommandsOptions>({
         items: ({ query }: { query: string }) => {
           const insideTable = this.editor.isActive('table')
           return defaultCommands
-            .filter((item) =>
-              item.title.toLowerCase().includes(query.toLowerCase())
-            )
+            .filter((item) => {
+              if (!item.title.toLowerCase().includes(query.toLowerCase())) return false
+              if (item.fileAttachment && !this.options.onFileUpload) return false
+              return true
+            })
             .map((item) => ({
               ...item,
               disabled:
@@ -254,6 +271,12 @@ export const SlashCommands = Extension.create<SlashCommandsOptions>({
                       // Handle image upload
                       this.options.onImageUpload((src, alt) => {
                         currentEditor.chain().focus().setImage({ src, alt }).run()
+                      })
+                    } else if (item.fileAttachment && this.options.onFileUpload) {
+                      // Handle file attachment upload
+                      this.options.onFileUpload((url, name) => {
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- custom command insertFileAttachment
+                        (currentEditor as any).chain().focus().insertFileAttachment({ url, name }).run()
                       })
                     } else {
                       item.command({ editor: currentEditor })
