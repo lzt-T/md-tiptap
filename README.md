@@ -53,7 +53,7 @@ function App() {
 }
 ```
 
-### 带图片上传
+### 带图片与附件预上传（Confirm 后回调）
 
 ```tsx
 import { TiptapEditor } from 'zt-reactjs-tiptap'
@@ -62,8 +62,8 @@ import 'zt-reactjs-tiptap/style.css'
 function App() {
   const [content, setContent] = useState('<p>Hello World!</p>')
 
-  const handleImageUpload = async (file: File) => {
-    // 实现你的图片上传逻辑
+  // 选择/拖拽图片时触发（预上传）
+  const handleImagePreUpload = async (file: File) => {
     const formData = new FormData()
     formData.append('file', file)
     const response = await fetch('/api/upload', {
@@ -74,11 +74,36 @@ function App() {
     return data.url
   }
 
+  // 仅在点击 Confirm 时触发
+  const handleImageUpload = async (payload: { file: File; url: string; alt?: string }) => {
+    console.log('Image confirmed:', payload)
+  }
+
+  // 选择/拖拽附件时触发（预上传）
+  const handleFilePreUpload = async (file: File) => {
+    const formData = new FormData()
+    formData.append('file', file)
+    const response = await fetch('/api/file-upload', {
+      method: 'POST',
+      body: formData,
+    })
+    const data = await response.json()
+    return { url: data.url, name: data.name ?? file.name }
+  }
+
+  // 仅在点击 Confirm/Insert Link 时触发
+  const handleFileUpload = async (payload: { file: File; url: string; name: string }) => {
+    console.log('File confirmed:', payload)
+  }
+
   return (
     <TiptapEditor
       value={content}
       onChange={setContent}
+      onImagePreUpload={handleImagePreUpload}
       onImageUpload={handleImageUpload}
+      onFilePreUpload={handleFilePreUpload}
+      onFileUpload={handleFileUpload}
     />
   )
 }
@@ -94,7 +119,7 @@ import 'zt-reactjs-tiptap/style.css'
 function EditorExample() {
   const [content, setContent] = useState('<p>开始编辑...</p>')
 
-  const handleImageUpload = async (file: File): Promise<string> => {
+  const handleImagePreUpload = async (file: File): Promise<string> => {
     // 示例：上传到服务器
     const formData = new FormData()
     formData.append('image', file)
@@ -108,6 +133,11 @@ function EditorExample() {
     return data.url
   }
 
+  const handleImageUpload = (payload: { file: File; url: string; alt?: string }) => {
+    // 仅在点击 Confirm 后触发
+    console.log('图片确认插入:', payload)
+  }
+
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto' }}>
       <h1>我的编辑器</h1>
@@ -117,6 +147,7 @@ function EditorExample() {
           setContent(html)
           console.log('内容已更新:', html)
         }}
+        onImagePreUpload={handleImagePreUpload}
         onImageUpload={handleImageUpload}
       />
       <div style={{ marginTop: '20px' }}>
@@ -136,30 +167,21 @@ function EditorExample() {
 |------|------|------|--------|------|
 | `value` | `string` | 否 | - | 编辑器的 HTML 内容 |
 | `onChange` | `(html: string) => void` | 否 | - | 内容变化时的回调函数，参数为 HTML 字符串 |
-| `onImageUpload` | `(file: File) => Promise<string>` | 否 | - | 图片上传处理函数，需返回图片 URL。若不提供，图片将以 Base64 格式插入 |
+| `onImagePreUpload` | `(file: File) => Promise<string>` | 否 | - | 图片预上传函数（选择/拖拽文件时触发），返回图片 URL。不提供时图片将以 Base64 插入 |
+| `onImageUpload` | `(payload: { file: File; url: string; alt?: string }) => void \| Promise<void>` | 否 | - | 图片 Confirm 回调（仅在点击 Confirm 后触发） |
+| `onFilePreUpload` | `(file: File) => Promise<{ url: string; name: string }>` | 否 | - | 附件预上传函数（选择/拖拽文件时触发），返回文件 URL 与展示名 |
+| `onFileUpload` | `(payload: { file: File; url: string; name: string }) => void \| Promise<void>` | 否 | - | 附件 Confirm 回调（仅在点击 Confirm/Insert Link 后触发） |
 | `editorMode` | `'notion-like' \| 'headless'` | 否 | `'notion-like'` | 编辑器模式：Notion 风格（斜杠命令、块状编辑等）或无头模式 |
 | `headlessToolbarMode` | `'always' \| 'on-focus'` | 否 | `'always'` | **仅在 `editorMode='headless'` 时生效**。`always`：工具栏始终显示；`on-focus`：编辑器聚焦或点击工具栏时显示，失焦到编辑器区域外时隐藏 |
 | `commandMenuMaxHeight` | `number` | 否 | `240` | 斜杠命令菜单最大高度（px） |
 | `commandMenuMinHeight` | `number` | 否 | `160` | 斜杠命令菜单最小高度（px） |
-| `placeholder` | `string` | 否 | `"输入 '/' 查看命令..."` | 编辑器为空时的占位文本 |
+| `placeholder` | `string` | 否 | NotionLike: "Type '/' for commands..."；Headless: "Start typing..." | 编辑器为空时的占位文本。不传时按模式使用上述默认值；传入后两种模式均使用该值 |
 | `disabled` | `boolean` | 否 | `false` | 是否禁用编辑器（只读） |
 | `onChangeDebounceMs` | `number` | 否 | `300` | `onChange` 防抖延迟（毫秒） |
 | `border` | `boolean` | 否 | `true` | 是否显示编辑器容器边框 |
 | `imageMaxSizeBytes` | `number` | 否 | `5242880`（5MB） | 图片上传最大体积（字节），超过则拒绝并提示 |
 | `formulaCategories` | `FormulaPickerCategory[]` | 否 | 内置默认分类 | 公式选择器的分类列表。不传则使用内置分类；传入时可完全自定义或在默认基础上扩展（见下方「扩展公式分类」） |
-| `maxHeight` | `number \| string` | 否 | - | 编辑器容器的最大高度。不配置时容器为 `height: 100%`；配置后高度随内容从较小开始增长，达到该值后不再增高，超出部分在编辑区内滚动。数字表示像素（如 `400`），字符串为任意合法 CSS 长度（如 `"50vh"`、`"20rem"`） |
-
-### 限制编辑器最大高度（maxHeight）
-
-不配置时编辑器容器占满父级高度（`height: 100%`）。传入 `maxHeight` 后，高度会随内容从较小开始增长，达到设定值后不再增高，超出部分在编辑区内滚动。
-
-```tsx
-// 最大高度 400px，内容少时较矮，内容多到 400px 后内部滚动
-<TiptapEditor value={content} onChange={setContent} maxHeight={400} />
-
-// 使用 CSS 长度，如视口高度的一半
-<TiptapEditor value={content} onChange={setContent} maxHeight="50vh" />
-```
+| `maxHeight` | `number \| string` | 否 | - | 编辑器容器的最大高度。不配置时容器为 `height: 100%`；配置后高度限制为该值，内容超出时在编辑区内滚动。数字为像素（如 `400`），字符串为任意合法 CSS 长度（如 `"50vh"`、`"20rem"`） |
 
 ### Headless 模式下的工具栏显示
 
@@ -291,8 +313,9 @@ const custom = htmlToPlainText(html, { blockSeparator: '\n\n' })
 2. **URL 插入**：通过图片链接地址插入
 
 **图片处理**：
-- 如果提供 `onImageUpload` 函数，图片将上传到服务器并返回 URL
-- 如果没有提供，图片将以 Base64 格式直接嵌入（适合小图片）
+- 如果提供 `onImagePreUpload` 函数，将执行预上传并使用返回 URL 预览/插入
+- 如果没有提供 `onImagePreUpload`，图片将以 Base64 格式直接嵌入（适合小图片）
+- `onImageUpload` 仅在点击 Confirm 后触发，不负责执行上传
 - 支持 JPG、PNG、GIF 等常见格式
 - 建议图片大小不超过 5MB
 

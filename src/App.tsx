@@ -104,10 +104,14 @@ function App() {
           headlessToolbarMode={HeadlessToolbarMode.OnFocus}
           value={content}
           onChange={handleEditorChange}
-          onImageUpload={handleImageUpload}
+          onImagePreUpload={handleImageUpload}
+          onImageUpload={(data)=>{
+             console.log(data,'dasdsad');
+             
+          }}
           onImageDelete={onImageDelete}
           maxHeight="500px"
-          onFileUpload={onFileUpload}
+          onFilePreUpload={onFileUpload}
           onFileDelete={onFileDelete}
           onFileAttachmentClick={onFileAttachmentClick}
         />

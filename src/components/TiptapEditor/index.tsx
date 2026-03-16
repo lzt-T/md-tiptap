@@ -53,8 +53,10 @@ const TiptapEditor = ({
   value,
   onChange,
   onImageUpload,
+  onImagePreUpload,
   onImageDelete,
   onFileUpload,
+  onFilePreUpload,
   onFileDelete,
   onFileAttachmentClick,
   commandMenuMaxHeight = config.COMMAND_MENU_DEFAULT_MAX_HEIGHT,
@@ -132,7 +134,7 @@ const TiptapEditor = ({
       : noopMathDialog,
     onImageUpload: isNotionLike ? imageDialog.openImageDialog : noopImageUpload,
     onFileUpload:
-      isNotionLike && onFileUpload
+      isNotionLike && onFilePreUpload
         ? fileUploadDialog.openFileUploadDialog
         : undefined,
     onFileAttachmentClick,
@@ -143,7 +145,7 @@ const TiptapEditor = ({
   const { runCommandItem } = useEditorCommands(editor, {
     onOpenMathDialog: mathDialog.handleMathDialogFromSlash,
     onOpenImageDialog: imageDialog.openImageDialog,
-    onOpenFileUploadDialog: onFileUpload
+    onOpenFileUploadDialog: onFilePreUpload
       ? fileUploadDialog.openFileUploadDialog
       : undefined,
   });
@@ -282,7 +284,7 @@ const TiptapEditor = ({
           onOpenMathDialog={mathDialog.handleMathDialogFromSlash}
           onOpenImageDialog={imageDialog.openImageDialog}
           onOpenFileUploadDialog={
-            onFileUpload ? fileUploadDialog.openFileUploadDialog : undefined
+            onFilePreUpload ? fileUploadDialog.openFileUploadDialog : undefined
           }
         />
       )}
@@ -336,14 +338,16 @@ const TiptapEditor = ({
         isOpen={imageDialog.showImageDialog}
         onConfirm={imageDialog.handleImageConfirm}
         onCancel={imageDialog.handleImageCancel}
+        onPreUpload={onImagePreUpload}
         onUpload={onImageUpload}
         imageMaxSizeBytes={imageMaxSizeBytes}
       />
-      {onFileUpload && (
+      {onFilePreUpload && (
         <FileUploadDialog
           isOpen={fileUploadDialog.showFileUploadDialog}
           onConfirm={fileUploadDialog.handleFileUploadConfirm}
           onCancel={fileUploadDialog.handleFileUploadCancel}
+          onPreUpload={onFilePreUpload}
           onUpload={onFileUpload}
           fileMaxSizeBytes={fileMaxSizeBytes}
         />

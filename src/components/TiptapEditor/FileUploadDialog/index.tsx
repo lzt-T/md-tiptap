@@ -31,7 +31,8 @@ export interface FileUploadDialogProps {
   isOpen: boolean;
   onConfirm: (url: string, name: string) => void;
   onCancel: () => void;
-  onUpload: (file: File) => Promise<{ url: string; name: string }>;
+  onPreUpload: (file: File) => Promise<{ url: string; name: string }>;
+  onUpload?: (payload: { file: File; url: string; name: string }) => void | Promise<void>;
   fileMaxSizeBytes?: number;
 }
 
@@ -39,9 +40,11 @@ const FileUploadDialog = ({
   isOpen,
   onConfirm,
   onCancel,
+  onPreUpload,
   onUpload,
   fileMaxSizeBytes = config.FILE_UPLOAD_MAX_SIZE_BYTES,
 }: FileUploadDialogProps) => {
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [result, setResult] = useState<{ url: string; name: string } | null>(
     null
   );
@@ -51,6 +54,7 @@ const FileUploadDialog = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const resetStates = useCallback(() => {
+    setSelectedFile(null);
     setResult(null);
     setError("");
     setIsUploading(false);
@@ -60,28 +64,34 @@ const FileUploadDialog = ({
   const processFile = useCallback(
     async (file: File) => {
       if (!isAllowedFile(file)) {
-        setError("请选择 Word (.docx) 或 PDF (.pdf) 文件");
+        setSelectedFile(null);
+        setResult(null);
+        setError("Please select a Word (.docx) or PDF (.pdf) file");
         return;
       }
       if (file.size > fileMaxSizeBytes) {
-        setError(`文件大小不能超过 ${formatFileSize(fileMaxSizeBytes)}`);
+        setSelectedFile(null);
+        setResult(null);
+        setError(`File size must not exceed ${formatFileSize(fileMaxSizeBytes)}`);
         return;
       }
 
+      setSelectedFile(file);
       setError("");
       try {
         setIsUploading(true);
-        const res = await onUpload(file);
+        const res = await onPreUpload(file);
         setResult(res);
       } catch (err) {
+        setResult(null);
         setError(
-          err instanceof Error ? err.message : "上传失败，请重试"
+          err instanceof Error ? err.message : "Upload failed, please try again"
         );
       } finally {
         setIsUploading(false);
       }
     },
-    [onUpload, fileMaxSizeBytes]
+    [onPreUpload, fileMaxSizeBytes]
   );
 
   const handleFileChange = useCallback(
@@ -121,17 +131,23 @@ const FileUploadDialog = ({
   );
 
   const handleConfirm = useCallback(() => {
-    if (!result) {
-      setError("请先选择并上传文件");
+    if (!selectedFile || !result) {
+      setError("Please select and upload a file first");
       return;
     }
     if (isUploading) {
-      setError("正在上传，请稍候");
+      setError("Uploading, please wait");
+
       return;
     }
     onConfirm(result.url, result.name);
+    if (onUpload) {
+      void Promise.resolve(
+        onUpload({ file: selectedFile, url: result.url, name: result.name })
+      );
+    }
     resetStates();
-  }, [result, isUploading, onConfirm, resetStates]);
+  }, [selectedFile, result, isUploading, onConfirm, onUpload, resetStates]);
 
   const handleCancel = useCallback(() => {
     onCancel();
@@ -159,7 +175,7 @@ const FileUploadDialog = ({
         onKeyDown={handleKeyDown}
       >
         <DialogHeader>
-          <DialogTitle>上传附件</DialogTitle>
+          <DialogTitle>Upload Attachment</DialogTitle>
         </DialogHeader>
 
         <div className="file-upload-content">
@@ -187,17 +203,17 @@ const FileUploadDialog = ({
                       className="file-upload-file-icon-spin"
                     />
                   </div>
-                  <div className="file-upload-file-text">正在上传…</div>
+                  <div className="file-upload-file-text">Uploading…</div>
                 </>
               ) : result ? (
                 <>
                   <div className="file-upload-file-icon">
                     <FileUp size={40} />
                   </div>
-                  <div className="file-upload-file-text">已选择文件</div>
+                  <div className="file-upload-file-text">File selected</div>
                   <div className="file-upload-file-name">{result.name}</div>
                   <div className="file-upload-file-hint">
-                    点击或拖拽可重新选择
+                    Click or drag to choose another file
                   </div>
                 </>
               ) : (
@@ -206,10 +222,10 @@ const FileUploadDialog = ({
                     <FileUp size={40} />
                   </div>
                   <div className="file-upload-file-text">
-                    点击选择或拖拽文件到此处
+                    Click to select or drag files here
                   </div>
                   <div className="file-upload-file-hint">
-                    支持 Word (.docx)、PDF (.pdf)，最大{" "}
+                    Supports Word (.docx), PDF (.pdf), max{" "}
                     {formatFileSize(fileMaxSizeBytes)}
                   </div>
                 </>
@@ -227,13 +243,13 @@ const FileUploadDialog = ({
 
         <DialogFooter>
           <Button variant="outline" onClick={handleCancel}>
-            取消
+            Cancel
           </Button>
           <Button
             onClick={handleConfirm}
             disabled={!result || !!error || isUploading}
           >
-            {isUploading ? "上传中…" : "插入链接"}
+            {isUploading ? "Uploading…" : "Insert Link"}
           </Button>
         </DialogFooter>
       </DialogContent>

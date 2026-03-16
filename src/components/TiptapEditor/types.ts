@@ -38,11 +38,17 @@ export interface TiptapEditorProps {
   onChange?: (html: string) => void
   
   /**
-   * 图片上传处理函数
-   * @param file - 要上传的图片文件
-   * @returns Promise<string> - 返回图片的 URL
+   * 图片确认插入后触发（仅在点击 Confirm 后触发）
+   * @param payload - { file, url, alt? }
    */
-  onImageUpload?: (file: File) => Promise<string>
+  onImageUpload?: (payload: { file: File; url: string; alt?: string }) => void | Promise<void>
+
+  /**
+   * 图片预上传处理函数（选择/拖拽文件时触发）
+   * @param file - 要上传的图片文件
+   * @returns Promise<string> - 返回图片 URL
+   */
+  onImagePreUpload?: (file: File) => Promise<string>
 
   /**
    * 图片删除时触发（点击图片右上角删除按钮）
@@ -51,11 +57,17 @@ export interface TiptapEditorProps {
   onImageDelete?: (params: { src: string; alt?: string; title?: string }) => void
 
   /**
-   * 附件上传处理函数（Word/PDF），插入为文件块链接
+   * 附件确认插入后触发（仅在点击 Confirm/Insert Link 后触发）
+   * @param payload - { file, url, name }
+   */
+  onFileUpload?: (payload: { file: File; url: string; name: string }) => void | Promise<void>
+
+  /**
+   * 附件预上传处理函数（选择/拖拽文件时触发）
    * @param file - 要上传的文件
    * @returns Promise<{ url: string; name: string }> - 返回文件 URL 与显示名称
    */
-  onFileUpload?: (file: File) => Promise<{ url: string; name: string }>
+  onFilePreUpload?: (file: File) => Promise<{ url: string; name: string }>
 
   /**
    * 附件删除时触发（点击附件右侧删除按钮）
@@ -80,8 +92,8 @@ export interface TiptapEditorProps {
   commandMenuMinHeight?: number
 
   /**
-   * 编辑器为空时显示的占位文本。不传时 NotionLike 为「输入 '/' 查看命令...」，
-   * Headless 为「开始输入...」；传入则两种模式均使用该值。
+   * Placeholder when editor is empty. When not provided: NotionLike uses "Type '/' for commands...",
+   * Headless uses "Start typing..."; when provided, both modes use this value.
    */
   placeholder?: string
 

@@ -17,7 +17,8 @@ interface ImageUploadDialogProps {
   isOpen: boolean
   onConfirm: (src: string, alt?: string) => void
   onCancel: () => void
-  onUpload?: (file: File) => Promise<string>
+  onPreUpload?: (file: File) => Promise<string>
+  onUpload?: (payload: { file: File; url: string; alt?: string }) => void | Promise<void>
   /** 图片最大体积（字节），超过则拒绝 */
   imageMaxSizeBytes?: number
 }
@@ -26,10 +27,12 @@ const ImageUploadDialog = ({
   isOpen,
   onConfirm,
   onCancel,
+  onPreUpload,
   onUpload,
   imageMaxSizeBytes = config.IMAGE_MAX_SIZE_BYTES,
 }: ImageUploadDialogProps) => {
   const [uploadType, setUploadType] = useState<'file' | 'url'>('file')
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [imageUrl, setImageUrl] = useState('')
   const [previewLoadError, setPreviewLoadError] = useState(false)
   const [error, setError] = useState('')
@@ -40,6 +43,7 @@ const ImageUploadDialog = ({
 
   const resetStates = useCallback(() => {
     setUploadType('file')
+    setSelectedFile(null)
     setImageUrl('')
     setPreviewLoadError(false)
     setError('')
@@ -49,28 +53,35 @@ const ImageUploadDialog = ({
 
   const processFile = useCallback(async (file: File) => {
     if (!file.type.startsWith('image/')) {
-      setError('请选择图片文件')
+      setSelectedFile(null)
+      setImageUrl('')
+      setError('Please select an image file')
       return
     }
 
     const maxBytes = imageMaxSizeBytes
     if (file.size > maxBytes) {
-      setError(`图片大小不能超过 ${formatFileSize(maxBytes)}`)
+      setSelectedFile(null)
+      setImageUrl('')
+      setError(`Image size must not exceed ${formatFileSize(maxBytes)}`)
       return
     }
 
     setError('')
 
-    if (onUpload) {
+    setSelectedFile(file)
+
+    if (onPreUpload) {
       try {
         setIsUploading(true)
-        const url = await onUpload(file)
+        const url = await onPreUpload(file)
         setPreviewLoadError(false)
         setImageUrl(url)
         setIsUploading(false)
       } catch (err) {
         setIsUploading(false)
-        setError(err instanceof Error ? err.message : '上传失败，请重试')
+        setImageUrl('')
+        setError(err instanceof Error ? err.message : 'Upload failed, please retry')
       }
     } else {
       const reader = new FileReader()
@@ -80,11 +91,11 @@ const ImageUploadDialog = ({
         setImageUrl(base64)
       }
       reader.onerror = () => {
-        setError('读取文件失败')
+        setError('Failed to read file')
       }
       reader.readAsDataURL(file)
     }
-  }, [onUpload, imageMaxSizeBytes])
+  }, [onPreUpload, imageMaxSizeBytes])
 
   const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -118,6 +129,7 @@ const ImageUploadDialog = ({
 
   const handleUrlChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const url = e.target.value
+    setSelectedFile(null)
     setPreviewLoadError(false)
     setImageUrl(url)
 
@@ -126,7 +138,7 @@ const ImageUploadDialog = ({
         new URL(url)
         setError('')
       } catch {
-        setError('请输入有效的图片 URL')
+        setError('Please enter a valid image URL')
       }
     } else {
       setError('')
@@ -135,18 +147,21 @@ const ImageUploadDialog = ({
 
   const handleConfirm = useCallback(() => {
     if (!imageUrl) {
-      setError('请选择图片或输入图片 URL')
+      setError('Please select an image or enter image URL')
       return
     }
 
     if (isUploading) {
-      setError('图片正在上传中，请稍候')
+      setError('Image is uploading, please wait')
       return
     }
 
     onConfirm(imageUrl)
+    if (uploadType === 'file' && selectedFile && onUpload) {
+      void Promise.resolve(onUpload({ file: selectedFile, url: imageUrl }))
+    }
     resetStates()
-  }, [imageUrl, isUploading, onConfirm, resetStates])
+  }, [imageUrl, isUploading, onConfirm, onUpload, resetStates, selectedFile, uploadType])
 
   const handleCancel = useCallback(() => {
     onCancel()
@@ -177,7 +192,7 @@ const ImageUploadDialog = ({
         onKeyDown={handleKeyDown}
       >
         <DialogHeader>
-          <DialogTitle>图片上传</DialogTitle>
+          <DialogTitle>Image upload</DialogTitle>
         </DialogHeader>
 
         <div className="image-upload-tabs">
@@ -186,14 +201,14 @@ const ImageUploadDialog = ({
             className={`image-upload-tab ${uploadType === 'file' ? 'active' : ''}`}
             onClick={() => setUploadType('file')}
           >
-            上传文件
+            Upload file
           </button>
           <button
             type="button"
             className={`image-upload-tab ${uploadType === 'url' ? 'active' : ''}`}
             onClick={() => setUploadType('url')}
           >
-            图片链接
+            Image URL
           </button>
         </div>
 
@@ -220,14 +235,14 @@ const ImageUploadDialog = ({
                     <div className="image-upload-file-icon">
                       <Loader2 size={40} className="image-upload-file-icon-spin" />
                     </div>
-                    <div className="image-upload-file-text">正在上传图片...</div>
+                    <div className="image-upload-file-text">Uploading image...</div>
                   </>
                 ) : imageUrl ? (
                   <div className="image-upload-file-preview">
                     {previewLoadError ? (
                       <div className="image-upload-file-preview-error">
                         <ImageOff size={40} />
-                        <span>图片无法加载</span>
+                        <span>Image failed to load</span>
                       </div>
                     ) : (
                       <img
@@ -244,23 +259,23 @@ const ImageUploadDialog = ({
                       <ImagePlus size={40} />
                     </div>
                     <div className="image-upload-file-text">
-                      点击选择图片或拖拽图片到此处
+                      Click to select or drag image here
                     </div>
                     <div className="image-upload-file-hint">
-                      支持 JPG、PNG、GIF 等格式，最大 {formatFileSize(imageMaxSizeBytes)}
+                      Supports JPG, PNG, GIF, max {formatFileSize(imageMaxSizeBytes)}
                     </div>
                   </>
                 )}
               </label>
               {uploadType === 'file' && imageUrl && (
                 <div className="image-upload-file-hint image-upload-file-reselect-hint">
-                  点击或拖拽可重新选择
+                  Click or drag to reselect
                 </div>
               )}
             </div>
           ) : (
             <div className="image-upload-url space-y-2">
-              <Label htmlFor="imageUrlInput">图片 URL</Label>
+              <Label htmlFor="imageUrlInput">Image URL</Label>
               <input
                 ref={urlInputRef}
                 id="imageUrlInput"
@@ -283,13 +298,13 @@ const ImageUploadDialog = ({
 
         <DialogFooter>
           <Button variant="outline" onClick={handleCancel}>
-            取消
+            Cancel
           </Button>
           <Button
             onClick={handleConfirm}
             disabled={!imageUrl || !!error || isUploading}
           >
-            {isUploading ? '上传中...' : '确定'}
+            {isUploading ? 'Uploading...' : 'Confirm'}
           </Button>
         </DialogFooter>
       </DialogContent>
