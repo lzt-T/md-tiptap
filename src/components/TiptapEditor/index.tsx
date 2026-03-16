@@ -115,7 +115,7 @@ const TiptapEditor = ({
         ? config.DEFAULT_PLACEHOLDER
         : config.PLACEHOLDER_HEADLESS;
 
-  const { editor } = useTiptapEditor({
+  const { editor, runAfterOnChange } = useTiptapEditor({
     value,
     placeholder: resolvedPlaceholder,
     disabled,
@@ -141,6 +141,28 @@ const TiptapEditor = ({
     onInlineMathClick: mathDialog.handleInlineMathClick,
     onBlockMathClick: mathDialog.handleBlockMathClick,
   });
+
+  const handleImageUploadAfterChange = useCallback(
+    (payload: { file: File; url: string; alt?: string }) => {
+      runAfterOnChange(() => {
+        if (onImageUpload) {
+          void Promise.resolve(onImageUpload(payload));
+        }
+      });
+    },
+    [onImageUpload, runAfterOnChange]
+  );
+
+  const handleFileUploadAfterChange = useCallback(
+    (payload: { file: File; url: string; name: string }) => {
+      runAfterOnChange(() => {
+        if (onFileUpload) {
+          void Promise.resolve(onFileUpload(payload));
+        }
+      });
+    },
+    [onFileUpload, runAfterOnChange]
+  );
 
   const { runCommandItem } = useEditorCommands(editor, {
     onOpenMathDialog: mathDialog.handleMathDialogFromSlash,
@@ -339,7 +361,7 @@ const TiptapEditor = ({
         onConfirm={imageDialog.handleImageConfirm}
         onCancel={imageDialog.handleImageCancel}
         onPreUpload={onImagePreUpload}
-        onUpload={onImageUpload}
+        onUpload={handleImageUploadAfterChange}
         imageMaxSizeBytes={imageMaxSizeBytes}
       />
       {onFilePreUpload && (
@@ -348,7 +370,7 @@ const TiptapEditor = ({
           onConfirm={fileUploadDialog.handleFileUploadConfirm}
           onCancel={fileUploadDialog.handleFileUploadCancel}
           onPreUpload={onFilePreUpload}
-          onUpload={onFileUpload}
+          onUpload={handleFileUploadAfterChange}
           fileMaxSizeBytes={fileMaxSizeBytes}
         />
       )}

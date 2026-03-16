@@ -19,7 +19,7 @@ import TaskItem from "@tiptap/extension-task-item";
 import Mathematics from "@tiptap/extension-mathematics";
 import { SlashCommands } from "@/extensions/SlashCommands";
 import { TableBackspaceHandler } from "@/extensions/TableBackspaceHandler";
-import { useRef, useEffect, useMemo } from "react";
+import { useRef, useEffect, useMemo, useCallback } from "react";
 import type { Node } from "@tiptap/pm/model";
 import debounce from "lodash/debounce";
 
@@ -78,11 +78,54 @@ export function useTiptapEditor({
   const isFirstUpdateRef = useRef(true);
   /** 最近一次由本编辑器通过 onChange 抛出的 HTML，用于区分「父组件回传的 value」与「真正的外部更新」，避免回传时误调 setContent 导致光标被移到文末 */
   const lastEmittedHtmlRef = useRef<string | null>(null);
+  /** 需要在 onChange 之后触发的事件队列（上传/删除） */
+  const postChangeQueue = useMemo(() => {
+    const callbacks: Array<() => void> = [];
+    return {
+      enqueue: (callback: () => void) => {
+        callbacks.push(callback);
+      },
+      flush: () => {
+        if (callbacks.length === 0) return;
+        const pending = callbacks.splice(0, callbacks.length);
+        pending.forEach((callback) => callback());
+      },
+    };
+  }, []);
+
+  const runAfterOnChange = useCallback(
+    (callback: () => void) => {
+      if (!onChange) {
+        callback();
+        return;
+      }
+      postChangeQueue.enqueue(callback);
+    },
+    [onChange, postChangeQueue]
+  );
+
+  const handleImageDeleteAfterChange = useCallback(
+    (params: { src: string; alt?: string; title?: string }) => {
+      runAfterOnChange(() => onImageDelete?.(params));
+    },
+    [onImageDelete, runAfterOnChange]
+  );
+
+  const handleFileDeleteAfterChange = useCallback(
+    (params: { url: string; name: string }) => {
+      runAfterOnChange(() => onFileDelete?.(params));
+    },
+    [onFileDelete, runAfterOnChange]
+  );
 
   // 创建防抖后的 onChange
   const debouncedOnChange = useMemo(
-    () => debounce((html: string) => onChange?.(html), onChangeDebounceMs),
-    [onChange, onChangeDebounceMs]
+    () =>
+      debounce((html: string) => {
+        onChange?.(html);
+        postChangeQueue.flush();
+      }, onChangeDebounceMs),
+    [onChange, onChangeDebounceMs, postChangeQueue]
   );
 
   const editor = useEditor({
@@ -91,7 +134,10 @@ export function useTiptapEditor({
       StarterKit,
       ImageWithDelete,
       FileAttachment.configure({ onClick: onFileAttachmentClick }),
-      DeletionCallbacks.configure({ onImageDelete, onFileDelete }),
+      DeletionCallbacks.configure({
+        onImageDelete: handleImageDeleteAfterChange,
+        onFileDelete: handleFileDeleteAfterChange,
+      }),
       Table.configure({ resizable: true }),
       TableRow,
       TableCell,
@@ -183,5 +229,5 @@ export function useTiptapEditor({
     }, 0);
   }, [editor, value]);
 
-  return { editor };
+  return { editor, runAfterOnChange };
 }

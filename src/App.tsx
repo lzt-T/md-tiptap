@@ -14,19 +14,15 @@ function App() {
   const handleEditorChange = (html: string) => {
     setCount(count + 1);
     setContent(html);
-    console.log(
-      "htmlToPlainText",
-      htmlToPlainText(html, {
-        singleLine: true,
-      })
-    );
+    console.log("htmlToPlainText", htmlToPlainText(html,{
+      singleLine: true,
+    }));
     console.log("count", count);
     console.log("✏️ onChange 被触发 - 用户编辑:", html);
   };
 
-  // 自定义图片上传函数示例
-  // 如果不提供此函数，图片会自动转换为 Base64
-  const handleImageUpload = async (file: File): Promise<string> => {
+  // 选择文件时触发：执行预上传，返回图片 URL
+  const handleImagePreUpload = async (file: File): Promise<string> => {
     console.log("📤 上传图片:", file.name, file.size, "bytes");
 
     // 模拟上传到服务器（实际使用时替换为真实的上传逻辑）
@@ -47,9 +43,13 @@ function App() {
     });
   };
 
-  const onFileUpload = async (
-    file: File
-  ): Promise<{ url: string; name: string }> => {
+  // 仅在点击 Confirm 后触发
+  const onImageUpload = (payload: { file: File; url: string; alt?: string }) => {
+    console.log("✅ 图片 Confirm 回调:", payload);
+  };
+
+  // 选择文件时触发：执行预上传，返回文件 URL + 名称
+  const onFilePreUpload = async (file: File): Promise<{ url: string; name: string }> => {
     console.log("📤 上传文件:", file.name, file.size, "bytes");
     return new Promise((resolve) => {
       setTimeout(() => {
@@ -58,13 +58,12 @@ function App() {
     });
   };
 
-  const onFileAttachmentClick = ({
-    url,
-    name,
-  }: {
-    url: string;
-    name: string;
-  }) => {
+  // 仅在点击 Confirm/Insert Link 后触发
+  const onFileUpload = (payload: { file: File; url: string; name: string }) => {
+    console.log("✅ 文件 Confirm 回调:", payload);
+  };
+
+  const onFileAttachmentClick = ({ url, name }: { url: string; name: string }) => {
     console.log("📤 点击文件:", { url, name });
   };
 
@@ -101,17 +100,18 @@ function App() {
           // border={false}
           disabled={disabled}
           editorMode={EditorMode.Headless}
-          headlessToolbarMode={HeadlessToolbarMode.OnFocus}
+          // headlessToolbarMode={HeadlessToolbarMode.OnFocus}
           value={content}
-          onChange={handleEditorChange}
-          onImagePreUpload={handleImageUpload}
-          onImageUpload={(data)=>{
-             console.log(data,'dasdsad');
-             
+          onChange={(str)=>{
+            console.log("str", str);
+            // handleEditorChange(str);
           }}
+          onImagePreUpload={handleImagePreUpload}
+          onImageUpload={onImageUpload}
           onImageDelete={onImageDelete}
           maxHeight="500px"
-          onFilePreUpload={onFileUpload}
+          onFilePreUpload={onFilePreUpload}
+          onFileUpload={onFileUpload}
           onFileDelete={onFileDelete}
           onFileAttachmentClick={onFileAttachmentClick}
         />
