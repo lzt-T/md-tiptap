@@ -1,0 +1,226 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-27T08:54:36.954Z",
+  "title": "Design System: zt-reactjs-tiptap",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "清透靛青",
+        "canonical": "oklch(0.53 0.2 275)",
+        "tonalRamp": ["oklch(0.15 0.04 275)", "oklch(0.25 0.08 275)", "oklch(0.36 0.13 275)", "oklch(0.47 0.18 275)", "oklch(0.58 0.2 275)", "oklch(0.7 0.16 275)", "oklch(0.82 0.1 275)", "oklch(0.95 0.04 275)"]
+      },
+      "primary-dark": {
+        "role": "primary",
+        "displayName": "夜间靛青",
+        "canonical": "oklch(0.74 0.14 275)",
+        "tonalRamp": ["oklch(0.15 0.03 275)", "oklch(0.25 0.06 275)", "oklch(0.36 0.09 275)", "oklch(0.47 0.12 275)", "oklch(0.58 0.14 275)", "oklch(0.7 0.12 275)", "oklch(0.82 0.08 275)", "oklch(0.95 0.03 275)"]
+      },
+      "canvas": {
+        "role": "neutral",
+        "displayName": "纸白画布",
+        "canonical": "oklch(1 0 0)",
+        "tonalRamp": ["oklch(0.15 0 0)", "oklch(0.27 0 0)", "oklch(0.39 0 0)", "oklch(0.51 0 0)", "oklch(0.63 0 0)", "oklch(0.75 0 0)", "oklch(0.87 0 0)", "oklch(0.95 0 0)"]
+      },
+      "canvas-dark": {
+        "role": "neutral",
+        "displayName": "深墨画布",
+        "canonical": "oklch(0.145 0 0)",
+        "tonalRamp": ["oklch(0.15 0 0)", "oklch(0.27 0 0)", "oklch(0.39 0 0)", "oklch(0.51 0 0)", "oklch(0.63 0 0)", "oklch(0.75 0 0)", "oklch(0.87 0 0)", "oklch(0.95 0 0)"]
+      },
+      "panel": {
+        "role": "neutral",
+        "displayName": "浮层白",
+        "canonical": "#ffffff",
+        "tonalRamp": ["oklch(0.15 0 0)", "oklch(0.27 0 0)", "oklch(0.39 0 0)", "oklch(0.51 0 0)", "oklch(0.63 0 0)", "oklch(0.75 0 0)", "oklch(0.87 0 0)", "oklch(0.95 0 0)"]
+      },
+      "panel-dark": {
+        "role": "neutral",
+        "displayName": "夜间浮层",
+        "canonical": "oklch(0.265 0.005 255)",
+        "tonalRamp": ["oklch(0.15 0.005 255)", "oklch(0.27 0.005 255)", "oklch(0.39 0.005 255)", "oklch(0.51 0.005 255)", "oklch(0.63 0.005 255)", "oklch(0.75 0.005 255)", "oklch(0.87 0.005 255)", "oklch(0.95 0.005 255)"]
+      },
+      "toolbar": {
+        "role": "neutral",
+        "displayName": "工具栏雾白",
+        "canonical": "#f9fafb",
+        "tonalRamp": ["oklch(0.15 0.003 255)", "oklch(0.27 0.003 255)", "oklch(0.39 0.003 255)", "oklch(0.51 0.003 255)", "oklch(0.63 0.003 255)", "oklch(0.75 0.003 255)", "oklch(0.87 0.003 255)", "oklch(0.95 0.003 255)"]
+      },
+      "subtle": {
+        "role": "neutral",
+        "displayName": "内容浅层",
+        "canonical": "#f1f5f9",
+        "tonalRamp": ["oklch(0.15 0.008 250)", "oklch(0.27 0.008 250)", "oklch(0.39 0.008 250)", "oklch(0.51 0.008 250)", "oklch(0.63 0.008 250)", "oklch(0.75 0.008 250)", "oklch(0.87 0.008 250)", "oklch(0.95 0.008 250)"]
+      },
+      "selection": {
+        "role": "primary",
+        "displayName": "浅靛青选中面",
+        "canonical": "color-mix(in oklch, oklch(0.53 0.2 275) 10%, white)",
+        "tonalRamp": ["oklch(0.15 0.02 275)", "oklch(0.27 0.02 275)", "oklch(0.39 0.02 275)", "oklch(0.51 0.02 275)", "oklch(0.63 0.02 275)", "oklch(0.75 0.02 275)", "oklch(0.87 0.02 275)", "oklch(0.95 0.02 275)"]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "主墨色",
+        "canonical": "#111827",
+        "tonalRamp": ["oklch(0.15 0.015 255)", "oklch(0.27 0.015 255)", "oklch(0.39 0.015 255)", "oklch(0.51 0.015 255)", "oklch(0.63 0.015 255)", "oklch(0.75 0.015 255)", "oklch(0.87 0.015 255)", "oklch(0.95 0.015 255)"]
+      },
+      "text": {
+        "role": "neutral",
+        "displayName": "控件文本",
+        "canonical": "#374151",
+        "tonalRamp": ["oklch(0.15 0.012 255)", "oklch(0.27 0.012 255)", "oklch(0.39 0.012 255)", "oklch(0.51 0.012 255)", "oklch(0.63 0.012 255)", "oklch(0.75 0.012 255)", "oklch(0.87 0.012 255)", "oklch(0.95 0.012 255)"]
+      },
+      "text-muted": {
+        "role": "neutral",
+        "displayName": "辅助文本",
+        "canonical": "#64748b",
+        "tonalRamp": ["oklch(0.15 0.025 255)", "oklch(0.27 0.025 255)", "oklch(0.39 0.025 255)", "oklch(0.51 0.025 255)", "oklch(0.63 0.025 255)", "oklch(0.75 0.025 255)", "oklch(0.87 0.025 255)", "oklch(0.95 0.025 255)"]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "细边界",
+        "canonical": "#e5e7eb",
+        "tonalRamp": ["oklch(0.15 0.004 255)", "oklch(0.27 0.004 255)", "oklch(0.39 0.004 255)", "oklch(0.51 0.004 255)", "oklch(0.63 0.004 255)", "oklch(0.75 0.004 255)", "oklch(0.87 0.004 255)", "oklch(0.95 0.004 255)"]
+      },
+      "border-strong": {
+        "role": "neutral",
+        "displayName": "强边界",
+        "canonical": "#cbd5e1",
+        "tonalRamp": ["oklch(0.15 0.012 255)", "oklch(0.27 0.012 255)", "oklch(0.39 0.012 255)", "oklch(0.51 0.012 255)", "oklch(0.63 0.012 255)", "oklch(0.75 0.012 255)", "oklch(0.87 0.012 255)", "oklch(0.95 0.012 255)"]
+      },
+      "destructive": {
+        "role": "tertiary",
+        "displayName": "危险红",
+        "canonical": "#dc2626",
+        "tonalRamp": ["oklch(0.15 0.05 27)", "oklch(0.25 0.1 27)", "oklch(0.36 0.16 27)", "oklch(0.47 0.22 27)", "oklch(0.58 0.245 27)", "oklch(0.7 0.2 27)", "oklch(0.82 0.12 27)", "oklch(0.95 0.04 27)"]
+      }
+    },
+    "typographyMeta": {
+      "headline": { "displayName": "Headline", "purpose": "编辑内容中的一级标题。" },
+      "title": { "displayName": "Title", "purpose": "编辑内容中的二级标题和结构标题。" },
+      "body": { "displayName": "Body", "purpose": "长时间阅读与编辑的正文。" },
+      "label": { "displayName": "Label", "purpose": "工具栏、菜单和常规控件。" },
+      "caption": { "displayName": "Caption", "purpose": "分组标题、帮助信息和次级标签。" },
+      "code": { "displayName": "Code", "purpose": "行内代码与代码块。" }
+    },
+    "shadows": [
+      { "name": "micro-lift", "value": "0 1px 2px rgb(0 0 0 / 0.05)", "purpose": "分段切换活动项。" },
+      { "name": "low-overlay", "value": "0 1px 4px rgb(0 0 0 / 0.15)", "purpose": "小型操作表面。" },
+      { "name": "medium-overlay", "value": "0 2px 8px rgb(0 0 0 / 0.15)", "purpose": "需要明确分离的小面板。" },
+      { "name": "menu-overlay", "value": "0 4px 12px rgb(0 0 0 / 0.08), 0 2px 4px rgb(0 0 0 / 0.04)", "purpose": "工具栏菜单与 BubbleMenu。" },
+      { "name": "modal-overlay", "value": "0 4px 16px rgb(0 0 0 / 0.2)", "purpose": "CommandMenu 和 Dialog 等最高层级表面。" }
+    ],
+    "motion": [
+      { "name": "state-fast", "value": "150ms ease", "purpose": "hover、颜色和透明度状态转换。" },
+      { "name": "popover-entry", "value": "140ms ease-out", "purpose": "Popover、菜单的轻微淡入与位移。" },
+      { "name": "dialog-entry", "value": "200ms ease", "purpose": "Dialog 淡入和轻微缩放。" },
+      { "name": "loading-spin", "value": "800ms linear infinite", "purpose": "上传加载指示器。" },
+      { "name": "cursor-blink", "value": "1s steps(2, start) infinite", "purpose": "块间隙光标闪烁。" },
+      { "name": "reduced-motion", "value": "none", "purpose": "在 prefers-reduced-motion 下关闭非必要进入和加载动效。" }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "demo-stack", "value": "720px" },
+      { "name": "coarse-pointer", "value": "(pointer: coarse)" },
+      { "name": "reduced-motion", "value": "(prefers-reduced-motion: reduce)" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "用于确认和主要提交操作的紧凑主按钮。",
+      "html": "<button class=\"ds-btn-primary\">确认</button>",
+      "css": ".ds-btn-primary { height: 36px; padding: 8px 16px; border: 0; border-radius: 8px; background: var(--primary, oklch(0.53 0.2 275)); color: var(--primary-foreground, #fff); font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; transition: background-color 150ms ease, opacity 150ms ease; } .ds-btn-primary:hover { background: color-mix(in oklch, var(--primary, oklch(0.53 0.2 275)) 90%, black); } .ds-btn-primary:focus-visible { outline: 3px solid color-mix(in oklch, var(--ring, oklch(0.62 0.15 275)) 50%, transparent); } .ds-btn-primary:disabled { pointer-events: none; opacity: 0.5; }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "用于次要操作和取消操作的中性描边按钮。",
+      "html": "<button class=\"ds-btn-outline\">取消</button>",
+      "css": ".ds-btn-outline { height: 36px; padding: 8px 16px; border: 1px solid var(--border, #e5e7eb); border-radius: 8px; background: var(--background, #fff); color: var(--foreground, #111827); font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; transition: background-color 150ms ease, border-color 150ms ease, opacity 150ms ease; } .ds-btn-outline:hover { background: var(--accent, #f3f4f6); color: var(--accent-foreground, #111827); } .ds-btn-outline:focus-visible { outline: 3px solid color-mix(in oklch, var(--ring, oklch(0.62 0.15 275)) 50%, transparent); } .ds-btn-outline:disabled { pointer-events: none; opacity: 0.5; }"
+    },
+    {
+      "name": "Toolbar Control",
+      "kind": "button",
+      "refersTo": "toolbar-button-active",
+      "description": "默认安静、激活后使用浅靛青选中面的格式工具。",
+      "html": "<div class=\"ds-toolbar-preview\"><button class=\"ds-toolbar-btn\"><strong>B</strong></button><button class=\"ds-toolbar-btn ds-is-active\"><em>I</em></button></div>",
+      "css": ".ds-toolbar-preview { display: inline-flex; gap: 2px; padding: 6px 12px; background: var(--ui-bg-toolbar, #f9fafb); border: 1px solid var(--ui-border, #e5e7eb); border-radius: 8px; } .ds-toolbar-btn { min-width: 32px; height: 32px; padding: 6px 10px; border: 0; border-radius: 6px; background: transparent; color: var(--ui-text, #374151); font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; transition: background-color 150ms ease, color 150ms ease, opacity 150ms ease; } .ds-toolbar-btn:hover { background: var(--ui-bg-hover-soft, #f3f4f6); color: var(--ui-text-strong, #111827); } .ds-toolbar-btn.ds-is-active { background: var(--ui-bg-selected, color-mix(in oklch, oklch(0.53 0.2 275) 10%, white)); color: var(--ui-text-selected, oklch(0.47 0.18 275)); } .ds-toolbar-btn:focus-visible { outline: 2px solid var(--ring, oklch(0.62 0.15 275)); outline-offset: 2px; } .ds-toolbar-btn:disabled { opacity: 0.5; cursor: not-allowed; }"
+    },
+    {
+      "name": "Compact Input",
+      "kind": "input",
+      "refersTo": "input-compact",
+      "description": "用于链接和紧凑浮层表单的单行输入框。",
+      "html": "<input class=\"ds-input-compact\" value=\"https://example.com\" aria-label=\"链接地址\" />",
+      "css": ".ds-input-compact { width: 260px; height: 30px; padding: 0 8px; border: 1px solid var(--ui-border, #e5e7eb); border-radius: 6px; background: var(--ui-bg-panel, #fff); color: var(--ui-text, #374151); font: inherit; font-size: 13px; transition: border-color 150ms ease; } .ds-input-compact:focus { outline: none; border-color: var(--ui-control-active, oklch(0.53 0.2 275)); } .ds-input-compact:disabled { opacity: 0.5; cursor: not-allowed; }"
+    },
+    {
+      "name": "Floating Menu",
+      "kind": "nav",
+      "refersTo": "menu-surface",
+      "description": "用于命令、标题和块级操作的紧凑浮层菜单。",
+      "html": "<div class=\"ds-menu\" role=\"menu\"><button class=\"ds-menu-item\" role=\"menuitem\">正文</button><button class=\"ds-menu-item ds-is-selected\" role=\"menuitem\">一级标题</button><button class=\"ds-menu-item\" role=\"menuitem\">引用</button></div>",
+      "css": ".ds-menu { display: grid; min-width: 172px; gap: 2px; padding: 4px; border: 1px solid var(--ui-border, #e5e7eb); border-radius: 8px; background: var(--ui-bg-panel, #fff); color: var(--ui-text-strong, #111827); box-shadow: var(--ui-shadow-xl, 0 4px 12px rgb(0 0 0 / 0.08)); } .ds-menu-item { min-height: 32px; padding: 0 8px; border: 0; border-radius: 6px; background: transparent; color: inherit; font: inherit; font-size: 14px; text-align: left; cursor: pointer; transition: background-color 150ms ease, color 150ms ease; } .ds-menu-item:hover { background: var(--ui-bg-hover-soft, #f3f4f6); } .ds-menu-item.ds-is-selected { background: var(--ui-bg-selected, color-mix(in oklch, oklch(0.53 0.2 275) 10%, white)); color: var(--ui-control-active, oklch(0.53 0.2 275)); } .ds-menu-item:focus-visible { outline: 2px solid var(--ring, oklch(0.62 0.15 275)); outline-offset: 1px; } .ds-menu-item:disabled { opacity: 0.5; cursor: not-allowed; }"
+    },
+    {
+      "name": "Segmented Switch",
+      "kind": "custom",
+      "description": "在少量互斥选项之间切换的柔和分段控件。",
+      "html": "<div class=\"ds-segmented\"><button class=\"ds-segmented-option ds-is-active\">Notion-like</button><button class=\"ds-segmented-option\">Headless</button></div>",
+      "css": ".ds-segmented { display: flex; width: 280px; padding: 4px; border-radius: 10px; background: var(--muted, #f3f4f6); } .ds-segmented-option { flex: 1; padding: 7px 12px; border: 0; border-radius: 8px; background: transparent; color: var(--muted-foreground, #64748b); font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; transition: background-color 150ms ease, color 150ms ease, box-shadow 150ms ease; } .ds-segmented-option:hover { color: var(--foreground, #111827); } .ds-segmented-option.ds-is-active { background: var(--background, #fff); color: var(--foreground, #111827); box-shadow: var(--ui-shadow-sm, 0 1px 2px rgb(0 0 0 / 0.05)); } .ds-segmented-option:focus-visible { outline: 2px solid var(--ring, oklch(0.62 0.15 275)); outline-offset: 2px; } .ds-segmented-option:disabled { opacity: 0.55; cursor: not-allowed; }"
+    },
+    {
+      "name": "Dialog Surface",
+      "kind": "card",
+      "refersTo": "dialog-surface",
+      "description": "用于需要受保护焦点和明确确认流程的模态表面。",
+      "html": "<div class=\"ds-dialog-preview\"><section class=\"ds-dialog\" role=\"dialog\" aria-labelledby=\"ds-dialog-title\"><h2 id=\"ds-dialog-title\">插入链接</h2><p>输入链接地址并确认。</p><div class=\"ds-dialog-actions\"><button class=\"ds-dialog-cancel\">取消</button><button class=\"ds-dialog-confirm\">确认</button></div></section></div>",
+      "css": ".ds-dialog-preview { padding: 24px; border-radius: 10px; background: rgb(0 0 0 / 0.56); } .ds-dialog { width: min(32rem, calc(100vw - 2rem)); padding: 24px; border: 1px solid var(--border, #e5e7eb); border-radius: 10px; background: var(--popover, #fff); color: var(--popover-foreground, #111827); box-shadow: var(--ui-shadow-popover, 0 4px 16px rgb(0 0 0 / 0.2)); font: inherit; } .ds-dialog h2 { margin: 0; font-size: 18px; line-height: 1; font-weight: 600; } .ds-dialog p { margin: 12px 0 20px; color: var(--muted-foreground, #64748b); font-size: 14px; } .ds-dialog-actions { display: flex; justify-content: flex-end; gap: 8px; } .ds-dialog button { height: 36px; padding: 8px 16px; border-radius: 8px; font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; } .ds-dialog-cancel { border: 1px solid var(--border, #e5e7eb); background: var(--background, #fff); color: var(--foreground, #111827); } .ds-dialog-cancel:hover { background: var(--accent, #f3f4f6); } .ds-dialog-confirm { border: 0; background: var(--primary, oklch(0.53 0.2 275)); color: var(--primary-foreground, #fff); } .ds-dialog-confirm:hover { background: color-mix(in oklch, var(--primary, oklch(0.53 0.2 275)) 90%, black); } .ds-dialog button:focus-visible { outline: 3px solid color-mix(in oklch, var(--ring, oklch(0.62 0.15 275)) 50%, transparent); } .ds-dialog button:disabled { opacity: 0.5; cursor: not-allowed; }"
+    },
+    {
+      "name": "Editor Container",
+      "kind": "card",
+      "refersTo": "editor-container",
+      "description": "承载工具栏和编辑内容的主题隔离工作区。",
+      "html": "<section class=\"ds-editor\"><div class=\"ds-editor-toolbar\">B&nbsp;&nbsp; I&nbsp;&nbsp; U</div><div class=\"ds-editor-content\"><h2>安静工作台</h2><p>内容始终是视觉主体，工具只在需要时出现。</p></div></section>",
+      "css": ".ds-editor { overflow: hidden; border: 1px solid var(--ui-border-muted, #e2e8f0); border-radius: 8px; background: var(--background, #fff); color: var(--ui-text-strong, #111827); font: inherit; } .ds-editor-toolbar { padding: 6px 12px; border-bottom: 1px solid var(--ui-border, #e5e7eb); background: var(--ui-bg-toolbar, #f9fafb); color: var(--ui-text, #374151); font-size: 14px; font-weight: 500; } .ds-editor-content { min-height: 150px; padding: 12px 14px; } .ds-editor-content h2 { margin: 0 0 8px; font-size: 1.5em; line-height: 1.4; } .ds-editor-content p { margin: 0; font-size: 1em; line-height: 1.7; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "安静工作台",
+    "overview": "这套系统像一张安静、精确的工作台：编辑内容始终是视觉主体，工具在需要时清晰出现，完成任务后退回背景。中性表面提供稳定画布，清透靛青只承担状态、焦点和关键操作，不作为装饰铺陈。\n\n界面密度紧凑但不拥挤。控制区使用小尺度、短动效和明确状态，内容区保留更宽裕的阅读与编辑节奏。系统明确避开沉闷企业蓝、大面积实心状态色和模板化管理后台观感。",
+    "keyCharacteristics": [
+      "内容优先，中性画布保持安静。",
+      "清透靛青稀缺出现，只编码交互意义。",
+      "控件紧凑精确，内容区域留有呼吸空间。",
+      "常驻表面保持平面，浮层通过阴影抬升。",
+      "浅暗主题共享同一语义，并严格隔离于宿主页面。"
+    ],
+    "rules": [
+      { "name": "The Scarce Accent Rule", "body": "强调色只用于状态、焦点、链接和关键操作；常驻容器不得使用大面积实心强调色。", "section": "colors" },
+      { "name": "The Semantic Theme Rule", "body": "浅暗主题必须通过相同语义角色映射，不得机械反相或改变状态含义。", "section": "colors" },
+      { "name": "The Host Voice Rule", "body": "普通界面与正文继承宿主字体，只有代码内容切换到等宽字体；不要擅自引入新的品牌字体。", "section": "typography" },
+      { "name": "The Dense Tools, Airy Content Rule", "body": "工具区使用紧凑间距，正文区使用更宽裕的行高与块间距；不要把工具栏密度复制到阅读内容中。", "section": "layout" },
+      { "name": "The Flat-at-Rest Rule", "body": "常驻表面保持平面；只有脱离文档流并覆盖其他内容的界面才使用明显阴影。", "section": "elevation" },
+      { "name": "The Radius Hierarchy Rule", "body": "元素越接近内容越小圆角，承载多个控件的表面使用更大圆角；不要在同一层级混用无关半径。", "section": "shapes" }
+    ],
+    "dos": [
+      "Do 让编辑内容保持最高视觉优先级，控制表面退居辅助位置。",
+      "Do 用语义 Token 同时维护浅色与暗色主题，并保持 Portal 内外视觉一致。",
+      "Do 使用浅色选中面、图标颜色和可见焦点共同表达状态。",
+      "Do 在粗指针环境把主要交互目标提升到至少 `44px × 44px`。",
+      "Do 为进入、加载和光标动效提供 reduced-motion 降级。"
+    ],
+    "donts": [
+      "Don't 使用沉闷企业蓝、大面积实心状态色或模板化后台配色。",
+      "Don't 给常驻容器添加无意义阴影；边框和色调已经承担基础分层。",
+      "Don't 用颜色作为状态的唯一线索，必须同时保留形状、位置、图标或语义属性。",
+      "Don't 在编辑器作用域外声明主题变量或把浮层挂到错误的 Portal 层级。",
+      "Don't 为追求品牌感覆盖宿主字体或引入与内容无关的装饰元素。"
+    ]
+  }
+}
