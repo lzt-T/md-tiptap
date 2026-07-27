@@ -36,10 +36,10 @@ export interface ToolbarProps {
   highlightColorOptions: ColorOption[];
   /** Popover Portal 挂载容器（用于主题作用域隔离）。 */
   portalContainer?: HTMLElement | null;
-  /** 判定弹层关闭时 activeElement 是否命中业务容器。 */
-  isInsideOverlayContainer?: (target: EventTarget | null) => boolean;
-  /** 弹层关闭且 activeElement 在容器外时执行的收口逻辑。 */
-  onOverlayCloseOutside?: () => void;
+  /** 判定弹层关闭时 activeElement 是否仍在编辑器根容器内。 */
+  isInsideEditorContainer?: (target: EventTarget | null) => boolean;
+  /** 受控浮层关闭且焦点离开编辑器交互域后的统一收口。 */
+  onFocusScopeExit?: () => void;
 }
 
 /** 工具栏项渲染后的中间结构。 */

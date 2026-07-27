@@ -260,7 +260,7 @@ function App() {
 | `onFileUpload` | `(payload: { file: File; url: string; name: string }) => void \| Promise<void>` | 否 | - | 附件 Confirm 回调（仅在点击 Confirm/Insert Link 后触发） |
 | `editorMode` | `'notion-like' \| 'headless'` | 否 | `'notion-like'` | 编辑器模式：Notion 风格（斜杠命令、块状编辑等）或无头模式 |
 | `theme` | `'light' \| 'dark'` | 否 | 自动跟随 `html.dark`（无 `dark` 时为 `light`） | 编辑器主题。传入时强制使用传入值；不传时仅根据 `html.dark` 自动解析 |
-| `headlessToolbarMode` | `'always' \| 'on-focus'` | 否 | `'always'` | **仅在 `editorMode='headless'` 时生效**。`always`：工具栏始终显示；`on-focus`：编辑器聚焦或点击工具栏时显示，失焦到编辑器区域外时隐藏 |
+| `headlessToolbarMode` | `'always' \| 'on-focus'` | 否 | `'always'` | **仅在 `editorMode='headless'` 时生效**。`always`：工具栏始终显示；`on-focus`：焦点位于编辑器交互域时显示，离开内容区、工具栏、浮层和编辑器所属 Dialog 后隐藏 |
 | `commandMenuMaxHeight` | `number` | 否 | `240` | 斜杠命令菜单最大高度（px） |
 | `commandMenuMinHeight` | `number` | 否 | `160` | 斜杠命令菜单最小高度（px） |
 | `language` | `'zh-CN' \| 'en-US'` | 否 | 自动解析浏览器语言（`zh* -> zh-CN`，其余 `-> en-US`） | 控制工具栏、斜杠命令、弹窗与默认 placeholder 文案 |
@@ -291,7 +291,7 @@ function App() {
 在 `editorMode="headless"` 时，可以通过 `headlessToolbarMode` 控制顶部工具栏的显示策略：
 
 - `headlessToolbarMode="always"`：工具栏始终显示。
-- `headlessToolbarMode="on-focus"`：当编辑器获得焦点或用户点击工具栏区域时显示；当焦点离开整个编辑器容器（包括工具栏）后隐藏。点击工具栏按钮本身不会导致工具栏立即消失。
+- `headlessToolbarMode="on-focus"`：当焦点位于编辑器交互域时显示，交互域包括内容区、工具栏、编辑器浮层、图片描述输入框和编辑器所属全屏 Dialog；只有焦点离开整个交互域后才隐藏，并将非空范围选区折叠到原选区起点，重新聚焦不会恢复旧范围选中。
 
 示例：
 
@@ -699,7 +699,7 @@ import 'zt-reactjs-tiptap/style.css'
 
 5. **UI 主题 Token 化**：编辑器 UI（工具栏、菜单、表格操作、弹窗、输入框、滚动条等）已统一使用主题 token。默认 `light` 视觉与旧版保持一致，切换 `theme="dark"` 时同一套 token 会自动映射为暗色值。
 
-6. **弹层/对话框**：编辑器使用分层 Portal。图片、视频、公式、附件等全屏 Dialog 挂载到 `document.body` 下同时带有 `.zt-tiptap-dialog-host` 与 `.zt-tiptap-theme` 的隔离宿主，Dialog 的通用 `[data-slot]` 规则也仅在该宿主内生效，避免影响宿主项目的 Dialog；工具栏/BubbleMenu 的全局类菜单仍挂载到 `.zt-tiptap-portal`；代码块、表格、BubbleMenu 选区附属面板挂载到 `.editor-wrapper` 内的 `.zt-tiptap-content-portal`，会随编辑器滚动视口裁剪。若样式仍异常，优先检查宿主全局 reset 或高优先级选择器
+6. **弹层/对话框**：编辑器使用分层 Portal。图片、视频、公式、附件等全屏 Dialog 挂载到 `document.body` 下同时带有 `.zt-tiptap-dialog-host`、`.zt-tiptap-theme` 与来源编辑器焦点域标识的隔离宿主，因此 Dialog 交互仍属于对应编辑器且不会串联其他编辑器；Dialog 的通用 `[data-slot]` 规则也仅在该宿主内生效，避免影响宿主项目的 Dialog。工具栏/BubbleMenu 的全局类菜单仍挂载到 `.zt-tiptap-portal`；代码块、表格、BubbleMenu 选区附属面板挂载到 `.editor-wrapper` 内的 `.zt-tiptap-content-portal`，会随编辑器滚动视口裁剪。若样式仍异常，优先检查宿主全局 reset 或高优先级选择器
 
 ## 开发
 

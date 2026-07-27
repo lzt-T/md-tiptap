@@ -69,8 +69,9 @@ interface BubbleMenuProps {
   contentPortalContainer?: HTMLDivElement | null;
   /** 选区附属面板碰撞边界，通常为编辑器滚动容器。 */
   contentPopoverBoundary?: HTMLDivElement | null;
-  isInsideOverlayContainer?: (target: EventTarget | null) => boolean;
-  onOverlayCloseOutside?: () => void;
+  isInsideEditorContainer?: (target: EventTarget | null) => boolean;
+  /** 受控浮层关闭且焦点离开编辑器交互域后的统一收口。 */
+  onFocusScopeExit?: () => void;
 }
 
 // 气泡菜单支持切换的标题级别。
@@ -150,8 +151,8 @@ const BubbleMenu = ({
   highlightColorOptions = config.HIGHLIGHT_COLORS,
   contentPortalContainer,
   contentPopoverBoundary,
-  isInsideOverlayContainer,
-  onOverlayCloseOutside,
+  isInsideEditorContainer,
+  onFocusScopeExit,
 }: BubbleMenuProps) => {
   /** 选区/内容变化时自增，驱动 BubbleMenu 按当前选区重算 isActive 状态。 */
   const [selectionKey, setSelectionKey] = useState(0);
@@ -242,8 +243,8 @@ const BubbleMenu = ({
         }
       },
       onExitInside: focusEditorAfterColorPopoverClose,
-      onExitOutside: onOverlayCloseOutside,
-      isInsideContainer: isInsideOverlayContainer,
+      onExitOutside: onFocusScopeExit,
+      isInsideContainer: isInsideEditorContainer,
       exitDelay: "raf",
     });
 
@@ -264,8 +265,8 @@ const BubbleMenu = ({
         }
       },
       onExitInside: focusEditorAfterColorPopoverClose,
-      onExitOutside: onOverlayCloseOutside,
-      isInsideContainer: isInsideOverlayContainer,
+      onExitOutside: onFocusScopeExit,
+      isInsideContainer: isInsideEditorContainer,
       exitDelay: "raf",
     });
   /** 管理“链接面板”关闭后的焦点分流。 */
@@ -283,8 +284,8 @@ const BubbleMenu = ({
         setShowLinkEditor(false);
       },
       onExitInside: focusEditorAfterColorPopoverClose,
-      onExitOutside: onOverlayCloseOutside,
-      isInsideContainer: isInsideOverlayContainer,
+      onExitOutside: onFocusScopeExit,
+      isInsideContainer: isInsideEditorContainer,
       exitDelay: "raf",
     });
 

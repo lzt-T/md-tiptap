@@ -207,7 +207,7 @@ function App() {
             onImagePreUpload={handleImagePreUpload}
             onImageUpload={onImageUpload}
             onImageDelete={onImageDelete}
-            maxHeight="500px"
+            maxHeight="600px"
             onFilePreUpload={onFilePreUpload}
             onFileUpload={onFileUpload}
             onFileDelete={onFileDelete}

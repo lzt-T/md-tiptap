@@ -55,8 +55,8 @@ interface CodeBlockLanguageMenuProps {
   languages: CodeBlockLanguageOption[];
   defaultLanguage: string;
   enabled?: boolean;
-  onMenuRootChange?: (node: HTMLDivElement | null) => void;
-  onMenuOpenStateChecked?: (editorFocused: boolean) => void;
+  /** 菜单外部关闭且焦点离开编辑器交互域后的统一收口。 */
+  onFocusScopeExit?: () => void;
 }
 
 /** 从当前选区向上查找激活的代码块节点与对应 DOM。 */
@@ -93,8 +93,7 @@ export default function CodeBlockLanguageMenu({
   languages,
   defaultLanguage,
   enabled = true,
-  onMenuRootChange,
-  onMenuOpenStateChecked,
+  onFocusScopeExit,
 }: CodeBlockLanguageMenuProps) {
   // 当前激活代码块对应的语言值。
   const [currentLanguage, setCurrentLanguage] = useState<string | null>(null);
@@ -156,26 +155,27 @@ export default function CodeBlockLanguageMenu({
     input?.focus();
   }, []);
 
-  /** 关闭语言下拉，按需先把焦点恢复到当前代码块再同步焦点状态。 */
+  /** 关闭语言下拉，并按需把焦点恢复到当前代码块。 */
   const closeLanguageMenu = useCallback(
     (restoreEditorFocus = false) => {
       setIsMenuOpen(false);
+      if (!restoreEditorFocus) return;
       requestAnimationFrame(() => {
-        if (restoreEditorFocus) {
-          editor.commands.focus();
-        }
-        requestAnimationFrame(() => {
-          onMenuOpenStateChecked?.(editor.isFocused);
-        });
+        editor.commands.focus();
       });
     },
-    [editor, onMenuOpenStateChecked],
+    [editor],
   );
 
-  /** 处理语言下拉外部点击关闭。 */
+  /** 关闭语言下拉，并在菜单卸载与焦点落定后检查焦点域退出。 */
   const handleLanguagePanelOutside = useCallback(() => {
     closeLanguageMenu(false);
-  }, [closeLanguageMenu]);
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        onFocusScopeExit?.();
+      });
+    });
+  }, [closeLanguageMenu, onFocusScopeExit]);
 
   // 语言下拉面板浮层定位。
   const languagePanel = useFloatingPortalPanel({
@@ -252,13 +252,6 @@ export default function CodeBlockLanguageMenu({
   }, [editor, updateMenuState]);
 
   useEffect(() => {
-    if (!positionContext) {
-      setIsMenuOpen(false);
-      onMenuRootChange?.(null);
-    }
-  }, [onMenuRootChange, positionContext]);
-
-  useEffect(() => {
     if (!isMenuOpen) {
       setSearchQuery("");
       return;
@@ -267,15 +260,6 @@ export default function CodeBlockLanguageMenu({
       focusSearchInput();
     });
   }, [focusSearchInput, isMenuOpen]);
-
-  /** 同步菜单根节点引用，并在首次挂载后用真实尺寸重算坐标。 */
-  const handleMenuRootRef = useCallback(
-    (node: HTMLDivElement | null) => {
-      overlayRef(node);
-      onMenuRootChange?.(node);
-    },
-    [onMenuRootChange, overlayRef],
-  );
 
   if (!portalContainer || !positionContext || !currentLanguage) return null;
 
@@ -292,7 +276,7 @@ export default function CodeBlockLanguageMenu({
         visibility: "hidden",
         zIndex: 45,
       }}
-      ref={handleMenuRootRef}
+      ref={overlayRef}
     >
       <div className="code-block-control-bar">
         <button

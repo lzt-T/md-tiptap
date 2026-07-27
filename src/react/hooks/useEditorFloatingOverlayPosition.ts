@@ -448,10 +448,19 @@ export function useEditorFloatingOverlayPosition({
     const scheduler = createRafScheduler(updatePosition);
     // 编辑器滚动容器。
     const wrapper = context.editorWrapper;
+    // 当前浮层节点。
+    const overlay = overlayRefValue.current;
     /** 请求浮层重定位。 */
     const handleReposition = () => scheduler.schedule();
+    // 浮层尺寸变化观察器。
+    const overlayResizeObserver = overlay
+      ? new ResizeObserver(handleReposition)
+      : null;
 
-    // 分别订阅全局 scroll 与 resize。
+    // 分别订阅浮层尺寸、全局 scroll 与 resize。
+    if (overlay) {
+      overlayResizeObserver?.observe(overlay);
+    }
     const unsubscribeGlobalScroll = subscribeGlobalScroll(handleReposition);
     const unsubscribeGlobalResize = subscribeGlobalResize(handleReposition);
     wrapper.addEventListener("scroll", handleReposition, { passive: true });
@@ -459,6 +468,7 @@ export function useEditorFloatingOverlayPosition({
 
     return () => {
       scheduler.cancel();
+      overlayResizeObserver?.disconnect();
       unsubscribeGlobalScroll();
       unsubscribeGlobalResize();
       wrapper.removeEventListener("scroll", handleReposition);

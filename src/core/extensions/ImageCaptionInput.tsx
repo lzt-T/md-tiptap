@@ -1,12 +1,5 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef } from "react";
 import type { ChangeEvent, KeyboardEvent, MouseEvent } from "react";
-import { useScopedActiveDispatcher } from "@/react/hooks";
-
-// 描述输入框离开编辑器容器时通知外层聚焦控制器。
-const FOCUS_RETAINED_EXIT_OUTSIDE_EVENT = "zt-editor-focus-retained-exit-outside";
-
-// 描述输入框进入焦点时通知外层聚焦控制器。
-const FOCUS_RETAINED_ENTER_INSIDE_EVENT = "zt-editor-focus-retained-enter-inside";
 
 interface ImageCaptionInputProps {
   /** 图片描述输入框的无内容提示。 */
@@ -42,40 +35,6 @@ export function ImageCaptionInput({
   const hasCaption = caption?.trim().length > 0;
   // 描述输入框节点，用于按内容自动撑高。
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-  // 描述输入框是否处于激活态。
-  const [isCaptionActive, setIsCaptionActive] = useState(false);
-
-  /** 判定当前焦点是否仍在编辑器容器内部。 */
-  const isInsideEditorContainer = (target: EventTarget | null) => {
-    if (!(target instanceof Node)) return false;
-
-    // 描述输入框所在的编辑器根容器。
-    const editorContainer = textareaRef.current?.closest(".editor-container");
-    return Boolean(editorContainer?.contains(target));
-  };
-
-  /** 通知编辑器容器执行统一 blur 收口。 */
-  const dispatchFocusRetainedExitOutside = () => {
-    // 描述输入框所在的编辑器根容器。
-    const editorContainer = textareaRef.current?.closest(".editor-container");
-    editorContainer?.dispatchEvent(new CustomEvent(FOCUS_RETAINED_EXIT_OUTSIDE_EVENT));
-  };
-
-  /** 通知编辑器容器恢复聚焦态。 */
-  const dispatchFocusRetainedEnterInside = () => {
-    // 描述输入框所在的编辑器根容器。
-    const editorContainer = textareaRef.current?.closest(".editor-container");
-    editorContainer?.dispatchEvent(new CustomEvent(FOCUS_RETAINED_ENTER_INSIDE_EVENT));
-  };
-
-  // 描述输入框激活态分发器。
-  const { handleActiveChange } = useScopedActiveDispatcher({
-    isActive: isCaptionActive,
-    setActive: setIsCaptionActive,
-    isInsideContainer: isInsideEditorContainer,
-    onExitOutside: dispatchFocusRetainedExitOutside,
-    exitDelay: "raf",
-  });
 
   useLayoutEffect(() => {
     // 当前描述输入框节点。
@@ -117,17 +76,6 @@ export function ImageCaptionInput({
     onCaptionChange(event.target.value);
   };
 
-  /** 进入描述输入框激活态。 */
-  const handleFocus = () => {
-    handleActiveChange(true);
-    dispatchFocusRetainedEnterInside();
-  };
-
-  /** 退出描述输入框激活态，并按焦点位置分流。 */
-  const handleBlur = () => {
-    handleActiveChange(false);
-  };
-
   if (!editable && !hasCaption) return null;
 
   if (!editable) {
@@ -138,14 +86,11 @@ export function ImageCaptionInput({
     <textarea
       ref={textareaRef}
       className="image-caption-input"
-      data-editor-focus-retained="true"
       value={caption}
       placeholder={placeholder}
       aria-label={ariaLabel}
       rows={1}
       onChange={handleChange}
-      onFocus={handleFocus}
-      onBlur={handleBlur}
       onMouseDown={stopEditorEvent}
       onClick={stopEditorEvent}
       onKeyDown={stopEditorKeyDown}

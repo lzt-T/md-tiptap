@@ -79,8 +79,6 @@ export interface FileUploadDialogProps {
   fileMaxSizeBytes?: number;
   fileUploadTypes?: string[];
   locale: EditorLocale;
-  /** 为 true 时标记为编辑器焦点保活区域，避免 NotionLike 下误触发 blur 收口 */
-  preserveEditorFocus?: boolean;
   /** 弹窗挂载容器，用于继承编辑器作用域主题变量 */
   portalContainer?: HTMLElement | null;
 }
@@ -95,7 +93,6 @@ const FileUploadDialog = ({
   fileMaxSizeBytes = config.FILE_UPLOAD_MAX_SIZE_BYTES,
   fileUploadTypes,
   locale,
-  preserveEditorFocus = false,
   portalContainer,
 }: FileUploadDialogProps) => {
   const resolvedFileUploadTypes = useMemo(
@@ -254,7 +251,6 @@ const FileUploadDialog = ({
         className="file-upload-dialog-content max-w-lg overflow-hidden flex flex-col"
         showCloseButton={false}
         onKeyDown={handleKeyDown}
-        data-editor-focus-retained={preserveEditorFocus ? "true" : undefined}
         portalContainer={portalContainer}
       >
         <DialogHeader>

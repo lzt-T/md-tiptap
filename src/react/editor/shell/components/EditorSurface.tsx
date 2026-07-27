@@ -40,8 +40,9 @@ interface EditorSurfaceProps {
   resolvedCodeBlockLanguages: CodeBlockLanguageOption[];
   textColorOptions: ColorOption[];
   highlightColorOptions: ColorOption[];
-  isInsideOverlayContainer?: (target: EventTarget | null) => boolean;
-  onOverlayCloseOutside?: () => void;
+  isInsideEditorContainer?: (target: EventTarget | null) => boolean;
+  /** 受控浮层关闭且焦点离开编辑器交互域后的统一收口。 */
+  onFocusScopeExit?: () => void;
   resolvedDefaultCodeBlockLanguage: string;
   resolvedPlaceholder: string;
   onCodeBlockFormat?: (payload: {
@@ -62,8 +63,6 @@ interface EditorSurfaceProps {
   onOpenFileUploadDialog?: (
     callback: (url: string, name: string) => void,
   ) => void;
-  onMenuRootChange: (node: HTMLDivElement | null) => void;
-  onCodeBlockLanguageMenuOpenChecked: (editorFocused: boolean) => void;
 }
 
 /** 将 placeholder 转为可用于 CSS content 的字符串。 */
@@ -92,8 +91,8 @@ export default function EditorSurface({
   resolvedCodeBlockLanguages,
   textColorOptions,
   highlightColorOptions,
-  isInsideOverlayContainer,
-  onOverlayCloseOutside,
+  isInsideEditorContainer,
+  onFocusScopeExit,
   resolvedDefaultCodeBlockLanguage,
   resolvedPlaceholder,
   onCodeBlockFormat,
@@ -105,8 +104,6 @@ export default function EditorSurface({
   onOpenImageDialog,
   onOpenVideoDialog,
   onOpenFileUploadDialog,
-  onMenuRootChange,
-  onCodeBlockLanguageMenuOpenChecked,
 }: EditorSurfaceProps) {
   // 代码块附属浮层挂载点，放在滚动容器内以跟随编辑器视口裁剪。
   const [contentPortalContainer, setContentPortalContainer] =
@@ -135,8 +132,8 @@ export default function EditorSurface({
           textColorOptions={textColorOptions}
           highlightColorOptions={highlightColorOptions}
           portalContainer={portalContainer}
-          isInsideOverlayContainer={isInsideOverlayContainer}
-          onOverlayCloseOutside={onOverlayCloseOutside}
+          isInsideEditorContainer={isInsideEditorContainer}
+          onFocusScopeExit={onFocusScopeExit}
         />
       )}
       <div
@@ -177,8 +174,7 @@ export default function EditorSurface({
             languages={resolvedCodeBlockLanguages}
             defaultLanguage={resolvedDefaultCodeBlockLanguage}
             enabled={showCodeBlockLanguageMenu}
-            onMenuRootChange={onMenuRootChange}
-            onMenuOpenStateChecked={onCodeBlockLanguageMenuOpenChecked}
+            onFocusScopeExit={onFocusScopeExit}
           />
         )}
         {editor && !disabled && (
@@ -200,8 +196,8 @@ export default function EditorSurface({
             portalContainer={portalContainer}
             contentPortalContainer={contentPortalContainer}
             contentPopoverBoundary={editorWrapperRef.current}
-            isInsideOverlayContainer={isInsideOverlayContainer}
-            onOverlayCloseOutside={onOverlayCloseOutside}
+            isInsideEditorContainer={isInsideEditorContainer}
+            onFocusScopeExit={onFocusScopeExit}
           />
         )}
         {isNotionLike &&

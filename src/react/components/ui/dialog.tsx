@@ -5,6 +5,9 @@ import { Dialog as DialogPrimitive } from "radix-ui"
 import { cn } from "@/shared/utils/utils"
 import { Button } from "@/react/components/ui/button"
 
+// 编辑器焦点域标识属性，用于关联 body Dialog 与来源编辑器。
+const EDITOR_FOCUS_SCOPE_ATTRIBUTE = "data-editor-focus-scope"
+
 /** Dialog Portal 组件属性别名。 */
 type DialogPortalProps = React.ComponentProps<typeof DialogPrimitive.Portal>
 
@@ -38,9 +41,15 @@ function syncDialogHostThemeVariables(host: HTMLElement, themeRoot: Element) {
 function createBodyDialogHost(portalContainer: HTMLElement) {
   // 当前编辑器主题根节点。
   const themeRoot = portalContainer.closest(".zt-tiptap-theme")
+  // 当前编辑器焦点域标识。
+  const focusScopeId = themeRoot?.getAttribute(EDITOR_FOCUS_SCOPE_ATTRIBUTE)
   // body 下的 Dialog 宿主节点。
   const host = document.createElement("div")
   host.className = "zt-tiptap-theme zt-tiptap-dialog-host"
+
+  if (focusScopeId) {
+    host.setAttribute(EDITOR_FOCUS_SCOPE_ATTRIBUTE, focusScopeId)
+  }
 
   if (themeRoot?.classList.contains("dark")) {
     host.classList.add("dark")

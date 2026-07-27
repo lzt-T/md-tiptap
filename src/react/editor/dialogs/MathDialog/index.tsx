@@ -21,8 +21,6 @@ interface MathDialogProps {
   onCancel: () => void;
   formulaCategories?: FormulaPickerCategory[];
   locale: EditorLocale;
-  /** 为 true 时标记为编辑器焦点保活区域，避免 NotionLike 下误触发 blur 收口。 */
-  preserveEditorFocus?: boolean;
   /** 弹窗挂载容器，用于继承编辑器作用域主题变量 */
   portalContainer?: HTMLElement | null;
 }
@@ -35,7 +33,6 @@ const MathDialog = ({
   onCancel,
   formulaCategories,
   locale,
-  preserveEditorFocus = false,
   portalContainer,
 }: MathDialogProps) => {
   const [latex, setLatex] = useState("");
@@ -119,7 +116,6 @@ const MathDialog = ({
         className="max-w-[calc(100%-2rem)] sm:max-w-4xl max-h-[90vh] flex flex-col overflow-hidden"
         showCloseButton={false}
         onOpenAutoFocus={handleOpenAutoFocus}
-        data-editor-focus-retained={preserveEditorFocus ? "true" : undefined}
         portalContainer={portalContainer}
       >
         <DialogHeader className="shrink-0">

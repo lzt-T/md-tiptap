@@ -93,8 +93,8 @@ const Toolbar = ({
   textColorOptions,
   highlightColorOptions,
   portalContainer,
-  isInsideOverlayContainer,
-  onOverlayCloseOutside,
+  isInsideEditorContainer,
+  onFocusScopeExit,
 }: ToolbarProps) => {
   /** 选区/内容变化时自增，用于让工具栏根据当前选区重新计算 isActive 并重渲染 */
   const [selectionKey, setSelectionKey] = useState(0);
@@ -134,8 +134,8 @@ const Toolbar = ({
         }
       },
       onExitInside: focusEditorAfterColorPopoverClose,
-      onExitOutside: onOverlayCloseOutside,
-      isInsideContainer: isInsideOverlayContainer,
+      onExitOutside: onFocusScopeExit,
+      isInsideContainer: isInsideEditorContainer,
       exitDelay: "raf",
     });
 
@@ -155,8 +155,8 @@ const Toolbar = ({
         }
       },
       onExitInside: focusEditorAfterColorPopoverClose,
-      onExitOutside: onOverlayCloseOutside,
-      isInsideContainer: isInsideOverlayContainer,
+      onExitOutside: onFocusScopeExit,
+      isInsideContainer: isInsideEditorContainer,
       exitDelay: "raf",
     });
   /** 管理“链接面板”关闭后的焦点分流。 */
@@ -177,8 +177,8 @@ const Toolbar = ({
         if (editor.isDestroyed) return;
         editor.commands.focus();
       },
-      onExitOutside: onOverlayCloseOutside,
-      isInsideContainer: isInsideOverlayContainer,
+      onExitOutside: onFocusScopeExit,
+      isInsideContainer: isInsideEditorContainer,
       exitDelay: "raf",
     });
 

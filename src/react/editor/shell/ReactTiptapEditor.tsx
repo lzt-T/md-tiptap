@@ -11,7 +11,7 @@ import type { Editor } from "@tiptap/react";
 import { NodeSelection } from "@tiptap/pm/state";
 import type { CommandItem } from "@/core/extensions/SlashCommands";
 import "@/react/editor/styles/TiptapEditor.css";
-import { useRef, useEffect, useCallback, useState } from "react";
+import { useRef, useEffect, useCallback, useId, useState } from "react";
 import type { CSSProperties } from "react";
 import type { TiptapEditorProps } from "@/react/editor/types";
 import {
@@ -34,7 +34,7 @@ import {
 import { resolveEditorLocale } from "@/shared/locales";
 import { useEditorResolvedConfig } from "@/react/editor/shell/hooks/useEditorResolvedConfig";
 import { useEditorThemePortalState } from "@/react/editor/shell/hooks/useEditorThemePortalState";
-import { useHeadlessFocusController } from "@/react/editor/shell/hooks/useHeadlessFocusController";
+import { useEditorFocusController } from "@/react/editor/shell/hooks/useEditorFocusController";
 import { useSlashMenuFocusSync } from "@/react/editor/shell/hooks/useSlashMenuFocusSync";
 import EditorSurface from "@/react/editor/shell/components/EditorSurface";
 import EditorDialogs from "@/react/editor/shell/components/EditorDialogs";
@@ -133,6 +133,8 @@ const ReactTiptapEditor = ({
   const editorWrapperRef = useRef<HTMLDivElement>(null);
   // 编辑器根容器引用。
   const containerRef = useRef<HTMLDivElement>(null);
+  // 当前编辑器及其 body 弹窗共享的焦点域标识。
+  const editorFocusScopeId = useId();
   // disabled 状态引用，供事件回调读取最新值。
   const disabledRef = useRef(disabled);
   // 斜杠命令执行引用，用于连接 TipTap 扩展与 React 层命令执行器。
@@ -147,15 +149,6 @@ const ReactTiptapEditor = ({
   useEffect(() => {
     disabledRef.current = disabled;
   }, [disabled]);
-
-  /** 判断事件目标是否位于代码块语言菜单浮层。 */
-  const isInsideCodeBlockLanguageSelect = useCallback(
-    (target: EventTarget | null) => {
-      if (!(target instanceof Element)) return false;
-      return !!target.closest(".code-block-language-select-content");
-    },
-    [],
-  );
 
   // 斜杠命令菜单状态。
   const commandMenu = useCommandMenu({
@@ -245,13 +238,13 @@ const ReactTiptapEditor = ({
     };
   }, [editor]);
 
-  // Headless 模式焦点控制。
-  const focusController = useHeadlessFocusController({
+  // 编辑器交互域焦点控制。
+  const focusController = useEditorFocusController({
     editor,
     isNotionLike: resolvedConfig.isNotionLike,
     containerRef,
+    focusScopeId: editorFocusScopeId,
     headlessToolbarMode,
-    isInsideCodeBlockLanguageSelect,
     onInlineMathClick: mathDialog.handleInlineMathClick,
     onBlockMathClick: mathDialog.handleBlockMathClick,
   });
@@ -400,7 +393,15 @@ const ReactTiptapEditor = ({
       : undefined;
 
   return (
-    <div ref={containerRef} className={containerClassName} style={containerStyle}>
+    <div
+      ref={containerRef}
+      className={containerClassName}
+      style={containerStyle}
+      data-editor-focus-scope={editorFocusScopeId}
+      onMouseDownCapture={focusController.handleMouseDownCapture}
+      onFocusCapture={focusController.handleFocusCapture}
+      onBlurCapture={focusController.handleBlurCapture}
+    >
       <EditorSurface
         editor={editor}
         disabled={disabled}
@@ -416,8 +417,8 @@ const ReactTiptapEditor = ({
         resolvedCodeBlockLanguages={resolvedConfig.resolvedCodeBlockLanguages}
         textColorOptions={textColorOptions}
         highlightColorOptions={highlightColorOptions}
-        isInsideOverlayContainer={focusController.isInsideEditorContainer}
-        onOverlayCloseOutside={focusController.finalizeBlurFromOverlayClose}
+        isInsideEditorContainer={focusController.isInsideEditorContainer}
+        onFocusScopeExit={focusController.handleFocusScopeExit}
         resolvedDefaultCodeBlockLanguage={
           resolvedConfig.resolvedDefaultCodeBlockLanguage
         }
@@ -433,13 +434,8 @@ const ReactTiptapEditor = ({
         onOpenFileUploadDialog={
           onFilePreUpload ? fileUploadDialog.openFileUploadDialog : undefined
         }
-        onMenuRootChange={focusController.setCodeBlockLanguageMenuRoot}
-        onCodeBlockLanguageMenuOpenChecked={
-          focusController.syncFocusStateAfterMenuClose
-        }
       />
       <EditorDialogs
-        isNotionLike={resolvedConfig.isNotionLike}
         portalContainer={themePortalState.portalContainer}
         formulaCategories={formulaCategories}
         locale={locale}
