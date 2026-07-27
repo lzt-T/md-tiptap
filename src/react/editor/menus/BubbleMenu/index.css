@@ -85,8 +85,8 @@
 }
 
 .zt-tiptap-theme .bubble-menu button.is-active {
-  background: var(--ui-control-active);
-  color: var(--ui-text-inverse);
+  background: var(--ui-bg-selected);
+  color: var(--ui-text-selected);
 }
 
 .zt-tiptap-theme .bubble-menu button strong,
@@ -183,7 +183,7 @@
 
 .zt-tiptap-theme .bubble-block-menu-item.is-active {
   background: var(--ui-bg-selected);
-  color: var(--ui-text-link);
+  color: var(--ui-text-selected);
 }
 
 .zt-tiptap-theme .bubble-block-menu-icon {
@@ -242,7 +242,7 @@
 
 .zt-tiptap-theme .more-menu button.is-active {
   background: var(--ui-bg-selected);
-  color: var(--ui-control-active);
+  color: var(--ui-text-selected);
 }
 
 .zt-tiptap-theme .more-menu button svg {

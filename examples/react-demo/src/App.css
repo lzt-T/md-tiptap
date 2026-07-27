@@ -16,11 +16,15 @@
   --demo-foreground: oklch(0.145 0 0);
   --demo-control-background: oklch(1 0 0);
   --demo-control-hover: oklch(0.97 0 0);
-  --demo-control-active: #eef2ff;
+  --demo-control-active: color-mix(
+    in oklch,
+    var(--demo-accent) 10%,
+    white
+  );
   --demo-border: oklch(0.922 0 0);
   --demo-border-strong: oklch(0.708 0 0);
-  --demo-accent: #1d4ed8;
-  --demo-ring: oklch(0.708 0 0);
+  --demo-accent: oklch(0.53 0.2 275);
+  --demo-ring: oklch(0.62 0.15 275);
 }
 
 .app.app-dark {
@@ -30,13 +34,13 @@
   --demo-control-hover: oklch(0.269 0 0);
   --demo-control-active: color-mix(
     in oklch,
-    oklch(0.89 0.028 255) 24%,
+    var(--demo-accent) 24%,
     transparent
   );
   --demo-border: oklch(1 0 0 / 16%);
   --demo-border-strong: oklch(1 0 0 / 24%);
-  --demo-accent: oklch(0.89 0.028 255);
-  --demo-ring: oklch(0.72 0.024 255);
+  --demo-accent: oklch(0.74 0.14 275);
+  --demo-ring: oklch(0.7 0.12 275);
 }
 
 .demo-shell {

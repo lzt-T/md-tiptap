@@ -697,7 +697,9 @@ import 'zt-reactjs-tiptap/style.css'
 }
 ```
 
-5. **UI 主题 Token 化**：编辑器 UI（工具栏、菜单、表格操作、弹窗、输入框、滚动条等）已统一使用主题 token。默认 `light` 视觉与旧版保持一致，切换 `theme="dark"` 时同一套 token 会自动映射为暗色值。
+`--primary` 是编辑器的主题强调色。覆盖它会联动按钮、链接、选中背景、选中边框与焦点反馈；如需保持可读性，应同时确认 `--primary-foreground` 与新主色具有足够对比度。
+
+5. **UI 主题 Token 化**：编辑器 UI（工具栏、菜单、表格操作、弹窗、输入框、滚动条等）已统一使用主题 token。默认 `light` 与 `dark` 采用同一套清透靛青强调色语义，切换主题时会自动映射为对应明暗值。
 
 6. **弹层/对话框**：编辑器使用分层 Portal。图片、视频、公式、附件等全屏 Dialog 挂载到 `document.body` 下同时带有 `.zt-tiptap-dialog-host`、`.zt-tiptap-theme` 与来源编辑器焦点域标识的隔离宿主，因此 Dialog 交互仍属于对应编辑器且不会串联其他编辑器；Dialog 的通用 `[data-slot]` 规则也仅在该宿主内生效，避免影响宿主项目的 Dialog。工具栏/BubbleMenu 的全局类菜单仍挂载到 `.zt-tiptap-portal`；代码块、表格、BubbleMenu 选区附属面板挂载到 `.editor-wrapper` 内的 `.zt-tiptap-content-portal`，会随编辑器滚动视口裁剪。若样式仍异常，优先检查宿主全局 reset 或高优先级选择器
 

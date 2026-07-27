@@ -54,8 +54,8 @@
 }
 
 .zt-tiptap-theme .editor-toolbar-inner .editor-toolbar-btn.is-active {
-  background: var(--ui-control-active);
-  color: var(--ui-text-inverse);
+  background: var(--ui-bg-selected);
+  color: var(--ui-text-selected);
 }
 
 .zt-tiptap-theme .editor-toolbar-btn:disabled,
@@ -132,7 +132,7 @@
 
 .zt-tiptap-theme .editor-toolbar-heading-item.is-active {
   background: var(--ui-bg-selected);
-  color: var(--ui-text-link);
+  color: var(--ui-text-selected);
 }
 
 .zt-tiptap-theme .editor-toolbar-heading-num {
