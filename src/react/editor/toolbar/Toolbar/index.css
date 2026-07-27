@@ -1,11 +1,11 @@
-.editor-toolbar {
+.zt-tiptap-theme .editor-toolbar {
   flex-shrink: 0;
   background: var(--ui-bg-toolbar);
   border-bottom: 1px solid var(--ui-border);
   padding: 6px 12px;
 }
 
-.editor-toolbar-inner {
+.zt-tiptap-theme .editor-toolbar-inner {
   display: flex;
   align-items: center;
   gap: 2px;
@@ -16,7 +16,7 @@
 }
 
 /* 工具栏操作按钮（主栏与更多菜单共用），按类名选择，不作用于 .color-picker-dropdown 等内部 button */
-.editor-toolbar-btn {
+.zt-tiptap-theme .editor-toolbar-btn {
   background: transparent;
   border: none;
   outline: none;
@@ -26,47 +26,62 @@
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
-  transition: all 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    opacity 0.15s ease;
   min-width: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.editor-toolbar-btn svg {
+.zt-tiptap-theme .editor-toolbar-btn svg {
   width: 16px;
   height: 16px;
   flex-shrink: 0;
 }
 
-.editor-toolbar-btn:hover {
+.zt-tiptap-theme .editor-toolbar-btn:hover {
   background: var(--ui-border);
   color: var(--ui-text-strong);
 }
 
-.editor-toolbar-inner .editor-toolbar-btn.is-active {
+.zt-tiptap-theme .editor-toolbar-btn:focus-visible,
+.zt-tiptap-theme .editor-toolbar-heading-item:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.zt-tiptap-theme .editor-toolbar-inner .editor-toolbar-btn.is-active {
   background: var(--ui-control-active);
   color: var(--ui-text-inverse);
 }
 
-.editor-toolbar-btn:disabled,
-.editor-toolbar-btn.is-disabled {
+.zt-tiptap-theme .editor-toolbar-btn:disabled,
+.zt-tiptap-theme .editor-toolbar-btn.is-disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.editor-toolbar-heading-btn {
+.zt-tiptap-theme .editor-toolbar-btn:disabled:hover,
+.zt-tiptap-theme .editor-toolbar-btn.is-disabled:hover {
+  background: transparent;
+  color: var(--ui-text);
+}
+
+.zt-tiptap-theme .editor-toolbar-heading-btn {
   font-size: 14px;
   font-weight: 600;
   line-height: 1;
 }
 
-.editor-toolbar-chevron {
+.zt-tiptap-theme .editor-toolbar-chevron {
   margin-left: 2px;
   flex-shrink: 0;
 }
 
-.editor-toolbar-separator {
+.zt-tiptap-theme .editor-toolbar-separator {
   width: 1px;
   flex: 0 0 1px;
   background: var(--ui-border);
@@ -74,7 +89,7 @@
   align-self: stretch;
 }
 
-.editor-toolbar-heading-menu {
+.zt-tiptap-theme .editor-toolbar-heading-menu {
   width: max-content;
   height: auto;
   min-height: 0;
@@ -88,13 +103,13 @@
   min-width: 140px;
 }
 
-[data-slot="popover-content"].editor-toolbar-heading-menu {
+.zt-tiptap-theme [data-slot="popover-content"].editor-toolbar-heading-menu {
   width: max-content;
   height: auto;
   min-height: 0;
 }
 
-.editor-toolbar-heading-item {
+.zt-tiptap-theme .editor-toolbar-heading-item {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -110,68 +125,68 @@
   transition: background 0.15s ease;
 }
 
-.editor-toolbar-heading-item:hover {
+.zt-tiptap-theme .editor-toolbar-heading-item:hover {
   background: var(--ui-bg-hover-soft);
   color: var(--ui-text-strong);
 }
 
-.editor-toolbar-heading-item.is-active {
+.zt-tiptap-theme .editor-toolbar-heading-item.is-active {
   background: var(--ui-bg-selected);
   color: var(--ui-text-link);
 }
 
-.editor-toolbar-heading-num {
+.zt-tiptap-theme .editor-toolbar-heading-num {
   font-weight: 600;
   min-width: 1.5em;
 }
 
-.editor-toolbar-heading-label {
+.zt-tiptap-theme .editor-toolbar-heading-label {
   line-height: 1.2;
 }
 
-.editor-toolbar-heading-item[data-heading-style="paragraph"]
+.zt-tiptap-theme .editor-toolbar-heading-item[data-heading-style="paragraph"]
   .editor-toolbar-heading-label {
   font-size: 14px;
   font-weight: 400;
 }
 
-.editor-toolbar-heading-item[data-heading-style="h1"]
+.zt-tiptap-theme .editor-toolbar-heading-item[data-heading-style="h1"]
   .editor-toolbar-heading-label {
   font-size: 16px;
   font-weight: 700;
 }
 
-.editor-toolbar-heading-item[data-heading-style="h2"]
+.zt-tiptap-theme .editor-toolbar-heading-item[data-heading-style="h2"]
   .editor-toolbar-heading-label {
   font-size: 15px;
   font-weight: 700;
 }
 
-.editor-toolbar-heading-item[data-heading-style="h3"]
+.zt-tiptap-theme .editor-toolbar-heading-item[data-heading-style="h3"]
   .editor-toolbar-heading-label {
   font-size: 14px;
   font-weight: 700;
 }
 
-.editor-toolbar-heading-item[data-heading-style="h4"]
+.zt-tiptap-theme .editor-toolbar-heading-item[data-heading-style="h4"]
   .editor-toolbar-heading-label {
   font-size: 14px;
   font-weight: 600;
 }
 
-.editor-toolbar-heading-item[data-heading-style="h5"]
+.zt-tiptap-theme .editor-toolbar-heading-item[data-heading-style="h5"]
   .editor-toolbar-heading-label {
   font-size: 13px;
   font-weight: 600;
 }
 
-.editor-toolbar-heading-item[data-heading-style="h6"]
+.zt-tiptap-theme .editor-toolbar-heading-item[data-heading-style="h6"]
   .editor-toolbar-heading-label {
   font-size: 13px;
   font-weight: 500;
 }
 
-.editor-toolbar-popover-panel {
+.zt-tiptap-theme .editor-toolbar-popover-panel {
   width: auto;
   padding: 0;
   border: none;
@@ -179,7 +194,7 @@
   box-shadow: none;
 }
 
-.editor-toolbar-table-size-popover {
+.zt-tiptap-theme .editor-toolbar-table-size-popover {
   width: auto;
   padding: 0;
   background: var(--ui-bg-panel);
@@ -188,7 +203,7 @@
   box-shadow: var(--ui-shadow-xl);
 }
 
-.editor-toolbar-link-popover {
+.zt-tiptap-theme .editor-toolbar-link-popover {
   width: auto;
   padding: 0;
   border: none;
@@ -196,4 +211,9 @@
   box-shadow: none;
 }
 
-
+@media (pointer: coarse) {
+  .zt-tiptap-theme .editor-toolbar-btn {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}

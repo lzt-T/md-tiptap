@@ -1,15 +1,15 @@
 /* Mathematics styles */
-.editor-wrapper .ProseMirror .tiptap-mathematics-render {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .tiptap-mathematics-render {
     cursor: pointer;
     border-radius: 4px;
     transition: background-color 0.2s;
 }
 
-.editor-wrapper .ProseMirror .tiptap-mathematics-render:hover {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .tiptap-mathematics-render:hover {
     background-color: var(--ui-bg-subtle);
 }
 
-.editor-wrapper
+.zt-tiptap-theme .editor-wrapper
     .ProseMirror
     .tiptap-mathematics-render[data-type="inline-math"] {
     display: inline-block;
@@ -25,32 +25,32 @@
     scrollbar-color: var(--ui-border-strong) transparent;
 }
 
-.editor-wrapper
+.zt-tiptap-theme .editor-wrapper
     .ProseMirror
     .tiptap-mathematics-render[data-type="inline-math"]::-webkit-scrollbar {
     height: 3px;
 }
 
-.editor-wrapper
+.zt-tiptap-theme .editor-wrapper
     .ProseMirror
     .tiptap-mathematics-render[data-type="inline-math"]::-webkit-scrollbar-track {
     background: transparent;
 }
 
-.editor-wrapper
+.zt-tiptap-theme .editor-wrapper
     .ProseMirror
     .tiptap-mathematics-render[data-type="inline-math"]::-webkit-scrollbar-thumb {
     background: var(--ui-border-strong);
     border-radius: 2px;
 }
 
-.editor-wrapper
+.zt-tiptap-theme .editor-wrapper
     .ProseMirror
     .tiptap-mathematics-render[data-type="inline-math"]::-webkit-scrollbar-thumb:hover {
     background: var(--ui-text-placeholder);
 }
 
-.editor-wrapper
+.zt-tiptap-theme .editor-wrapper
     .ProseMirror
     .tiptap-mathematics-render[data-type="block-math"] {
     display: block;
@@ -64,40 +64,40 @@
     scrollbar-color: var(--ui-border-strong) transparent;
 }
 
-.editor-wrapper
+.zt-tiptap-theme .editor-wrapper
     .ProseMirror
     .tiptap-mathematics-render[data-type="block-math"]::-webkit-scrollbar {
     height: 4px;
 }
 
-.editor-wrapper
+.zt-tiptap-theme .editor-wrapper
     .ProseMirror
     .tiptap-mathematics-render[data-type="block-math"]::-webkit-scrollbar-track {
     background: transparent;
     border-radius: 2px;
 }
 
-.editor-wrapper
+.zt-tiptap-theme .editor-wrapper
     .ProseMirror
     .tiptap-mathematics-render[data-type="block-math"]::-webkit-scrollbar-thumb {
     background: var(--ui-border-strong);
     border-radius: 2px;
 }
 
-.editor-wrapper
+.zt-tiptap-theme .editor-wrapper
     .ProseMirror
     .tiptap-mathematics-render[data-type="block-math"]::-webkit-scrollbar-thumb:hover {
     background: var(--ui-text-placeholder);
 }
 
-.editor-wrapper
+.zt-tiptap-theme .editor-wrapper
     .ProseMirror
     .tiptap-mathematics-render[data-type="block-math"]:hover {
     background-color: var(--ui-bg-subtle);
 }
 
 /* 块级公式 hover 时显示的删除按钮（容器由 useBlockMathDeleteButton 注入） */
-.editor-wrapper .ProseMirror .block-math-delete-btn-wrapper {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .block-math-delete-btn-wrapper {
     position: absolute;
     right: 8px;
     top: 50%;
@@ -106,7 +106,7 @@
     height: 28px;
 }
 
-.editor-wrapper .ProseMirror .block-math-delete-btn {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .block-math-delete-btn {
     width: 100%;
     height: 100%;
     padding: 0;
@@ -126,7 +126,7 @@
     box-shadow: 0 1px 3px var(--ui-scrollbar-thumb);
 }
 
-.editor-wrapper
+.zt-tiptap-theme .editor-wrapper
     .ProseMirror
     .tiptap-mathematics-render[data-type="block-math"]:hover
     .block-math-delete-btn-wrapper
@@ -134,21 +134,21 @@
     opacity: 1;
 }
 
-.editor-wrapper
+.zt-tiptap-theme .editor-wrapper
     .ProseMirror
     .tiptap-mathematics-render.ProseMirror-selectednode {
     outline: 2px solid var(--ui-control-active);
     outline-offset: 2px;
 }
 
-.editor-container.is-editor-blurred
+.zt-tiptap-theme.editor-container.is-editor-blurred
     .editor-wrapper
     .ProseMirror
     .tiptap-mathematics-render.ProseMirror-selectednode {
     outline: none;
 }
 
-.editor-container.is-editor-focus-unstable
+.zt-tiptap-theme.editor-container.is-editor-focus-unstable
     .editor-wrapper
     .ProseMirror
     .tiptap-mathematics-render.ProseMirror-selectednode {
@@ -156,15 +156,14 @@
 }
 
 /* KaTeX font adjustments */
-.editor-wrapper .ProseMirror .katex {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .katex {
     font-size: 1.1em;
 }
 
-.editor-wrapper
+.zt-tiptap-theme .editor-wrapper
     .ProseMirror
     .tiptap-mathematics-render[data-type="block-math"]
     .katex-display {
     margin: 0 auto;
 }
-
 

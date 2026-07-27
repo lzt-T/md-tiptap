@@ -1,78 +1,77 @@
-.editor-container.is-disabled .block-math-delete-btn-wrapper {
+.zt-tiptap-theme.editor-container.is-disabled .block-math-delete-btn-wrapper {
   display: none;
 }
 
 /* Disabled: no hover/click styles on math */
-.editor-container.is-disabled .tiptap-mathematics-render {
+.zt-tiptap-theme.editor-container.is-disabled .tiptap-mathematics-render {
   cursor: default;
 }
 
-.editor-container.is-disabled .tiptap-mathematics-render:hover {
+.zt-tiptap-theme.editor-container.is-disabled .tiptap-mathematics-render:hover {
   background-color: transparent;
 }
 
-.editor-container.is-disabled .tiptap-mathematics-render[data-type="block-math"]:hover {
+.zt-tiptap-theme.editor-container.is-disabled .tiptap-mathematics-render[data-type="block-math"]:hover {
   background-color: var(--ui-bg-muted);
 }
 
-.editor-container.is-disabled .tiptap-mathematics-render.ProseMirror-selectednode {
+.zt-tiptap-theme.editor-container.is-disabled .tiptap-mathematics-render.ProseMirror-selectednode {
   outline: none;
 }
 
-.editor-container.is-disabled .editor-wrapper .ProseMirror .image-node-wrapper img.image-selected,
-.editor-container.is-disabled .editor-wrapper .ProseMirror .image-node-wrapper.ProseMirror-selectednode img,
-.editor-container.is-disabled .editor-wrapper .ProseMirror .image-node-wrapper .image-error-placeholder.image-selected,
-.editor-container.is-disabled .editor-wrapper .ProseMirror .image-node-wrapper.ProseMirror-selectednode .image-error-placeholder {
+.zt-tiptap-theme.editor-container.is-disabled .editor-wrapper .ProseMirror .image-node-wrapper img.image-selected,
+.zt-tiptap-theme.editor-container.is-disabled .editor-wrapper .ProseMirror .image-node-wrapper.ProseMirror-selectednode img,
+.zt-tiptap-theme.editor-container.is-disabled .editor-wrapper .ProseMirror .image-node-wrapper .image-error-placeholder.image-selected,
+.zt-tiptap-theme.editor-container.is-disabled .editor-wrapper .ProseMirror .image-node-wrapper.ProseMirror-selectednode .image-error-placeholder {
   outline: none;
 }
 
-.editor-container.is-disabled .editor-wrapper .ProseMirror .image-node-wrapper .image-delete-btn {
+.zt-tiptap-theme.editor-container.is-disabled .editor-wrapper .ProseMirror .image-node-wrapper .image-delete-btn {
   display: none;
 }
 
-.editor-container.is-disabled .editor-wrapper .ProseMirror .image-node-wrapper .image-resize-handle,
-.editor-container.is-disabled .editor-wrapper .ProseMirror .image-node-wrapper .image-align-menu {
+.zt-tiptap-theme.editor-container.is-disabled .editor-wrapper .ProseMirror .image-node-wrapper .image-resize-handle,
+.zt-tiptap-theme.editor-container.is-disabled .editor-wrapper .ProseMirror .image-node-wrapper .image-align-menu {
   display: none;
 }
 
-.editor-container.is-disabled .editor-wrapper .ProseMirror .image-node-wrapper {
+.zt-tiptap-theme.editor-container.is-disabled .editor-wrapper .ProseMirror .image-node-wrapper {
   cursor: default;
 }
 
-.editor-container.is-disabled .editor-wrapper .ProseMirror .ProseMirror-selectednode video {
+.zt-tiptap-theme.editor-container.is-disabled .editor-wrapper .ProseMirror .ProseMirror-selectednode video {
   outline: none;
 }
 
-.editor-container.is-disabled .editor-wrapper .ProseMirror .video-node-wrapper .video-delete-btn,
-.editor-container.is-disabled .editor-wrapper .ProseMirror .video-node-wrapper .video-resize-handle,
-.editor-container.is-disabled .editor-wrapper .ProseMirror .video-node-wrapper .video-align-menu {
+.zt-tiptap-theme.editor-container.is-disabled .editor-wrapper .ProseMirror .video-node-wrapper .video-delete-btn,
+.zt-tiptap-theme.editor-container.is-disabled .editor-wrapper .ProseMirror .video-node-wrapper .video-resize-handle,
+.zt-tiptap-theme.editor-container.is-disabled .editor-wrapper .ProseMirror .video-node-wrapper .video-align-menu {
   display: none;
 }
 
-.editor-container.is-disabled .editor-wrapper .ProseMirror .video-node-wrapper,
-.editor-container.is-disabled .editor-wrapper .ProseMirror .video-node-wrapper video {
+.zt-tiptap-theme.editor-container.is-disabled .editor-wrapper .ProseMirror .video-node-wrapper,
+.zt-tiptap-theme.editor-container.is-disabled .editor-wrapper .ProseMirror .video-node-wrapper video {
   cursor: default;
 }
 
 /* Disabled: 任务列表复选框不用指针样式 */
-.editor-container.is-disabled .editor-wrapper .ProseMirror ul[data-type="taskList"] li label input[type="checkbox"] {
+.zt-tiptap-theme.editor-container.is-disabled .editor-wrapper .ProseMirror ul[data-type="taskList"] li label input[type="checkbox"] {
   cursor: default;
 }
 
-.editor-container.is-disabled .editor-wrapper .ProseMirror .file-attachment-delete {
+.zt-tiptap-theme.editor-container.is-disabled .editor-wrapper .ProseMirror .file-attachment-delete {
   display: none;
 }
 
 /* disabled 下文件块不显示选中边框，但链接仍可点击 */
-.editor-container.is-disabled .editor-wrapper .ProseMirror .file-attachment-wrapper.file-attachment-selected,
-.editor-container.is-disabled .editor-wrapper .ProseMirror .file-attachment-wrapper.ProseMirror-selectednode {
+.zt-tiptap-theme.editor-container.is-disabled .editor-wrapper .ProseMirror .file-attachment-wrapper.file-attachment-selected,
+.zt-tiptap-theme.editor-container.is-disabled .editor-wrapper .ProseMirror .file-attachment-wrapper.ProseMirror-selectednode {
   border-color: var(--ui-border-muted);
   background: var(--ui-bg-muted);
 }
 
-.editor-container.is-disabled .editor-wrapper .ProseMirror .file-attachment-link {
+.zt-tiptap-theme.editor-container.is-disabled .editor-wrapper .ProseMirror .file-attachment-link {
   cursor: pointer;
   pointer-events: auto;
 }
-
 

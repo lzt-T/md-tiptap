@@ -1,27 +1,27 @@
-.video-upload-dialog-content {
+.zt-tiptap-theme .video-upload-dialog-content {
   border-radius: 12px;
 }
 
-.video-upload-segmented-switch {
+.zt-tiptap-theme .video-upload-segmented-switch {
   margin-bottom: 0.5rem;
 }
 
-.video-upload-content {
+.zt-tiptap-theme .video-upload-content {
   display: flex;
   flex-direction: column;
   gap: 12px;
   margin-top: 8px;
 }
 
-.video-upload-file {
+.zt-tiptap-theme .video-upload-file {
   width: 100%;
 }
 
-.video-upload-input-hidden {
+.zt-tiptap-theme .video-upload-input-hidden {
   display: none;
 }
 
-.video-upload-file-label {
+.zt-tiptap-theme .video-upload-file-label {
   min-height: 220px;
   border: 1px dashed var(--border);
   border-radius: 10px;
@@ -34,20 +34,20 @@
   padding: 16px;
 }
 
-.video-upload-file-label.is-drag-over {
+.zt-tiptap-theme .video-upload-file-label.is-drag-over {
   border-color: var(--primary);
 }
 
-.video-upload-file-label.is-disabled {
+.zt-tiptap-theme .video-upload-file-label.is-disabled {
   opacity: 0.65;
   cursor: not-allowed;
 }
 
-.video-upload-file-icon-spin {
-  animation: video-upload-spin 0.8s linear infinite;
+.zt-tiptap-theme .video-upload-file-icon-spin {
+  animation: zt-tiptap-video-upload-spin 0.8s linear infinite;
 }
 
-@keyframes video-upload-spin {
+@keyframes zt-tiptap-video-upload-spin {
   from {
     transform: rotate(0deg);
   }
@@ -57,22 +57,22 @@
   }
 }
 
-.video-upload-file-text {
+.zt-tiptap-theme .video-upload-file-text {
   font-size: 14px;
 }
 
-.video-upload-file-hint {
+.zt-tiptap-theme .video-upload-file-hint {
   font-size: 12px;
   color: var(--muted-foreground);
 }
 
-.video-upload-file-preview {
+.zt-tiptap-theme .video-upload-file-preview {
   width: 100%;
   max-height: 320px;
   border-radius: 8px;
 }
 
-.video-upload-input {
+.zt-tiptap-theme .video-upload-input {
   width: 100%;
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -80,14 +80,20 @@
   background: transparent;
 }
 
-.video-upload-error {
+.zt-tiptap-theme .video-upload-error {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #dc2626;
+  color: var(--ui-danger);
   font-size: 13px;
 }
 
-.video-upload-error-icon {
+.zt-tiptap-theme .video-upload-error-icon {
   flex-shrink: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zt-tiptap-theme .video-upload-file-icon-spin {
+    animation: none;
+  }
 }

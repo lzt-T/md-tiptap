@@ -6,6 +6,7 @@ import {
   useCallback,
   type ReactNode,
   type MouseEvent,
+  type PointerEvent,
 } from "react";
 import { GapCursor } from "@tiptap/pm/gapcursor";
 import { TextSelection } from "@tiptap/pm/state";
@@ -68,6 +69,15 @@ function isFromColorPopoverContent(target: EventTarget | null): boolean {
   return Boolean(
     target.closest(".color-picker") || target.closest(".editor-link-panel"),
   );
+}
+
+/** 阻止禁用按钮的指针按下行为导致编辑器失焦。 */
+function preventDisabledButtonPointerDown(
+  event: PointerEvent<HTMLElement>,
+): void {
+  if (!(event.target instanceof Element)) return;
+  if (!event.target.closest("button:disabled, button.is-disabled")) return;
+  event.preventDefault();
 }
 
 const Toolbar = ({
@@ -465,6 +475,7 @@ const Toolbar = ({
               data-heading-style="paragraph"
               onClick={onParagraphSelect}
               title={locale.toolbar.paragraph}
+              aria-label={locale.toolbar.paragraph}
             >
               <span className="editor-toolbar-heading-num">
                 <TextIcon size={16} />
@@ -488,6 +499,7 @@ const Toolbar = ({
                   data-heading-style={`h${level}`}
                   onClick={() => onHeadingSelect(level)}
                   title={locale.toolbar.headingLevel(level)}
+                  aria-label={locale.toolbar.headingLevel(level)}
                 >
                   <span className="editor-toolbar-heading-num">
                     <HeadingIcon size={16} />
@@ -595,6 +607,7 @@ const Toolbar = ({
     <div
       className="editor-toolbar"
       data-selection-key={selectionKey}
+      onPointerDown={preventDisabledButtonPointerDown}
       onMouseDown={handleToolbarMouseDown}
     >
       <div className="editor-toolbar-inner">

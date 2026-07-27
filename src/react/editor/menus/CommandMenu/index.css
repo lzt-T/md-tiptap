@@ -1,9 +1,9 @@
-.command-menu-overlay {
+.zt-tiptap-theme .command-menu-overlay {
   z-index: 48;
   pointer-events: auto;
 }
 
-.command-menu-overlay .command-menu-shell {
+.zt-tiptap-theme .command-menu-overlay .command-menu-shell {
   width: 100%;
   min-width: 172px;
   overflow: hidden;
@@ -14,13 +14,13 @@
   box-shadow: var(--ui-shadow-popover);
 }
 
-.command-menu-overlay [data-slot="command-list"] {
+.zt-tiptap-theme .command-menu-overlay [data-slot="command-list"] {
   padding: 5px;
   scrollbar-width: thin;
   scrollbar-color: var(--ui-scrollbar-thumb) transparent;
 }
 
-.command-menu-overlay [data-slot="command-item"] {
+.zt-tiptap-theme .command-menu-overlay [data-slot="command-item"] {
   cursor: pointer;
   min-height: 32px;
   gap: 8px;
@@ -33,18 +33,18 @@
     color 0.15s ease;
 }
 
-.command-menu-overlay [data-slot="command-item"]:hover,
-.command-menu-overlay [data-slot="command-item"][data-selected="true"] {
+.zt-tiptap-theme .command-menu-overlay [data-slot="command-item"]:hover,
+.zt-tiptap-theme .command-menu-overlay [data-slot="command-item"][data-selected="true"] {
   background: var(--ui-bg-hover-soft);
   color: var(--ui-text-strong);
 }
 
-.command-menu-overlay [data-slot="command-item"].command-menu-item-selected {
+.zt-tiptap-theme .command-menu-overlay [data-slot="command-item"].command-menu-item-selected {
   background: var(--ui-bg-selected);
   color: var(--ui-control-active);
 }
 
-.command-menu-overlay [data-slot="command-item"] svg {
+.zt-tiptap-theme .command-menu-overlay [data-slot="command-item"] svg {
   width: 16px;
   height: 16px;
   flex: 0 0 16px;
@@ -53,7 +53,7 @@
   transition: color 0.15s ease;
 }
 
-.command-menu-text-icon {
+.zt-tiptap-theme .command-menu-text-icon {
   width: 16px;
   flex: 0 0 16px;
   color: var(--ui-text-muted);
@@ -64,32 +64,32 @@
   transition: color 0.15s ease;
 }
 
-.command-menu-item-title {
+.zt-tiptap-theme .command-menu-item-title {
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
 }
 
-.command-menu-overlay
+.zt-tiptap-theme .command-menu-overlay
   [data-slot="command-item"].command-menu-item-selected
   svg,
-.command-menu-overlay
+.zt-tiptap-theme .command-menu-overlay
   [data-slot="command-item"].command-menu-item-selected
   .command-menu-text-icon {
   color: var(--ui-control-active);
 }
 
-.command-menu-group {
+.zt-tiptap-theme .command-menu-group {
   padding: 0;
 }
 
-.command-menu-group + .command-menu-group {
+.zt-tiptap-theme .command-menu-group + .command-menu-group {
   margin-top: 6px;
   padding-top: 6px;
   border-top: 1px solid var(--ui-border-muted);
 }
 
-.command-menu-group [cmdk-group-heading] {
+.zt-tiptap-theme .command-menu-group [cmdk-group-heading] {
   color: var(--ui-text-muted);
   font-size: 11px;
   font-weight: 500;
@@ -99,20 +99,19 @@
 
 /* CommandMenu 滚动条样式 */
 /* Webkit 滚动条样式（Chrome, Safari, Edge） */
-.command-menu-overlay [data-slot="command-list"]::-webkit-scrollbar {
+.zt-tiptap-theme .command-menu-overlay [data-slot="command-list"]::-webkit-scrollbar {
   width: 4px;
 }
 
-.command-menu-overlay [data-slot="command-list"]::-webkit-scrollbar-track {
+.zt-tiptap-theme .command-menu-overlay [data-slot="command-list"]::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.command-menu-overlay [data-slot="command-list"]::-webkit-scrollbar-thumb {
+.zt-tiptap-theme .command-menu-overlay [data-slot="command-list"]::-webkit-scrollbar-thumb {
   background-color: var(--ui-scrollbar-thumb);
   border-radius: 2px;
 }
 
-.command-menu-overlay [data-slot="command-list"]::-webkit-scrollbar-thumb:hover {
+.zt-tiptap-theme .command-menu-overlay [data-slot="command-list"]::-webkit-scrollbar-thumb:hover {
   background-color: var(--ui-scrollbar-thumb-hover);
 }
-

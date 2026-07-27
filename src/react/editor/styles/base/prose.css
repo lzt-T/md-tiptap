@@ -1,112 +1,112 @@
-.editor-wrapper .ProseMirror p {
+.zt-tiptap-theme .editor-wrapper .ProseMirror p {
     font-size: 1em;
     font-weight: 400;
     line-height: 1.7;
 }
 
-.editor-wrapper .ProseMirror h1 {
+.zt-tiptap-theme .editor-wrapper .ProseMirror h1 {
     font-size: 2em;
     font-weight: 700;
     margin: 1em 0 0.5em;
     line-height: 1.3;
 }
 
-.editor-wrapper .ProseMirror h2 {
+.zt-tiptap-theme .editor-wrapper .ProseMirror h2 {
     font-size: 1.5em;
     font-weight: 700;
     margin: 1em 0 0.5em;
     line-height: 1.4;
 }
 
-.editor-wrapper .ProseMirror h3 {
+.zt-tiptap-theme .editor-wrapper .ProseMirror h3 {
     font-size: 1.25em;
     font-weight: 700;
     margin: 1em 0 0.5em;
     line-height: 1.5;
 }
 
-.editor-wrapper .ProseMirror h4 {
+.zt-tiptap-theme .editor-wrapper .ProseMirror h4 {
     font-size: 1.125em;
     font-weight: 600;
     margin: 0.9em 0 0.45em;
     line-height: 1.5;
 }
 
-.editor-wrapper .ProseMirror h5 {
+.zt-tiptap-theme .editor-wrapper .ProseMirror h5 {
     font-size: 1em;
     font-weight: 600;
     margin: 0.8em 0 0.4em;
     line-height: 1.55;
 }
 
-.editor-wrapper .ProseMirror h6 {
+.zt-tiptap-theme .editor-wrapper .ProseMirror h6 {
     font-size: 1em;
     font-weight: 500;
     margin: 0.75em 0 0.35em;
     line-height: 1.6;
 }
 
-.editor-wrapper .ProseMirror ul,
-.editor-wrapper .ProseMirror ol {
+.zt-tiptap-theme .editor-wrapper .ProseMirror ul,
+.zt-tiptap-theme .editor-wrapper .ProseMirror ol {
     padding-left: 2em;
     margin-left: 0;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
 }
 
-.editor-wrapper .ProseMirror ul {
+.zt-tiptap-theme .editor-wrapper .ProseMirror ul {
     list-style-type: disc;
 }
 
-.editor-wrapper .ProseMirror ol {
+.zt-tiptap-theme .editor-wrapper .ProseMirror ol {
     list-style-type: decimal;
 }
 
-.editor-wrapper .ProseMirror li {
+.zt-tiptap-theme .editor-wrapper .ProseMirror li {
     margin: 0.25em 0;
     padding-left: 0.25em;
     display: list-item;
 }
 
 /* 明确设置列表符号，避免被全局 li { list-style: none } 等覆盖 */
-.editor-wrapper .ProseMirror ul > li,
-.editor-wrapper .ProseMirror ul ul ul ul > li {
+.zt-tiptap-theme .editor-wrapper .ProseMirror ul > li,
+.zt-tiptap-theme .editor-wrapper .ProseMirror ul ul ul ul > li {
     list-style-type: disc;
 }
 
-.editor-wrapper .ProseMirror ul ul > li,
-.editor-wrapper .ProseMirror ul ul ul ul ul > li {
+.zt-tiptap-theme .editor-wrapper .ProseMirror ul ul > li,
+.zt-tiptap-theme .editor-wrapper .ProseMirror ul ul ul ul ul > li {
     list-style-type: circle;
 }
 
-.editor-wrapper .ProseMirror ul ul ul > li,
-.editor-wrapper .ProseMirror ul ul ul ul ul ul > li {
+.zt-tiptap-theme .editor-wrapper .ProseMirror ul ul ul > li,
+.zt-tiptap-theme .editor-wrapper .ProseMirror ul ul ul ul ul ul > li {
     list-style-type: square;
 }
 
-.editor-wrapper .ProseMirror ol > li,
-.editor-wrapper .ProseMirror ol ol ol ol > li {
+.zt-tiptap-theme .editor-wrapper .ProseMirror ol > li,
+.zt-tiptap-theme .editor-wrapper .ProseMirror ol ol ol ol > li {
     list-style-type: decimal;
 }
 
-.editor-wrapper .ProseMirror ol ol > li,
-.editor-wrapper .ProseMirror ol ol ol ol ol > li {
+.zt-tiptap-theme .editor-wrapper .ProseMirror ol ol > li,
+.zt-tiptap-theme .editor-wrapper .ProseMirror ol ol ol ol ol > li {
     list-style-type: lower-alpha;
 }
 
-.editor-wrapper .ProseMirror ol ol ol > li,
-.editor-wrapper .ProseMirror ol ol ol ol ol ol > li {
+.zt-tiptap-theme .editor-wrapper .ProseMirror ol ol ol > li,
+.zt-tiptap-theme .editor-wrapper .ProseMirror ol ol ol ol ol ol > li {
     list-style-type: lower-roman;
 }
 
-.editor-wrapper .ProseMirror ul ul,
-.editor-wrapper .ProseMirror ol ul,
-.editor-wrapper .ProseMirror ul ol,
-.editor-wrapper .ProseMirror ol ol {
+.zt-tiptap-theme .editor-wrapper .ProseMirror ul ul,
+.zt-tiptap-theme .editor-wrapper .ProseMirror ol ul,
+.zt-tiptap-theme .editor-wrapper .ProseMirror ul ol,
+.zt-tiptap-theme .editor-wrapper .ProseMirror ol ol {
     margin-top: 0.25em;
 }
 
-.editor-wrapper .ProseMirror blockquote {
+.zt-tiptap-theme .editor-wrapper .ProseMirror blockquote {
     border-left: 3px solid var(--ui-border-muted);
     padding-left: 1em;
     margin-left: 0;
@@ -114,16 +114,16 @@
 }
 
 /* 正文文本链接：默认下划线，hover 仅变手型。 */
-.editor-wrapper .ProseMirror a {
+.zt-tiptap-theme .editor-wrapper .ProseMirror a {
     color: var(--ui-text-link);
     text-decoration: underline;
 }
 
-.editor-wrapper .ProseMirror a:hover {
+.zt-tiptap-theme .editor-wrapper .ProseMirror a:hover {
     cursor: pointer;
 }
 
-.editor-wrapper .ProseMirror :not(pre) > code {
+.zt-tiptap-theme .editor-wrapper .ProseMirror :not(pre) > code {
     background: var(--ui-bg-subtle);
     padding: 0.2em 0.4em;
     border: 1px solid transparent;
@@ -142,14 +142,14 @@
     );
 }
 
-.dark .editor-wrapper .ProseMirror :not(pre) > code,
+.zt-tiptap-theme.dark .editor-wrapper .ProseMirror :not(pre) > code,
 .zt-tiptap-theme.dark .editor-wrapper .ProseMirror :not(pre) > code {
     background: color-mix(in oklab, var(--ui-bg-subtle) 78%, var(--ui-bg-selected) 22%);
     border-color: var(--ui-border-muted);
     color: var(--code-block-fg);
 }
 
-.editor-wrapper .ProseMirror pre code {
+.zt-tiptap-theme .editor-wrapper .ProseMirror pre code {
     background: none;
     border: none;
     padding: 0;
@@ -157,14 +157,14 @@
 }
 
 /* Gap Cursor：两个块级节点之间的间隙光标 */
-.editor-wrapper .ProseMirror-gapcursor {
+.zt-tiptap-theme .editor-wrapper .ProseMirror-gapcursor {
     display: none;
     pointer-events: none;
     position: relative;
     height: 0;
 }
 
-.editor-wrapper .ProseMirror-focused .ProseMirror-gapcursor {
+.zt-tiptap-theme .editor-wrapper .ProseMirror-focused .ProseMirror-gapcursor {
     display: block;
     /* Fallback for browsers without lh unit support */
     height: 1em;
@@ -173,13 +173,13 @@
 }
 
 /* 聚焦恢复的首帧可能先短暂回到旧 GapCursor，稳定前隐藏以避免可见跳闪。 */
-.editor-container.is-editor-focus-unstable
+.zt-tiptap-theme.editor-container.is-editor-focus-unstable
     .editor-wrapper
     .ProseMirror-gapcursor {
     display: none;
 }
 
-.editor-wrapper .ProseMirror-gapcursor::after {
+.zt-tiptap-theme .editor-wrapper .ProseMirror-gapcursor::after {
     content: "";
     display: block;
     position: absolute;
@@ -189,11 +189,11 @@
     height: 1em;
     transform: translateY(-50%);
     background-color: currentColor;
-    animation: zt-gap-cursor-blink 1s steps(2, start) infinite;
+    animation: zt-tiptap-gap-cursor-blink 1s steps(2, start) infinite;
 }
 
 /* Notion-like: show placeholder text on gap cursor using CSS content */
-.editor-wrapper.notion-editor
+.zt-tiptap-theme .editor-wrapper.notion-editor
     .ProseMirror-focused
     .ProseMirror-gapcursor::before {
     content: var(--zt-gap-placeholder-content);
@@ -208,61 +208,59 @@
 }
 
 /* 选中结构化块（如 block math）时，隐藏 gap cursor 的提示文案。 */
-.editor-container.is-structured-block-selected
+.zt-tiptap-theme.editor-container.is-structured-block-selected
     .editor-wrapper.notion-editor
     .ProseMirror-focused
     .ProseMirror-gapcursor::before {
     content: none;
 }
 
-@keyframes zt-gap-cursor-blink {
+@keyframes zt-tiptap-gap-cursor-blink {
     to {
         visibility: hidden;
     }
 }
 
 /* Horizontal rule */
-.editor-wrapper .ProseMirror hr {
+.zt-tiptap-theme .editor-wrapper .ProseMirror hr {
     border: none;
     border-top: 1px solid var(--ui-border-muted);
     margin: 2em 0;
 }
 
 /* Block spacing（两种模式统一，保证段落/块可读性） */
-.editor-wrapper .ProseMirror > * {
+.zt-tiptap-theme .editor-wrapper .ProseMirror > * {
     margin: 0.5em 0;
 }
 
-.editor-wrapper .ProseMirror > *:first-child {
+.zt-tiptap-theme .editor-wrapper .ProseMirror > *:first-child {
     margin-top: 0;
 }
 
-.editor-wrapper .ProseMirror > *:last-child {
+.zt-tiptap-theme .editor-wrapper .ProseMirror > *:last-child {
     margin-bottom: 0;
 }
 
 /* 编辑器文本选区镜像高亮。 */
-.editor-wrapper .ProseMirror .zt-selection-mirror {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .zt-selection-mirror {
     background: color-mix(in oklch, var(--ui-control-active) 28%, transparent);
     border-radius: 2px;
 }
 
 /* 隐藏编辑器内浏览器默认选区高亮，统一交由镜像样式显示。 */
-.editor-wrapper .ProseMirror ::selection {
+.zt-tiptap-theme .editor-wrapper .ProseMirror ::selection {
     background: transparent;
     color: inherit;
 }
 
 /* Firefox 兼容：隐藏默认选区高亮。 */
-.editor-wrapper .ProseMirror ::-moz-selection {
+.zt-tiptap-theme .editor-wrapper .ProseMirror ::-moz-selection {
     background: transparent;
     color: inherit;
 }
 
 /* Focus outline for blocks */
-.editor-wrapper .ProseMirror [data-node-view-wrapper] {
+.zt-tiptap-theme .editor-wrapper .ProseMirror [data-node-view-wrapper] {
     outline: none;
 }
-
-
 

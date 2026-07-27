@@ -1,4 +1,4 @@
-.editor-wrapper .ProseMirror .tableWrapper {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .tableWrapper {
     position: relative;
     overflow-x: auto;
     overflow-y: hidden; /* 仅横向滚动，不出现纵向滚动条 */
@@ -10,25 +10,25 @@
     scrollbar-color: var(--ui-border-strong) transparent;
 }
 
-.editor-wrapper .ProseMirror .tableWrapper > [data-table-actions-wrapper="true"] {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .tableWrapper > [data-table-actions-wrapper="true"] {
     box-sizing: border-box;
     vertical-align: top;
 }
 
-.editor-wrapper .ProseMirror .tableWrapper::-webkit-scrollbar {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .tableWrapper::-webkit-scrollbar {
     height: 4px;
 }
 
-.editor-wrapper .ProseMirror .tableWrapper::-webkit-scrollbar-track {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .tableWrapper::-webkit-scrollbar-track {
     background: transparent;
 }
 
-.editor-wrapper .ProseMirror .tableWrapper::-webkit-scrollbar-thumb {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .tableWrapper::-webkit-scrollbar-thumb {
     background: var(--ui-border-strong);
     border-radius: 2px;
 }
 
-.editor-wrapper .ProseMirror table {
+.zt-tiptap-theme .editor-wrapper .ProseMirror table {
     border-collapse: collapse;
     table-layout: fixed;
     margin: 0;
@@ -37,12 +37,12 @@
     min-width: 100%;
 }
 
-.editor-wrapper .ProseMirror table col {
+.zt-tiptap-theme .editor-wrapper .ProseMirror table col {
     width: var(--table-cell-default-width);
 }
 
-.editor-wrapper .ProseMirror td,
-.editor-wrapper .ProseMirror th {
+.zt-tiptap-theme .editor-wrapper .ProseMirror td,
+.zt-tiptap-theme .editor-wrapper .ProseMirror th {
     position: relative;
     border: 1px solid var(--ui-border-muted);
     padding: 8px 12px;
@@ -51,49 +51,49 @@
     word-break: break-word;
 }
 
-.editor-wrapper .ProseMirror td > p,
-.editor-wrapper .ProseMirror th > p {
+.zt-tiptap-theme .editor-wrapper .ProseMirror td > p,
+.zt-tiptap-theme .editor-wrapper .ProseMirror th > p {
     margin: 0;
     line-height: 1.5;
 }
 
-.editor-wrapper .ProseMirror th {
+.zt-tiptap-theme .editor-wrapper .ProseMirror th {
     background: var(--ui-bg-muted);
     font-weight: 600;
 }
 
-.editor-wrapper .ProseMirror th :not(pre) > code {
+.zt-tiptap-theme .editor-wrapper .ProseMirror th :not(pre) > code {
     background: color-mix(in oklab, var(--ui-bg-subtle) 88%, var(--ui-border-muted) 12%);
     border: 1px solid color-mix(in oklab, var(--ui-border-muted) 88%, var(--ui-border-strong) 12%);
     border-radius: 5px;
     font-weight: inherit;
 }
 
-.dark .editor-wrapper .ProseMirror th :not(pre) > code,
+.zt-tiptap-theme.dark .editor-wrapper .ProseMirror th :not(pre) > code,
 .zt-tiptap-theme.dark .editor-wrapper .ProseMirror th :not(pre) > code {
     background: color-mix(in oklab, var(--ui-bg-subtle) 84%, var(--ui-bg-hover) 16%);
     border-color: color-mix(in oklab, var(--ui-border-muted) 86%, var(--ui-border-strong) 14%);
 }
 
-.editor-wrapper .ProseMirror th pre code {
+.zt-tiptap-theme .editor-wrapper .ProseMirror th pre code {
     background: none;
     border: none;
     border-radius: 0;
     padding: 0;
 }
 
-.editor-wrapper .ProseMirror th pre,
-.editor-wrapper .ProseMirror td pre {
+.zt-tiptap-theme .editor-wrapper .ProseMirror th pre,
+.zt-tiptap-theme .editor-wrapper .ProseMirror td pre {
     margin: 0.375em 0;
     max-width: 100%;
     overflow-x: auto;
 }
 
-.editor-wrapper .ProseMirror .selectedCell {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .selectedCell {
     background: var(--ui-bg-table-highlight);
 }
 
-.editor-wrapper .ProseMirror .column-resize-handle {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .column-resize-handle {
     position: absolute;
     top: -1px;
     right: -2px;
@@ -105,26 +105,26 @@
     z-index: 30;
 }
 
-.editor-wrapper .ProseMirror.resize-cursor {
+.zt-tiptap-theme .editor-wrapper .ProseMirror.resize-cursor {
     cursor: col-resize;
 }
 
 /* 拖拽调整列宽时隐藏表格操作触发按钮，避免遮挡与误触 */
-.editor-wrapper .ProseMirror.resize-cursor .table-row-action-trigger,
-.editor-wrapper .ProseMirror.resize-cursor .table-column-action-trigger,
-.editor-wrapper .ProseMirror.resize-cursor .table-add-row-below-trigger,
-.editor-wrapper .ProseMirror.resize-cursor .table-add-column-right-trigger {
+.zt-tiptap-theme .editor-wrapper .ProseMirror.resize-cursor .table-row-action-trigger,
+.zt-tiptap-theme .editor-wrapper .ProseMirror.resize-cursor .table-column-action-trigger,
+.zt-tiptap-theme .editor-wrapper .ProseMirror.resize-cursor .table-add-row-below-trigger,
+.zt-tiptap-theme .editor-wrapper .ProseMirror.resize-cursor .table-add-column-right-trigger {
     opacity: 0;
     pointer-events: none;
 }
 
-.table-column-action-menu,
-.table-row-action-menu,
-.table-alignment-submenu {
-    animation: zt-table-action-menu-in 0.14s ease-out;
+.zt-tiptap-theme .table-column-action-menu,
+.zt-tiptap-theme .table-row-action-menu,
+.zt-tiptap-theme .table-alignment-submenu {
+    animation: zt-tiptap-table-action-menu-in 0.14s ease-out;
 }
 
-@keyframes zt-table-action-menu-in {
+@keyframes zt-tiptap-table-action-menu-in {
     from {
         opacity: 0;
         transform: translateY(4px) scale(0.98);
@@ -137,11 +137,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .table-column-action-menu,
-    .table-row-action-menu,
-    .table-alignment-submenu {
+    .zt-tiptap-theme .table-column-action-menu,
+    .zt-tiptap-theme .table-row-action-menu,
+    .zt-tiptap-theme .table-alignment-submenu {
         animation: none;
     }
 }
-
-

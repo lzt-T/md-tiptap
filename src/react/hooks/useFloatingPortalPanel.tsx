@@ -4,6 +4,7 @@ import {
   useRef,
   useState,
   type MouseEvent,
+  type PointerEvent,
   type ReactNode,
   type RefObject,
   type AriaRole,
@@ -74,6 +75,8 @@ export interface FloatingPortalPanelProps {
   role?: AriaRole;
   /** 鼠标按下处理器。 */
   onMouseDown?: (event: MouseEvent<HTMLDivElement>) => void;
+  /** 指针按下处理器。 */
+  onPointerDown?: (event: PointerEvent<HTMLDivElement>) => void;
   /** 面板内容。 */
   children: ReactNode;
 }
@@ -206,6 +209,7 @@ export function FloatingPortalPanel({
   zIndex = 45,
   role,
   onMouseDown,
+  onPointerDown,
   children,
 }: FloatingPortalPanelProps) {
   if (!portalContainer || !panel.positionContext) return null;
@@ -220,6 +224,7 @@ export function FloatingPortalPanel({
         visibility: "hidden",
         zIndex,
       }}
+      onPointerDown={onPointerDown}
       onMouseDown={onMouseDown}
     >
       {children}

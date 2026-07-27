@@ -1,4 +1,4 @@
-.table-size-picker {
+.zt-tiptap-theme .table-size-picker {
   padding: 8px;
   display: flex;
   flex-direction: column;
@@ -6,53 +6,76 @@
   gap: 8px;
 }
 
-.table-size-picker-grid {
+.zt-tiptap-theme .table-size-picker-grid {
   display: grid;
   grid-template-columns: repeat(var(--cols), 1fr);
   grid-template-rows: repeat(var(--rows), 1fr);
-  gap: 2px;
+  gap: 0;
   width: min-content;
 }
 
-.table-size-picker-cell {
+.zt-tiptap-theme .table-size-picker-cell {
   appearance: none;
   -webkit-appearance: none;
-  width: 14px;
-  height: 14px;
-  min-width: 14px;
-  min-height: 14px;
+  position: relative;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  min-height: 20px;
   padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.zt-tiptap-theme .table-size-picker-cell::before {
+  content: "";
+  position: absolute;
+  inset: 2px;
   border: 1px solid var(--ui-border);
   border-radius: 2px;
   background: var(--ui-bg-panel);
-  cursor: pointer;
-  transition: background 0.1s ease, border-color 0.1s ease;
+  transition:
+    background-color 0.1s ease,
+    border-color 0.1s ease;
 }
 
-.table-size-picker-cell:focus,
-.table-size-picker-cell:focus-visible {
-  outline: none;
+.zt-tiptap-theme .table-size-picker-cell:focus,
+.zt-tiptap-theme .table-size-picker-cell:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 1px;
 }
 
-.table-size-picker-cell::-moz-focus-inner {
+.zt-tiptap-theme .table-size-picker-cell::-moz-focus-inner {
   border: 0;
   padding: 0;
 }
 
-.table-size-picker-cell:hover {
+.zt-tiptap-theme .table-size-picker-cell:hover::before {
   border-color: var(--ui-border-soft);
 }
 
-.table-size-picker-cell-selected {
+.zt-tiptap-theme .table-size-picker-cell-selected::before {
   background: var(--ui-text-strong);
   border-color: var(--ui-text-strong);
 }
 
-.table-size-picker-label {
+.zt-tiptap-theme .table-size-picker-label {
   font-size: 13px;
   font-weight: 500;
   color: var(--ui-text);
   min-height: 1.25em;
 }
 
+@media (pointer: coarse) {
+  .zt-tiptap-theme .table-size-picker-cell {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+  }
 
+  .zt-tiptap-theme .table-size-picker-cell::before {
+    inset: 2px;
+  }
+}

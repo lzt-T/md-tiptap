@@ -156,7 +156,10 @@ export default function ColorPopoverPicker({
             disabled && "is-disabled",
           )}
           title={title}
+          aria-label={title}
           disabled={disabled}
+          aria-disabled={disabled}
+          aria-pressed={active}
           aria-expanded={open}
           onMouseDown={(event) => event.preventDefault()}
           onClick={handleFloatingTriggerClick}
@@ -179,7 +182,11 @@ export default function ColorPopoverPicker({
             disabled && "is-disabled",
           )}
           title={title}
+          aria-label={title}
           disabled={disabled}
+          aria-disabled={disabled}
+          aria-pressed={active}
+          aria-expanded={open}
         >
           {icon}
         </button>

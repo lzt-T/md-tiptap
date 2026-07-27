@@ -1,4 +1,4 @@
-.bubble-menu {
+.zt-tiptap-theme .bubble-menu {
   display: flex;
   background: var(--ui-bg-panel);
   border: 1px solid var(--ui-border);
@@ -6,12 +6,15 @@
   padding: 4px;
   gap: 2px;
   box-shadow: var(--ui-shadow-xl);
-  animation: fadeIn 0.15s ease;
+  animation: zt-tiptap-bubble-menu-in 0.15s ease;
   position: relative;
   z-index: 62;
+  max-width: calc(100vw - 16px);
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
-@keyframes fadeIn {
+@keyframes zt-tiptap-bubble-menu-in {
   from {
     opacity: 0;
     transform: translateY(-4px);
@@ -22,7 +25,7 @@
   }
 }
 
-.bubble-menu button {
+.zt-tiptap-theme .bubble-menu button {
   background: transparent;
   border: none;
   outline: none;
@@ -32,90 +35,100 @@
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
-  transition: all 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    opacity 0.15s ease;
   min-width: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.bubble-menu button svg {
+.zt-tiptap-theme .bubble-menu button svg {
   width: 16px;
   height: 16px;
   flex-shrink: 0;
 }
 
-.bubble-menu button span {
+.zt-tiptap-theme .bubble-menu button span {
   font-size: 14px;
   line-height: 1;
 }
 
-.bubble-menu button:hover {
+.zt-tiptap-theme .bubble-menu button:hover {
   background: var(--ui-bg-hover-soft);
   color: var(--ui-text-strong);
 }
 
-.bubble-menu button:disabled,
-.bubble-menu button.is-disabled,
-.more-menu button:disabled,
-.more-menu button.is-disabled {
+.zt-tiptap-theme .bubble-menu button:focus-visible,
+.zt-tiptap-theme .bubble-block-menu-item:focus-visible,
+.zt-tiptap-theme .more-menu button:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.zt-tiptap-theme .bubble-menu button:disabled,
+.zt-tiptap-theme .bubble-menu button.is-disabled,
+.zt-tiptap-theme .more-menu button:disabled,
+.zt-tiptap-theme .more-menu button.is-disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.bubble-menu button:disabled:hover,
-.bubble-menu button.is-disabled:hover,
-.more-menu button:disabled:hover,
-.more-menu button.is-disabled:hover {
+.zt-tiptap-theme .bubble-menu button:disabled:hover,
+.zt-tiptap-theme .bubble-menu button.is-disabled:hover,
+.zt-tiptap-theme .more-menu button:disabled:hover,
+.zt-tiptap-theme .more-menu button.is-disabled:hover {
   background: transparent;
   color: var(--ui-text);
 }
 
-.bubble-menu button.is-active {
+.zt-tiptap-theme .bubble-menu button.is-active {
   background: var(--ui-control-active);
   color: var(--ui-text-inverse);
 }
 
-.bubble-menu button strong,
-.bubble-menu button em,
-.bubble-menu button u,
-.bubble-menu button s {
+.zt-tiptap-theme .bubble-menu button strong,
+.zt-tiptap-theme .bubble-menu button em,
+.zt-tiptap-theme .bubble-menu button u,
+.zt-tiptap-theme .bubble-menu button s {
   font-style: normal;
   text-decoration: none;
 }
 
-.bubble-menu button em {
+.zt-tiptap-theme .bubble-menu button em {
   font-style: italic;
 }
 
-.bubble-menu button u {
+.zt-tiptap-theme .bubble-menu button u {
   text-decoration: underline;
 }
 
-.bubble-menu button s {
+.zt-tiptap-theme .bubble-menu button s {
   text-decoration: line-through;
 }
 
-.bubble-menu .separator {
+.zt-tiptap-theme .bubble-menu .separator {
   width: 1px;
   background: var(--ui-border);
   margin: 4px 4px;
   align-self: stretch;
 }
 
-.bubble-block-trigger {
+.zt-tiptap-theme .bubble-block-trigger {
   width: max-content;
   min-width: 88px;
   justify-content: space-between;
   gap: 6px;
 }
 
-.bubble-block-trigger-label {
+.zt-tiptap-theme .bubble-block-trigger-label {
   white-space: nowrap;
   line-height: 1.2;
 }
 
-.bubble-block-menu {
+.zt-tiptap-theme .bubble-block-menu {
   width: max-content;
   min-width: 156px;
   max-height: 300px;
@@ -127,15 +140,16 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  max-width: calc(100vw - 16px);
 }
 
-.bubble-block-menu-list {
+.zt-tiptap-theme .bubble-block-menu-list {
   min-height: 0;
   flex: 1 1 auto;
   overflow-y: auto;
 }
 
-.bubble-block-menu-title {
+.zt-tiptap-theme .bubble-block-menu-title {
   flex: 0 0 auto;
   padding: 6px 10px 4px;
   color: var(--ui-text-muted);
@@ -144,7 +158,7 @@
   line-height: 1.2;
 }
 
-.bubble-block-menu-item {
+.zt-tiptap-theme .bubble-block-menu-item {
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -162,17 +176,17 @@
   transition: background 0.15s ease;
 }
 
-.bubble-block-menu-item:hover {
+.zt-tiptap-theme .bubble-block-menu-item:hover {
   background: var(--ui-bg-hover-soft);
   color: var(--ui-text-strong);
 }
 
-.bubble-block-menu-item.is-active {
+.zt-tiptap-theme .bubble-block-menu-item.is-active {
   background: var(--ui-bg-selected);
   color: var(--ui-text-link);
 }
 
-.bubble-block-menu-icon {
+.zt-tiptap-theme .bubble-block-menu-icon {
   width: 20px;
   flex: 0 0 20px;
   display: flex;
@@ -180,13 +194,13 @@
   justify-content: center;
 }
 
-.bubble-block-menu-label {
+.zt-tiptap-theme .bubble-block-menu-label {
   line-height: 1.2;
   white-space: nowrap;
 }
 
 /* 更多菜单样式 */
-.more-menu {
+.zt-tiptap-theme .more-menu {
   background: var(--ui-bg-panel);
   border: 1px solid var(--ui-border);
   border-radius: 8px;
@@ -196,9 +210,12 @@
   flex-direction: row;
   align-items: center;
   gap: 2px;
+  max-width: calc(100vw - 16px);
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
-.more-menu button {
+.zt-tiptap-theme .more-menu button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -212,26 +229,29 @@
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
-  transition: all 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    opacity 0.15s ease;
 }
 
-.more-menu button:hover {
+.zt-tiptap-theme .more-menu button:hover {
   background: var(--ui-bg-hover-soft);
   color: var(--ui-text-strong);
 }
 
-.more-menu button.is-active {
+.zt-tiptap-theme .more-menu button.is-active {
   background: var(--ui-bg-selected);
   color: var(--ui-control-active);
 }
 
-.more-menu button svg {
+.zt-tiptap-theme .more-menu button svg {
   width: 16px;
   height: 16px;
   flex-shrink: 0;
 }
 
-.more-menu-separator {
+.zt-tiptap-theme .more-menu-separator {
   width: 1px;
   height: auto;
   align-self: stretch;
@@ -239,20 +259,20 @@
   margin: 4px 0;
 }
 
-.bubble-menu-popover-panel {
+.zt-tiptap-theme .bubble-menu-popover-panel {
   width: auto;
   padding: 0;
   border: none;
   background: transparent;
   box-shadow: none;
-  animation: bubble-menu-popover-in 0.14s ease-out;
+  animation: zt-tiptap-bubble-menu-popover-in 0.14s ease-out;
 }
 
-[data-slot="popover-content"].bubble-menu-popover-panel {
+.zt-tiptap-theme [data-slot="popover-content"].bubble-menu-popover-panel {
   width: auto;
 }
 
-@keyframes bubble-menu-popover-in {
+@keyframes zt-tiptap-bubble-menu-popover-in {
   from {
     opacity: 0;
     transform: translateY(4px) scale(0.98);
@@ -265,9 +285,16 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bubble-menu-popover-panel {
+  .zt-tiptap-theme .bubble-menu,
+  .zt-tiptap-theme .bubble-menu-popover-panel {
     animation: none;
   }
 }
 
-
+@media (pointer: coarse) {
+  .zt-tiptap-theme .bubble-menu button,
+  .zt-tiptap-theme .more-menu button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}

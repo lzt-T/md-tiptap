@@ -1,36 +1,36 @@
 /* 任务列表的 li 不显示列表符号，由复选框代替 */
-.editor-wrapper .ProseMirror ul[data-type="taskList"] li {
+.zt-tiptap-theme .editor-wrapper .ProseMirror ul[data-type="taskList"] li {
   list-style: none;
   display: flex;
 }
 
 /* Task list styles */
-.editor-wrapper .ProseMirror ul[data-type="taskList"] {
+.zt-tiptap-theme .editor-wrapper .ProseMirror ul[data-type="taskList"] {
   list-style: none;
   padding-left: 0;
   margin-left: 0;
 }
 
-.editor-wrapper .ProseMirror ul[data-type="taskList"] li {
+.zt-tiptap-theme .editor-wrapper .ProseMirror ul[data-type="taskList"] li {
   align-items: flex-start;
   gap: 8px;
 }
 
 /* label 约束在首行行高内，使复选框与第一行文字垂直居中 */
-.editor-wrapper .ProseMirror ul[data-type="taskList"] li > label {
+.zt-tiptap-theme .editor-wrapper .ProseMirror ul[data-type="taskList"] li > label {
   flex-shrink: 0;
   display: flex;
   align-items: center;
   height: 1.5em; /* 与行高一致，checkbox 由 align-items: center 居中 */
 }
 
-.editor-wrapper .ProseMirror ul[data-type="taskList"] li > div {
+.zt-tiptap-theme .editor-wrapper .ProseMirror ul[data-type="taskList"] li > div {
   flex: 1;
   min-width: 0;
 }
 
 /* 任务列表复选框：未勾选为空心方框，勾选为带勾的方框 */
-.editor-wrapper .ProseMirror ul[data-type="taskList"] li label input[type="checkbox"] {
+.zt-tiptap-theme .editor-wrapper .ProseMirror ul[data-type="taskList"] li label input[type="checkbox"] {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -47,19 +47,19 @@
   flex-shrink: 0;
 }
 
-.editor-wrapper .ProseMirror ul[data-type="taskList"] li label input[type="checkbox"]:checked {
+.zt-tiptap-theme .editor-wrapper .ProseMirror ul[data-type="taskList"] li label input[type="checkbox"]:checked {
   background: var(--primary);
   border-color: var(--primary);
 }
 
-.editor-wrapper .ProseMirror ul[data-type="taskList"] li label.task-item-checkbox-label {
+.zt-tiptap-theme .editor-wrapper .ProseMirror ul[data-type="taskList"] li label.task-item-checkbox-label {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   position: relative;
 }
 
-.editor-wrapper .ProseMirror ul[data-type="taskList"] li label .task-item-checkbox-box {
+.zt-tiptap-theme .editor-wrapper .ProseMirror ul[data-type="taskList"] li label .task-item-checkbox-box {
   position: relative;
   width: 1.125rem;
   height: 1.125rem;
@@ -68,7 +68,7 @@
   justify-content: center;
 }
 
-.editor-wrapper .ProseMirror ul[data-type="taskList"] li label .task-item-checkmark {
+.zt-tiptap-theme .editor-wrapper .ProseMirror ul[data-type="taskList"] li label .task-item-checkmark {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -82,11 +82,10 @@
   z-index: 2;
 }
 
-.editor-wrapper .ProseMirror ul[data-type="taskList"] li label .task-item-checkmark svg {
+.zt-tiptap-theme .editor-wrapper .ProseMirror ul[data-type="taskList"] li label .task-item-checkmark svg {
   display: block;
 }
 
-.editor-wrapper .ProseMirror ul[data-type="taskList"] li label input[type="checkbox"]:checked + .task-item-checkmark {
+.zt-tiptap-theme .editor-wrapper .ProseMirror ul[data-type="taskList"] li label input[type="checkbox"]:checked + .task-item-checkmark {
   opacity: 1;
 }
-

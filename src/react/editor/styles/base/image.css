@@ -1,5 +1,5 @@
 /* Image node wrapper */
-.editor-wrapper .ProseMirror .image-node-wrapper {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .image-node-wrapper {
   position: relative;
   display: block;
   width: fit-content;
@@ -7,39 +7,39 @@
   line-height: 1.5;
 }
 
-.editor-wrapper .ProseMirror .image-node-wrapper.is-error {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .image-node-wrapper.is-error {
   display: block;
   width: 100%;
 }
 
-.editor-wrapper .ProseMirror .image-node-wrapper.is-loading {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .image-node-wrapper.is-loading {
   display: block;
   width: 100%;
   min-height: 120px;
   position: relative;
 }
 
-.editor-wrapper .ProseMirror .image-node-media {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .image-node-media {
   position: relative;
   line-height: 0;
 }
 
-.editor-wrapper .ProseMirror .image-node-wrapper.is-loading .image-node-media {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .image-node-wrapper.is-loading .image-node-media {
   min-height: 120px;
 }
 
 /* 图片加载中占位：避免先空白再出图的闪烁 */
-.editor-wrapper .ProseMirror .image-loading-placeholder {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .image-loading-placeholder {
   position: absolute;
   inset: 0;
   min-height: 120px;
   width: 100%;
   background: var(--ui-bg-subtle);
   border-radius: 4px;
-  animation: image-loading-pulse 1.5s ease-in-out infinite;
+  animation: zt-tiptap-image-loading-pulse 1.5s ease-in-out infinite;
 }
 
-@keyframes image-loading-pulse {
+@keyframes zt-tiptap-image-loading-pulse {
   0%,
   100% {
     opacity: 0.6;
@@ -50,14 +50,20 @@
   }
 }
 
-.editor-wrapper .ProseMirror .image-node-wrapper img {
+@media (prefers-reduced-motion: reduce) {
+  .zt-tiptap-theme .editor-wrapper .ProseMirror .image-loading-placeholder {
+    animation: none;
+  }
+}
+
+.zt-tiptap-theme .editor-wrapper .ProseMirror .image-node-wrapper img {
   display: block;
   max-width: 100%;
   height: auto;
   border-radius: 4px;
 }
 
-.editor-wrapper .ProseMirror .image-caption-input {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .image-caption-input {
   display: block;
   box-sizing: border-box;
   width: 100%;
@@ -79,16 +85,16 @@
   transition: color 0.15s ease;
 }
 
-.editor-wrapper .ProseMirror .image-caption-input::placeholder {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .image-caption-input::placeholder {
   color: var(--ui-text-muted);
   opacity: 0.72;
 }
 
-.editor-wrapper .ProseMirror .image-caption-input:focus {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .image-caption-input:focus {
   color: var(--ui-text);
 }
 
-.editor-wrapper .ProseMirror .image-caption-text {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .image-caption-text {
   display: block;
   box-sizing: border-box;
   width: 100%;
@@ -102,27 +108,27 @@
   white-space: pre-wrap;
 }
 
-.editor-wrapper .ProseMirror .image-node-wrapper img.image-selected,
-.editor-wrapper .ProseMirror .image-node-wrapper.ProseMirror-selectednode img,
-.editor-wrapper .ProseMirror .image-node-wrapper .image-error-placeholder.image-selected,
-.editor-wrapper .ProseMirror .image-node-wrapper.ProseMirror-selectednode .image-error-placeholder {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .image-node-wrapper img.image-selected,
+.zt-tiptap-theme .editor-wrapper .ProseMirror .image-node-wrapper.ProseMirror-selectednode img,
+.zt-tiptap-theme .editor-wrapper .ProseMirror .image-node-wrapper .image-error-placeholder.image-selected,
+.zt-tiptap-theme .editor-wrapper .ProseMirror .image-node-wrapper.ProseMirror-selectednode .image-error-placeholder {
   outline: 2px solid var(--ui-control-active);
   outline-offset: 2px;
   border-radius: 4px;
 }
 
-.editor-container.is-editor-blurred .editor-wrapper .ProseMirror .image-node-wrapper img.image-selected,
-.editor-container.is-editor-blurred .editor-wrapper .ProseMirror .image-node-wrapper.ProseMirror-selectednode img,
-.editor-container.is-editor-blurred .editor-wrapper .ProseMirror .image-node-wrapper .image-error-placeholder.image-selected,
-.editor-container.is-editor-focus-unstable .editor-wrapper .ProseMirror .image-node-wrapper img.image-selected,
-.editor-container.is-editor-focus-unstable .editor-wrapper .ProseMirror .image-node-wrapper.ProseMirror-selectednode img,
-.editor-container.is-editor-focus-unstable .editor-wrapper .ProseMirror .image-node-wrapper .image-error-placeholder.image-selected,
-.editor-container.is-editor-focus-unstable .editor-wrapper .ProseMirror .image-node-wrapper.ProseMirror-selectednode .image-error-placeholder,
-.editor-container.is-editor-blurred .editor-wrapper .ProseMirror .image-node-wrapper.ProseMirror-selectednode .image-error-placeholder {
+.zt-tiptap-theme.editor-container.is-editor-blurred .editor-wrapper .ProseMirror .image-node-wrapper img.image-selected,
+.zt-tiptap-theme.editor-container.is-editor-blurred .editor-wrapper .ProseMirror .image-node-wrapper.ProseMirror-selectednode img,
+.zt-tiptap-theme.editor-container.is-editor-blurred .editor-wrapper .ProseMirror .image-node-wrapper .image-error-placeholder.image-selected,
+.zt-tiptap-theme.editor-container.is-editor-focus-unstable .editor-wrapper .ProseMirror .image-node-wrapper img.image-selected,
+.zt-tiptap-theme.editor-container.is-editor-focus-unstable .editor-wrapper .ProseMirror .image-node-wrapper.ProseMirror-selectednode img,
+.zt-tiptap-theme.editor-container.is-editor-focus-unstable .editor-wrapper .ProseMirror .image-node-wrapper .image-error-placeholder.image-selected,
+.zt-tiptap-theme.editor-container.is-editor-focus-unstable .editor-wrapper .ProseMirror .image-node-wrapper.ProseMirror-selectednode .image-error-placeholder,
+.zt-tiptap-theme.editor-container.is-editor-blurred .editor-wrapper .ProseMirror .image-node-wrapper.ProseMirror-selectednode .image-error-placeholder {
   outline: none;
 }
 
-.editor-wrapper .ProseMirror .image-delete-btn {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .image-delete-btn {
   position: absolute;
   top: 8px;
   right: 8px;
@@ -142,16 +148,16 @@
   box-shadow: var(--ui-shadow-md);
 }
 
-.editor-wrapper .ProseMirror .image-node-wrapper:hover .image-delete-btn {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .image-node-wrapper:hover .image-delete-btn {
   opacity: 1;
 }
 
-.editor-wrapper .ProseMirror .image-delete-btn:hover {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .image-delete-btn:hover {
   background: var(--ui-image-badge-hover-bg);
   color: var(--ui-text-muted-strong);
 }
 
-.editor-wrapper .ProseMirror .image-resize-handle {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .image-resize-handle {
   position: absolute;
   top: 50%;
   width: 14px;
@@ -166,7 +172,7 @@
   transition: opacity 0.15s ease;
 }
 
-.editor-wrapper .ProseMirror .image-resize-handle::before {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .image-resize-handle::before {
   content: "";
   position: absolute;
   top: 50%;
@@ -179,20 +185,20 @@
   transform: translate(-50%, -50%);
 }
 
-.editor-wrapper .ProseMirror .image-resize-handle-left {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .image-resize-handle-left {
   left: 6px;
 }
 
-.editor-wrapper .ProseMirror .image-resize-handle-right {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .image-resize-handle-right {
   right: 6px;
 }
 
-.editor-wrapper .ProseMirror .image-node-wrapper:hover .image-resize-handle,
-.editor-wrapper .ProseMirror .image-node-wrapper.is-resizing .image-resize-handle {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .image-node-wrapper:hover .image-resize-handle,
+.zt-tiptap-theme .editor-wrapper .ProseMirror .image-node-wrapper.is-resizing .image-resize-handle {
   opacity: 1;
 }
 
-.editor-wrapper .ProseMirror .image-align-menu {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .image-align-menu {
   position: absolute;
   z-index: 42;
   display: flex;
@@ -206,13 +212,13 @@
   box-shadow: var(--ui-shadow-xl);
 }
 
-.editor-wrapper .ProseMirror .image-align-menu.is-above {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .image-align-menu.is-above {
   top: -46px;
   left: 50%;
   transform: translateX(-50%);
 }
 
-.editor-wrapper .ProseMirror .image-align-menu.is-inside {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .image-align-menu.is-inside {
   top: 8px;
   left: 50%;
   transform: translateX(-50%);
@@ -223,12 +229,12 @@
   scrollbar-width: thin;
 }
 
-.editor-container.is-editor-blurred .editor-wrapper .ProseMirror .image-align-menu,
-.editor-container.is-editor-focus-unstable .editor-wrapper .ProseMirror .image-align-menu {
+.zt-tiptap-theme.editor-container.is-editor-blurred .editor-wrapper .ProseMirror .image-align-menu,
+.zt-tiptap-theme.editor-container.is-editor-focus-unstable .editor-wrapper .ProseMirror .image-align-menu {
   display: none;
 }
 
-.editor-wrapper .ProseMirror .image-align-menu-btn {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .image-align-menu-btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -242,24 +248,24 @@
   transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-.editor-wrapper .ProseMirror .image-align-menu-btn:hover {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .image-align-menu-btn:hover {
   background: var(--ui-bg-hover-soft);
   color: var(--ui-text-strong);
 }
 
-.editor-wrapper .ProseMirror .image-align-menu-btn.is-active {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .image-align-menu-btn.is-active {
   background: var(--ui-control-active);
   color: var(--ui-text-inverse);
 }
 
-.editor-wrapper .ProseMirror .image-align-menu-btn svg {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .image-align-menu-btn svg {
   width: 16px;
   height: 16px;
   flex-shrink: 0;
 }
 
 /* 图片加载失败占位 */
-.editor-wrapper .ProseMirror .image-error-placeholder {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .image-error-placeholder {
   min-height: 120px;
   width: 100%;
   display: flex;
@@ -274,9 +280,7 @@
   font-size: 13px;
 }
 
-.editor-wrapper .ProseMirror .image-error-placeholder svg {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .image-error-placeholder svg {
   flex-shrink: 0;
   opacity: 0.7;
 }
-
-

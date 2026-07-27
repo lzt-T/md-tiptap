@@ -686,7 +686,7 @@ import 'zt-reactjs-tiptap/style.css'
 
 2. **导入顺序**：若希望用你项目的样式覆盖编辑器默认样式，建议先导入 `zt-reactjs-tiptap/style.css`，再导入你的全局样式
 
-3. **作用域主题变量**：本库的 shadcn 变量只在 `.zt-tiptap-theme` 作用域内生效，不会覆盖宿主项目的全局 `:root` 变量
+3. **作用域主题变量与组件样式**：本库的 shadcn 变量和编辑器组件选择器只在 `.zt-tiptap-theme` 作用域内生效，不会覆盖宿主项目的全局 `:root` 变量或同名类
 
 4. **局部主题定制**：可在宿主项目中按编辑器容器局部覆盖变量，例如：
 
@@ -699,7 +699,7 @@ import 'zt-reactjs-tiptap/style.css'
 
 5. **UI 主题 Token 化**：编辑器 UI（工具栏、菜单、表格操作、弹窗、输入框、滚动条等）已统一使用主题 token。默认 `light` 视觉与旧版保持一致，切换 `theme="dark"` 时同一套 token 会自动映射为暗色值。
 
-6. **弹层/对话框**：编辑器使用分层 Portal。图片、视频、公式、附件等全屏 Dialog 挂载到 `document.body` 下的 `.zt-tiptap-dialog-host` 隔离宿主，并同步 `.zt-tiptap-theme` 作用域变量，避免被父级 `overflow` 或 `transform` 裁切；工具栏/BubbleMenu 的全局类菜单仍挂载到 `.zt-tiptap-portal`；代码块、表格、BubbleMenu 选区附属面板挂载到 `.editor-wrapper` 内的 `.zt-tiptap-content-portal`，会随编辑器滚动视口裁剪。若样式仍异常，优先检查宿主全局 reset 或高优先级选择器
+6. **弹层/对话框**：编辑器使用分层 Portal。图片、视频、公式、附件等全屏 Dialog 挂载到 `document.body` 下同时带有 `.zt-tiptap-dialog-host` 与 `.zt-tiptap-theme` 的隔离宿主，Dialog 的通用 `[data-slot]` 规则也仅在该宿主内生效，避免影响宿主项目的 Dialog；工具栏/BubbleMenu 的全局类菜单仍挂载到 `.zt-tiptap-portal`；代码块、表格、BubbleMenu 选区附属面板挂载到 `.editor-wrapper` 内的 `.zt-tiptap-content-portal`，会随编辑器滚动视口裁剪。若样式仍异常，优先检查宿主全局 reset 或高优先级选择器
 
 ## 开发
 

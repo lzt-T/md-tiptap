@@ -1,22 +1,23 @@
-.color-picker {
+.zt-tiptap-theme .color-picker {
   background: var(--ui-bg-panel);
   border: 1px solid var(--ui-border);
   border-radius: 12px;
   padding: 12px;
   width: 214px;
+  max-width: calc(100vw - 16px);
   box-sizing: border-box;
   box-shadow: var(--ui-shadow-popover);
   display: grid;
   gap: 10px;
 }
 
-.color-picker-grid {
+.zt-tiptap-theme .color-picker-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 10px;
 }
 
-.color-picker-swatch {
+.zt-tiptap-theme .color-picker-swatch {
   width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -27,24 +28,30 @@
   padding: 0;
 }
 
-.color-picker-swatch:hover {
+.zt-tiptap-theme .color-picker-swatch:hover {
   transform: translateY(-1px);
   border-color: var(--ui-control-active);
   box-shadow: 0 2px 8px color-mix(in oklch, var(--ui-control-active) 30%, transparent);
 }
 
-.color-picker-swatch--selected {
+.zt-tiptap-theme .color-picker-swatch:focus-visible,
+.zt-tiptap-theme .color-picker-custom-btn:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.zt-tiptap-theme .color-picker-swatch--selected {
   border-color: var(--ui-control-active);
   box-shadow: 0 0 0 2px color-mix(in oklch, var(--ui-control-active) 25%, transparent);
 }
 
-.color-picker-swatch--transparent {
+.zt-tiptap-theme .color-picker-swatch--transparent {
   background: var(--ui-bg-panel);
   position: relative;
   overflow: hidden;
 }
 
-.color-picker-swatch--transparent::before {
+.zt-tiptap-theme .color-picker-swatch--transparent::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -57,7 +64,7 @@
   );
 }
 
-.color-picker-custom-btn {
+.zt-tiptap-theme .color-picker-custom-btn {
   width: 100%;
   height: 100%;
   box-sizing: border-box;
@@ -74,19 +81,19 @@
   text-align: center;
 }
 
-.color-picker-custom-btn:hover {
+.zt-tiptap-theme .color-picker-custom-btn:hover {
   background: var(--ui-bg-hover-soft);
   border-color: var(--ui-border-selected);
   color: var(--ui-text-strong);
 }
 
-.color-picker-custom-slot {
+.zt-tiptap-theme .color-picker-custom-slot {
   width: 100%;
   height: 52px;
   box-sizing: border-box;
 }
 
-.color-picker-custom {
+.zt-tiptap-theme .color-picker-custom {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -99,7 +106,7 @@
   border-radius: 8px;
 }
 
-.color-picker-custom-preview {
+.zt-tiptap-theme .color-picker-custom-preview {
   width: 18px;
   height: 18px;
   border-radius: 999px;
@@ -112,7 +119,7 @@
   flex-shrink: 0;
 }
 
-.color-picker-input {
+.zt-tiptap-theme .color-picker-input {
   flex: 1;
   width: 100%;
   min-width: 0;
@@ -129,21 +136,21 @@
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.color-picker-input::placeholder {
+.zt-tiptap-theme .color-picker-input::placeholder {
   color: var(--ui-text-placeholder);
 }
 
-.color-picker-input:focus {
+.zt-tiptap-theme .color-picker-input:focus {
   border-color: var(--ui-border-selected);
   box-shadow: 0 0 0 3px color-mix(in oklch, var(--ui-control-active) 18%, transparent);
 }
 
-.color-picker-input.is-invalid {
+.zt-tiptap-theme .color-picker-input.is-invalid {
   border-color: var(--ui-danger);
   box-shadow: 0 0 0 3px color-mix(in oklch, var(--ui-danger) 14%, transparent);
 }
 
-.color-picker-confirm-btn {
+.zt-tiptap-theme .color-picker-confirm-btn {
   width: 30px;
   height: 30px;
   border-radius: 7px;
@@ -159,20 +166,19 @@
   transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
-.color-picker-confirm-btn:hover:not(:disabled) {
+.zt-tiptap-theme .color-picker-confirm-btn:hover:not(:disabled) {
   background: var(--ui-bg-hover-soft);
   border-color: var(--ui-border-selected);
   color: var(--ui-control-active);
 }
 
-.color-picker-confirm-btn:focus-visible {
+.zt-tiptap-theme .color-picker-confirm-btn:focus-visible {
   outline: none;
   border-color: var(--ui-border-selected);
   box-shadow: 0 0 0 3px color-mix(in oklch, var(--ui-control-active) 18%, transparent);
 }
 
-.color-picker-confirm-btn:disabled {
+.zt-tiptap-theme .color-picker-confirm-btn:disabled {
   cursor: not-allowed;
   opacity: 0.5;
 }
-

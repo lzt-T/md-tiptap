@@ -1,6 +1,6 @@
 /* 表格下方/右侧加号按钮：聚焦时显示，点击在末尾插行/插列 */
-.table-add-row-below-trigger,
-.table-add-column-right-trigger {
+.zt-tiptap-theme .table-add-row-below-trigger,
+.zt-tiptap-theme .table-add-column-right-trigger {
   position: absolute;
   padding: 0;
   display: flex;
@@ -16,16 +16,15 @@
   box-sizing: border-box;
 }
 
-.table-add-row-below-trigger:hover,
-.table-add-column-right-trigger:hover {
+.zt-tiptap-theme .table-add-row-below-trigger:hover,
+.zt-tiptap-theme .table-add-column-right-trigger:hover {
   background: var(--ui-border-muted);
   border-color: var(--ui-border-strong);
   color: var(--ui-text-muted-strong);
 }
 
-.table-add-trigger-icon {
+.zt-tiptap-theme .table-add-trigger-icon {
   flex-shrink: 0;
   color: inherit;
 }
-
 

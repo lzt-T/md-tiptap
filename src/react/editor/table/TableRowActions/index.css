@@ -1,5 +1,5 @@
 /* 行侧竖三点按钮：绝对定位于每行左侧，高度与行高一致 */
-.table-row-action-trigger {
+.zt-tiptap-theme .table-row-action-trigger {
   position: absolute;
   width: 10px;
   min-height: 20px;
@@ -18,19 +18,19 @@
   box-sizing: border-box;
 }
 
-.table-row-action-trigger:hover {
+.zt-tiptap-theme .table-row-action-trigger:hover {
   background: var(--ui-border-muted);
   border-color: var(--ui-border-strong);
   color: var(--ui-text-muted-strong);
 }
 
-.table-row-action-icon {
+.zt-tiptap-theme .table-row-action-icon {
   flex-shrink: 0;
   color: inherit;
 }
 
 /* 行操作弹出菜单：横向图标栏，与 TableMenu 一致 */
-.table-row-action-menu {
+.zt-tiptap-theme .table-row-action-menu {
   background: var(--ui-text-inverse);
   border: 1px solid var(--ui-border-strong);
   border-radius: 6px;
@@ -41,7 +41,7 @@
   box-shadow: var(--ui-shadow-lg);
 }
 
-.table-row-action-menu button {
+.zt-tiptap-theme .table-row-action-menu button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -52,27 +52,42 @@
   width: 28px;
   height: 28px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    opacity 0.15s ease;
   color: var(--ui-text-muted-strong);
 }
 
-.table-row-action-menu button:hover:not(:disabled) {
+.zt-tiptap-theme .table-row-action-menu button:hover:not(:disabled) {
   background: var(--ui-bg-selected-strong);
   border-color: var(--ui-border-selected);
   color: var(--ui-text-selected);
 }
 
-.table-row-action-menu button:disabled {
+.zt-tiptap-theme .table-row-action-menu button:disabled {
   opacity: 0.3;
   cursor: not-allowed;
 }
 
-.table-row-action-menu .separator {
+.zt-tiptap-theme .table-row-action-trigger:focus-visible,
+.zt-tiptap-theme .table-row-action-menu button:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.zt-tiptap-theme .table-row-action-menu .separator {
   width: 1px;
   height: 20px;
   background: var(--ui-border-muted);
   margin: 0 2px;
 }
 
-
+@media (pointer: coarse) {
+  .zt-tiptap-theme .table-row-action-menu button {
+    width: 44px;
+    height: 44px;
+  }
+}
 

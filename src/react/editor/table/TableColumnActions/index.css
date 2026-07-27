@@ -1,5 +1,5 @@
 /* 列上方操作按钮：横条，宽度与单元格一致，横向三点图标 */
-.table-column-action-trigger {
+.zt-tiptap-theme .table-column-action-trigger {
   position: absolute;
   min-width: 0;
   padding: 0;
@@ -16,19 +16,19 @@
   box-sizing: border-box;
 }
 
-.table-column-action-trigger:hover {
+.zt-tiptap-theme .table-column-action-trigger:hover {
   background: var(--ui-border-muted);
   border-color: var(--ui-border-strong);
   color: var(--ui-text-muted-strong);
 }
 
-.table-column-action-icon {
+.zt-tiptap-theme .table-column-action-icon {
   flex-shrink: 0;
   color: inherit;
 }
 
 /* 列操作弹出菜单：与 TableRowActions 菜单一致 */
-.table-column-action-menu {
+.zt-tiptap-theme .table-column-action-menu {
   background: var(--ui-text-inverse);
   border: 1px solid var(--ui-border-strong);
   border-radius: 6px;
@@ -39,7 +39,7 @@
   box-shadow: var(--ui-shadow-lg);
 }
 
-.table-column-action-menu button {
+.zt-tiptap-theme .table-column-action-menu button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -50,26 +50,41 @@
   width: 28px;
   height: 28px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    opacity 0.15s ease;
   color: var(--ui-text-muted-strong);
 }
 
-.table-column-action-menu button:hover:not(:disabled) {
+.zt-tiptap-theme .table-column-action-menu button:hover:not(:disabled) {
   background: var(--ui-bg-selected-strong);
   border-color: var(--ui-border-selected);
   color: var(--ui-text-selected);
 }
 
-.table-column-action-menu button:disabled {
+.zt-tiptap-theme .table-column-action-menu button:disabled {
   opacity: 0.3;
   cursor: not-allowed;
 }
 
-.table-column-action-menu .separator {
+.zt-tiptap-theme .table-column-action-trigger:focus-visible,
+.zt-tiptap-theme .table-column-action-menu button:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.zt-tiptap-theme .table-column-action-menu .separator {
   width: 1px;
   height: 20px;
   background: var(--ui-border-muted);
   margin: 0 2px;
 }
 
-
+@media (pointer: coarse) {
+  .zt-tiptap-theme .table-column-action-menu button {
+    width: 44px;
+    height: 44px;
+  }
+}

@@ -1,11 +1,11 @@
-.table-alignment-trigger {
+.zt-tiptap-theme .table-alignment-trigger {
   width: 28px !important;
   min-width: 28px !important;
   justify-content: center !important;
   padding: 0 !important;
 }
 
-.table-alignment-submenu {
+.zt-tiptap-theme .table-alignment-submenu {
   background: var(--ui-text-inverse);
   border: 1px solid var(--ui-border-strong);
   border-radius: 6px;
@@ -16,7 +16,7 @@
   box-shadow: var(--ui-shadow-lg);
 }
 
-.table-alignment-submenu button {
+.zt-tiptap-theme .table-alignment-submenu button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -28,24 +28,39 @@
   padding: 0;
   color: var(--ui-text-muted-strong);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
 }
 
-.table-alignment-submenu button:hover {
+.zt-tiptap-theme .table-alignment-submenu button:hover {
   background: var(--ui-bg-selected-strong);
   border-color: var(--ui-border-selected);
   color: var(--ui-text-selected);
 }
 
-.table-alignment-submenu button.is-active {
+.zt-tiptap-theme .table-alignment-submenu button.is-active {
   background: var(--ui-bg-selected-strong);
   border-color: var(--ui-border-selected);
   color: var(--ui-text-selected);
 }
 
-.table-alignment-separator {
+.zt-tiptap-theme .table-alignment-submenu button:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.zt-tiptap-theme .table-alignment-separator {
   width: 1px;
   height: 20px;
   background: var(--ui-border-muted);
   margin: 0 2px;
+}
+
+@media (pointer: coarse) {
+  .zt-tiptap-theme .table-alignment-submenu button {
+    width: 44px;
+    height: 44px;
+  }
 }

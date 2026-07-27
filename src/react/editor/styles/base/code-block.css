@@ -18,7 +18,7 @@
   --code-token-number: oklch(0.58 0.13 255);
 }
 
-.dark .zt-tiptap-theme,
+.zt-tiptap-theme.dark .zt-tiptap-theme,
 .zt-tiptap-theme.dark {
   --code-block-bg: color-mix(in oklab, var(--muted) 72%, var(--card) 28%);
   --code-block-fg: color-mix(in oklab, var(--foreground) 94%, var(--muted-foreground) 6%);
@@ -29,7 +29,7 @@
   --code-token-number: oklch(0.75 0.11 255);
 }
 
-.editor-wrapper .ProseMirror pre {
+.zt-tiptap-theme .editor-wrapper .ProseMirror pre {
   position: relative;
   display: block;
   width: 100%;
@@ -45,73 +45,73 @@
   overflow-x: auto;
 }
 
-.dark .editor-wrapper .ProseMirror pre,
+.zt-tiptap-theme.dark .editor-wrapper .ProseMirror pre,
 .zt-tiptap-theme.dark .editor-wrapper .ProseMirror pre {
   background: color-mix(in oklab, var(--ui-bg-subtle) 76%, var(--ui-bg-selected) 24%);
   border: none;
 }
 
-.editor-wrapper .ProseMirror pre code {
+.zt-tiptap-theme .editor-wrapper .ProseMirror pre code {
   display: block;
   font-family: inherit;
 }
 
-.editor-wrapper .ProseMirror .hljs-comment,
-.editor-wrapper .ProseMirror .hljs-quote {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .hljs-comment,
+.zt-tiptap-theme .editor-wrapper .ProseMirror .hljs-quote {
   color: var(--code-token-comment);
 }
 
-.editor-wrapper .ProseMirror .hljs-keyword,
-.editor-wrapper .ProseMirror .hljs-selector-tag,
-.editor-wrapper .ProseMirror .hljs-literal,
-.editor-wrapper .ProseMirror .hljs-section,
-.editor-wrapper .ProseMirror .hljs-link {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .hljs-keyword,
+.zt-tiptap-theme .editor-wrapper .ProseMirror .hljs-selector-tag,
+.zt-tiptap-theme .editor-wrapper .ProseMirror .hljs-literal,
+.zt-tiptap-theme .editor-wrapper .ProseMirror .hljs-section,
+.zt-tiptap-theme .editor-wrapper .ProseMirror .hljs-link {
   color: var(--code-token-keyword);
 }
 
-.editor-wrapper .ProseMirror .hljs-string,
-.editor-wrapper .ProseMirror .hljs-title,
-.editor-wrapper .ProseMirror .hljs-name,
-.editor-wrapper .ProseMirror .hljs-type,
-.editor-wrapper .ProseMirror .hljs-attribute,
-.editor-wrapper .ProseMirror .hljs-symbol,
-.editor-wrapper .ProseMirror .hljs-bullet,
-.editor-wrapper .ProseMirror .hljs-addition,
-.editor-wrapper .ProseMirror .hljs-variable,
-.editor-wrapper .ProseMirror .hljs-template-tag,
-.editor-wrapper .ProseMirror .hljs-template-variable {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .hljs-string,
+.zt-tiptap-theme .editor-wrapper .ProseMirror .hljs-title,
+.zt-tiptap-theme .editor-wrapper .ProseMirror .hljs-name,
+.zt-tiptap-theme .editor-wrapper .ProseMirror .hljs-type,
+.zt-tiptap-theme .editor-wrapper .ProseMirror .hljs-attribute,
+.zt-tiptap-theme .editor-wrapper .ProseMirror .hljs-symbol,
+.zt-tiptap-theme .editor-wrapper .ProseMirror .hljs-bullet,
+.zt-tiptap-theme .editor-wrapper .ProseMirror .hljs-addition,
+.zt-tiptap-theme .editor-wrapper .ProseMirror .hljs-variable,
+.zt-tiptap-theme .editor-wrapper .ProseMirror .hljs-template-tag,
+.zt-tiptap-theme .editor-wrapper .ProseMirror .hljs-template-variable {
   color: var(--code-token-string);
 }
 
-.editor-wrapper .ProseMirror .hljs-number,
-.editor-wrapper .ProseMirror .hljs-regexp,
-.editor-wrapper .ProseMirror .hljs-meta,
-.editor-wrapper .ProseMirror .hljs-built_in,
-.editor-wrapper .ProseMirror .hljs-builtin-name,
-.editor-wrapper .ProseMirror .hljs-doctag,
-.editor-wrapper .ProseMirror .hljs-attr,
-.editor-wrapper .ProseMirror .hljs-selector-id,
-.editor-wrapper .ProseMirror .hljs-selector-class,
-.editor-wrapper .ProseMirror .hljs-selector-attr,
-.editor-wrapper .ProseMirror .hljs-selector-pseudo {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .hljs-number,
+.zt-tiptap-theme .editor-wrapper .ProseMirror .hljs-regexp,
+.zt-tiptap-theme .editor-wrapper .ProseMirror .hljs-meta,
+.zt-tiptap-theme .editor-wrapper .ProseMirror .hljs-built_in,
+.zt-tiptap-theme .editor-wrapper .ProseMirror .hljs-builtin-name,
+.zt-tiptap-theme .editor-wrapper .ProseMirror .hljs-doctag,
+.zt-tiptap-theme .editor-wrapper .ProseMirror .hljs-attr,
+.zt-tiptap-theme .editor-wrapper .ProseMirror .hljs-selector-id,
+.zt-tiptap-theme .editor-wrapper .ProseMirror .hljs-selector-class,
+.zt-tiptap-theme .editor-wrapper .ProseMirror .hljs-selector-attr,
+.zt-tiptap-theme .editor-wrapper .ProseMirror .hljs-selector-pseudo {
   color: var(--code-token-number);
 }
 
-.editor-wrapper .ProseMirror .hljs-emphasis {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .hljs-emphasis {
   font-style: italic;
 }
 
-.editor-wrapper .ProseMirror .hljs-strong {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .hljs-strong {
   font-weight: 700;
 }
 
-.code-block-language-menu {
+.zt-tiptap-theme .code-block-language-menu {
   z-index: 45;
   pointer-events: auto;
-  animation: code-block-language-menu-in 0.14s ease-out;
+  animation: zt-tiptap-code-block-language-menu-in 0.14s ease-out;
 }
 
-.code-block-control-bar {
+.zt-tiptap-theme .code-block-control-bar {
   display: inline-flex;
   align-items: center;
   border: 1px solid var(--ui-border);
@@ -122,12 +122,12 @@
   overflow: hidden;
 }
 
-.code-block-control-bar:focus-within {
+.zt-tiptap-theme .code-block-control-bar:focus-within {
   border-color: var(--ui-border);
   box-shadow: var(--shadow-xs);
 }
 
-.code-block-control-language-trigger {
+.zt-tiptap-theme .code-block-control-language-trigger {
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
@@ -143,17 +143,17 @@
   cursor: pointer;
 }
 
-.code-block-control-language-trigger:focus-visible {
+.zt-tiptap-theme .code-block-control-language-trigger:focus-visible {
   outline: none;
 }
 
-.code-block-control-language-text {
+.zt-tiptap-theme .code-block-control-language-text {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.code-block-action-bar {
+.zt-tiptap-theme .code-block-action-bar {
   display: inline-flex;
   align-items: center;
   border: 1px solid var(--ui-border);
@@ -165,7 +165,7 @@
   pointer-events: auto;
 }
 
-.code-block-control-action-btn {
+.zt-tiptap-theme .code-block-control-action-btn {
   width: 1.75rem;
   height: 1.75rem;
   border: none;
@@ -180,24 +180,24 @@
     background-color 0.15s ease;
 }
 
-.code-block-control-action-btn + .code-block-control-action-btn {
+.zt-tiptap-theme .code-block-control-action-btn + .code-block-control-action-btn {
   border-left: 1px solid var(--ui-border);
 }
 
-.code-block-control-action-btn:hover:not(:disabled) {
+.zt-tiptap-theme .code-block-control-action-btn:hover:not(:disabled) {
   background: var(--ui-bg-hover-soft);
 }
 
-.code-block-control-action-btn:focus-visible {
+.zt-tiptap-theme .code-block-control-action-btn:focus-visible {
   outline: none;
 }
 
-.code-block-control-action-btn:disabled {
+.zt-tiptap-theme .code-block-control-action-btn:disabled {
   cursor: not-allowed;
   color: color-mix(in oklab, var(--muted-foreground) 65%, transparent);
 }
 
-.code-block-language-select-content {
+.zt-tiptap-theme .code-block-language-select-content {
   width: 220px;
   min-width: 150px;
   max-height: 210px;
@@ -209,14 +209,14 @@
   box-shadow: var(--ui-shadow-popover);
   outline: none;
   pointer-events: auto;
-  animation: code-block-language-menu-in 0.14s ease-out;
+  animation: zt-tiptap-code-block-language-menu-in 0.14s ease-out;
 }
 
-.code-block-language-command {
+.zt-tiptap-theme .code-block-language-command {
   border-radius: 0.375rem;
 }
 
-.code-block-language-command [data-slot="command-input-wrapper"] {
+.zt-tiptap-theme .code-block-language-command [data-slot="command-input-wrapper"] {
   height: 2rem;
   box-sizing: border-box;
   align-items: center;
@@ -224,7 +224,7 @@
   padding: 0 0.5rem;
 }
 
-.code-block-language-command [data-slot="command-input"] {
+.zt-tiptap-theme .code-block-language-command [data-slot="command-input"] {
   appearance: none;
   border: 0;
   box-shadow: none;
@@ -235,36 +235,36 @@
   outline: none;
 }
 
-.code-block-language-list {
+.zt-tiptap-theme .code-block-language-list {
   max-height: 170px;
   overflow-y: auto;
   padding: 0.1875rem;
 }
 
-.code-block-language-option {
+.zt-tiptap-theme .code-block-language-option {
   font-size: 13px;
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
   cursor: pointer;
 }
 
-.code-block-language-empty {
+.zt-tiptap-theme .code-block-language-empty {
   padding: 0.5rem 0.625rem;
   font-size: 12px;
   color: var(--muted-foreground);
 }
 
-.editor-wrapper .code-block-action-spin {
-  animation: code-block-action-spin 1s linear infinite;
+.zt-tiptap-theme .editor-wrapper .zt-tiptap-code-block-action-spin {
+  animation: zt-tiptap-code-block-action-spin 1s linear infinite;
 }
 
-@keyframes code-block-action-spin {
+@keyframes zt-tiptap-code-block-action-spin {
   to {
     transform: rotate(360deg);
   }
 }
 
-@keyframes code-block-language-menu-in {
+@keyframes zt-tiptap-code-block-language-menu-in {
   from {
     opacity: 0;
     transform: translateY(4px) scale(0.98);
@@ -277,11 +277,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .code-block-language-menu,
-  .code-block-language-select-content {
+  .zt-tiptap-theme .code-block-language-menu,
+  .zt-tiptap-theme .code-block-language-select-content {
     animation: none;
   }
 }
-
 
 

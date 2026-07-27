@@ -84,8 +84,10 @@ export default function BubbleMoreMenu({
               : "bubble-menu-btn"
         }
         title={locale.bubbleMenu.superscript}
+        aria-label={locale.bubbleMenu.superscript}
         disabled={isSuperscriptDisabled}
         aria-disabled={isSuperscriptDisabled}
+        aria-pressed={isSuperscriptActive}
       >
         <Superscript size={16} />
       </button>
@@ -103,8 +105,10 @@ export default function BubbleMoreMenu({
               : "bubble-menu-btn"
         }
         title={locale.bubbleMenu.subscript}
+        aria-label={locale.bubbleMenu.subscript}
         disabled={isSubscriptDisabled}
         aria-disabled={isSubscriptDisabled}
+        aria-pressed={isSubscriptActive}
       >
         <Subscript size={16} />
       </button>
@@ -116,6 +120,8 @@ export default function BubbleMoreMenu({
         }}
         className={isAlignLeftActive ? "bubble-menu-btn is-active" : "bubble-menu-btn"}
         title={locale.bubbleMenu.alignLeft}
+        aria-label={locale.bubbleMenu.alignLeft}
+        aria-pressed={isAlignLeftActive}
       >
         <AlignLeft size={16} />
       </button>
@@ -126,6 +132,8 @@ export default function BubbleMoreMenu({
         }}
         className={isAlignCenterActive ? "bubble-menu-btn is-active" : "bubble-menu-btn"}
         title={locale.bubbleMenu.alignCenter}
+        aria-label={locale.bubbleMenu.alignCenter}
+        aria-pressed={isAlignCenterActive}
       >
         <AlignCenter size={16} />
       </button>
@@ -136,6 +144,8 @@ export default function BubbleMoreMenu({
         }}
         className={isAlignRightActive ? "bubble-menu-btn is-active" : "bubble-menu-btn"}
         title={locale.bubbleMenu.alignRight}
+        aria-label={locale.bubbleMenu.alignRight}
+        aria-pressed={isAlignRightActive}
       >
         <AlignRight size={16} />
       </button>
@@ -146,6 +156,8 @@ export default function BubbleMoreMenu({
         }}
         className={isJustifyActive ? "bubble-menu-btn is-active" : "bubble-menu-btn"}
         title={locale.bubbleMenu.justify}
+        aria-label={locale.bubbleMenu.justify}
+        aria-pressed={isJustifyActive}
       >
         <AlignJustify size={16} />
       </button>
@@ -162,6 +174,7 @@ export default function BubbleMoreMenu({
             : "bubble-menu-btn"
         }
         title={locale.bubbleMenu.decreaseIndent}
+        aria-label={locale.bubbleMenu.decreaseIndent}
         disabled={isDecreaseIndentDisabled}
         aria-disabled={isDecreaseIndentDisabled}
       >
@@ -179,6 +192,7 @@ export default function BubbleMoreMenu({
             : "bubble-menu-btn"
         }
         title={locale.bubbleMenu.increaseIndent}
+        aria-label={locale.bubbleMenu.increaseIndent}
         disabled={isIncreaseIndentDisabled}
         aria-disabled={isIncreaseIndentDisabled}
       >

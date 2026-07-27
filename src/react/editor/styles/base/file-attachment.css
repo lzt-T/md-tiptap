@@ -1,5 +1,5 @@
 /* 附件块（Word/PDF 等） */
-.editor-wrapper .ProseMirror .file-attachment-wrapper {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .file-attachment-wrapper {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -11,21 +11,21 @@
   max-width: 100%;
 }
 
-.editor-wrapper .ProseMirror .file-attachment-wrapper.file-attachment-selected,
-.editor-wrapper .ProseMirror .file-attachment-wrapper.ProseMirror-selectednode {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .file-attachment-wrapper.file-attachment-selected,
+.zt-tiptap-theme .editor-wrapper .ProseMirror .file-attachment-wrapper.ProseMirror-selectednode {
   border-color: var(--ui-control-active);
   background: var(--ui-bg-selected);
 }
 
-.editor-container.is-editor-blurred .editor-wrapper .ProseMirror .file-attachment-wrapper.file-attachment-selected,
-.editor-container.is-editor-focus-unstable .editor-wrapper .ProseMirror .file-attachment-wrapper.file-attachment-selected,
-.editor-container.is-editor-focus-unstable .editor-wrapper .ProseMirror .file-attachment-wrapper.ProseMirror-selectednode,
-.editor-container.is-editor-blurred .editor-wrapper .ProseMirror .file-attachment-wrapper.ProseMirror-selectednode {
+.zt-tiptap-theme.editor-container.is-editor-blurred .editor-wrapper .ProseMirror .file-attachment-wrapper.file-attachment-selected,
+.zt-tiptap-theme.editor-container.is-editor-focus-unstable .editor-wrapper .ProseMirror .file-attachment-wrapper.file-attachment-selected,
+.zt-tiptap-theme.editor-container.is-editor-focus-unstable .editor-wrapper .ProseMirror .file-attachment-wrapper.ProseMirror-selectednode,
+.zt-tiptap-theme.editor-container.is-editor-blurred .editor-wrapper .ProseMirror .file-attachment-wrapper.ProseMirror-selectednode {
   border-color: var(--ui-border-muted);
   background: var(--ui-bg-muted);
 }
 
-.editor-wrapper .ProseMirror .file-attachment-link {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .file-attachment-link {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -39,28 +39,28 @@
   transition: color 0.15s ease, background-color 0.15s ease;
 }
 
-.editor-wrapper .ProseMirror .file-attachment-link:hover {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .file-attachment-link:hover {
   color: var(--ui-text-link-hover);
   text-decoration: underline;
 }
 
-.editor-wrapper .ProseMirror .file-attachment-icon {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .file-attachment-icon {
   flex-shrink: 0;
   color: var(--ui-text-muted);
 }
 
-.editor-wrapper .ProseMirror .file-attachment-name {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .file-attachment-name {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.editor-wrapper .ProseMirror .file-attachment-external {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .file-attachment-external {
   flex-shrink: 0;
   opacity: 0.7;
 }
 
-.editor-wrapper .ProseMirror .file-attachment-delete {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .file-attachment-delete {
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
@@ -77,14 +77,13 @@
   transition: opacity 0.15s ease, background-color 0.15s ease, color 0.15s ease;
 }
 
-.editor-wrapper .ProseMirror .file-attachment-wrapper:hover .file-attachment-delete {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .file-attachment-wrapper:hover .file-attachment-delete {
   opacity: 1;
 }
 
-.editor-wrapper .ProseMirror .file-attachment-delete:hover {
+.zt-tiptap-theme .editor-wrapper .ProseMirror .file-attachment-delete:hover {
   background: var(--ui-bg-subtle);
   color: var(--ui-text-muted-strong);
 }
-
 
 

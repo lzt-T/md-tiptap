@@ -10,6 +10,7 @@ import {
   useEffect,
   useState,
   type MouseEvent,
+  type PointerEvent,
   type ReactNode,
 } from "react";
 import { config, type ColorOption } from "@/shared/config";
@@ -98,6 +99,15 @@ function isFromColorPopoverContent(target: EventTarget | null): boolean {
   return Boolean(
     target.closest(".color-picker") || target.closest(".editor-link-panel"),
   );
+}
+
+/** 阻止禁用按钮的指针按下行为导致编辑器失焦。 */
+function preventDisabledButtonPointerDown(
+  event: PointerEvent<HTMLElement>,
+): void {
+  if (!(event.target instanceof Element)) return;
+  if (!event.target.closest("button:disabled, button.is-disabled")) return;
+  event.preventDefault();
 }
 
 /** 解析当前选区所在块的展示文案。 */
@@ -468,6 +478,7 @@ const BubbleMenu = ({
                       setShowBlockMenu(false);
                     }}
                     title={item.label}
+                    aria-label={item.label}
                   >
                     <span className="bubble-block-menu-icon">{item.icon}</span>
                     <span className="bubble-block-menu-label">{item.label}</span>
@@ -508,6 +519,7 @@ const BubbleMenu = ({
             panel={moreMenuPanel}
             portalContainer={contentPortalContainer}
             className="bubble-menu-popover-panel"
+            onPointerDown={preventDisabledButtonPointerDown}
             onMouseDown={(event) => event.preventDefault()}
           >
             <BubbleMoreMenu
@@ -539,6 +551,7 @@ const BubbleMenu = ({
         data-selection-key={selectionKey}
         editor={editor}
         className="bubble-menu"
+        onPointerDown={preventDisabledButtonPointerDown}
         onMouseDown={handleBubbleMenuMouseDown}
         shouldShow={shouldShowBubbleMenu}
       >
@@ -551,7 +564,9 @@ const BubbleMenu = ({
               : "bubble-block-trigger"
           }
           title={locale.bubbleMenu.turnInto}
+          aria-label={locale.bubbleMenu.turnInto}
           aria-expanded={showBlockMenu}
+          aria-haspopup="menu"
           onClick={() => {
             if (showBlockMenu) {
               setShowBlockMenu(false);
@@ -583,8 +598,10 @@ const BubbleMenu = ({
                 : "bubble-menu-btn"
           }
           title={locale.bubbleMenu.bold}
+          aria-label={locale.bubbleMenu.bold}
           disabled={isBoldDisabled}
           aria-disabled={isBoldDisabled}
+          aria-pressed={editor.isActive("bold")}
         >
           <Bold size={16} />
         </button>
@@ -601,8 +618,10 @@ const BubbleMenu = ({
                 : "bubble-menu-btn"
           }
           title={locale.bubbleMenu.italic}
+          aria-label={locale.bubbleMenu.italic}
           disabled={isItalicDisabled}
           aria-disabled={isItalicDisabled}
+          aria-pressed={editor.isActive("italic")}
         >
           <Italic size={16} />
         </button>
@@ -619,8 +638,10 @@ const BubbleMenu = ({
                 : "bubble-menu-btn"
           }
           title={locale.bubbleMenu.underline}
+          aria-label={locale.bubbleMenu.underline}
           disabled={isUnderlineDisabled}
           aria-disabled={isUnderlineDisabled}
+          aria-pressed={editor.isActive("underline")}
         >
           <Underline size={16} />
         </button>
@@ -637,8 +658,10 @@ const BubbleMenu = ({
                 : "bubble-menu-btn"
           }
           title={locale.bubbleMenu.strikethrough}
+          aria-label={locale.bubbleMenu.strikethrough}
           disabled={isStrikethroughDisabled}
           aria-disabled={isStrikethroughDisabled}
+          aria-pressed={editor.isActive("strike")}
         >
           <Strikethrough size={16} />
         </button>
@@ -646,6 +669,8 @@ const BubbleMenu = ({
           onClick={() => format.toggleCode()}
           className={isInsideCode ? "bubble-menu-btn is-active" : "bubble-menu-btn"}
           title={locale.bubbleMenu.inlineCode}
+          aria-label={locale.bubbleMenu.inlineCode}
+          aria-pressed={isInsideCode}
         >
           <Code size={16} />
         </button>
@@ -659,8 +684,10 @@ const BubbleMenu = ({
                 : "bubble-menu-btn"
           }
           title={locale.bubbleMenu.link}
+          aria-label={locale.bubbleMenu.link}
           disabled={isLinkDisabled}
           aria-disabled={isLinkDisabled}
+          aria-pressed={editor.isActive("link")}
           aria-expanded={showLinkEditor}
           onClick={() => {
             if (isLinkDisabled) return;
@@ -718,7 +745,9 @@ const BubbleMenu = ({
             showMoreMenu ? "bubble-menu-btn is-active" : "bubble-menu-btn"
           }
           title={locale.bubbleMenu.more}
+          aria-label={locale.bubbleMenu.more}
           aria-expanded={showMoreMenu}
+          aria-haspopup="menu"
           onClick={() => {
             if (showMoreMenu) {
               setShowMoreMenu(false);

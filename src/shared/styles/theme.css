@@ -72,7 +72,7 @@
   --ui-text-strong: #111827;
   --ui-text-muted: #64748b;
   --ui-text-muted-strong: #475569;
-  --ui-text-placeholder: #94a3b8;
+  --ui-text-placeholder: var(--ui-text-muted);
   --ui-text-link: #1d4ed8;
   --ui-text-link-hover: #1e40af;
   --ui-text-selected: #3730a3;

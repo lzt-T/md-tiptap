@@ -1,8 +1,9 @@
-.editor-link-panel {
+.zt-tiptap-theme .editor-link-panel {
   display: flex;
   align-items: center;
   gap: 6px;
   min-width: 260px;
+  max-width: calc(100vw - 16px);
   padding: 8px;
   border-radius: 8px;
   border: 1px solid var(--ui-border);
@@ -10,7 +11,7 @@
   box-shadow: var(--ui-shadow-xl);
 }
 
-.editor-link-panel-input {
+.zt-tiptap-theme .editor-link-panel-input {
   flex: 1;
   min-width: 0;
   height: 30px;
@@ -22,18 +23,18 @@
   font-size: 13px;
 }
 
-.editor-link-panel-input:focus {
+.zt-tiptap-theme .editor-link-panel-input:focus {
   outline: none;
   border-color: var(--ui-control-active);
 }
 
-.editor-link-panel-actions {
+.zt-tiptap-theme .editor-link-panel-actions {
   display: flex;
   align-items: center;
   gap: 4px;
 }
 
-.editor-link-panel-action-btn {
+.zt-tiptap-theme .editor-link-panel-action-btn {
   width: 28px;
   height: 28px;
   border: none;
@@ -46,13 +47,18 @@
   cursor: pointer;
 }
 
-.editor-link-panel-action-btn:hover {
+.zt-tiptap-theme .editor-link-panel-action-btn:hover {
   background: var(--ui-bg-hover-soft);
   color: var(--ui-text-strong);
 }
 
-.editor-link-panel-action-btn:disabled,
-.editor-link-panel-action-btn.is-disabled {
+.zt-tiptap-theme .editor-link-panel-action-btn:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.zt-tiptap-theme .editor-link-panel-action-btn:disabled,
+.zt-tiptap-theme .editor-link-panel-action-btn.is-disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }

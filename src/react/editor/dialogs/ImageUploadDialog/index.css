@@ -1,25 +1,25 @@
 /* 对话框内容布局（与 shadcn Dialog 配合） */
-.image-upload-dialog-content {
+.zt-tiptap-theme .image-upload-dialog-content {
   display: flex;
   flex-direction: column;
   gap: 0;
 }
 
-.image-upload-dialog-content [data-slot="dialog-header"] {
+.zt-tiptap-theme .image-upload-dialog-content [data-slot="dialog-header"] {
   padding-bottom: 0.75rem;
 }
 
-.image-upload-dialog-content [data-slot="dialog-footer"] {
+.zt-tiptap-theme .image-upload-dialog-content [data-slot="dialog-footer"] {
   padding-top: 1rem;
   border-top: 1px solid var(--border);
 }
 
-.image-upload-segmented-switch {
+.zt-tiptap-theme .image-upload-segmented-switch {
   margin-bottom: 0.5rem;
 }
 
 /* 内容区域 */
-.image-upload-content {
+.zt-tiptap-theme .image-upload-content {
   flex: 1;
   overflow-y: auto;
   padding: 10px 0;
@@ -29,16 +29,16 @@
 }
 
 /* 文件上传区 */
-.image-upload-control {
+.zt-tiptap-theme .image-upload-control {
   width: 100%;
 }
 
-.image-upload-file {
+.zt-tiptap-theme .image-upload-file {
   position: relative;
   width: 100%;
 }
 
-.image-upload-input-hidden {
+.zt-tiptap-theme .image-upload-input-hidden {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -47,7 +47,7 @@
   pointer-events: none;
 }
 
-.image-upload-file-label {
+.zt-tiptap-theme .image-upload-file-label {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -62,27 +62,27 @@
   background: color-mix(in oklch, var(--muted) 30%, transparent);
 }
 
-.image-upload-file-label:hover {
+.zt-tiptap-theme .image-upload-file-label:hover {
   border-color: var(--primary);
   background: color-mix(in oklch, var(--primary) 8%, transparent);
 }
 
-.image-upload-file-label.is-drag-over {
+.zt-tiptap-theme .image-upload-file-label.is-drag-over {
   border-color: var(--primary);
   background: color-mix(in oklch, var(--primary) 12%, transparent);
 }
 
-.image-upload-file-label.is-disabled {
+.zt-tiptap-theme .image-upload-file-label.is-disabled {
   cursor: not-allowed;
   opacity: 0.7;
 }
 
-.image-upload-file-label.is-disabled:hover {
+.zt-tiptap-theme .image-upload-file-label.is-disabled:hover {
   border-color: var(--border);
   background: color-mix(in oklch, var(--muted) 30%, transparent);
 }
 
-.image-upload-file-icon {
+.zt-tiptap-theme .image-upload-file-icon {
   margin-bottom: 0.75rem;
   display: flex;
   align-items: center;
@@ -90,35 +90,35 @@
   color: var(--muted-foreground);
 }
 
-.image-upload-file-icon-spin {
-  animation: image-upload-spin 0.8s linear infinite;
+.zt-tiptap-theme .image-upload-file-icon-spin {
+  animation: zt-tiptap-image-upload-spin 0.8s linear infinite;
 }
 
-@keyframes image-upload-spin {
+@keyframes zt-tiptap-image-upload-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
 
-.image-upload-file-text {
+.zt-tiptap-theme .image-upload-file-text {
   font-size: 1rem;
   font-weight: 500;
   color: var(--foreground);
   margin-bottom: 0.5rem;
 }
 
-.image-upload-file-hint {
+.zt-tiptap-theme .image-upload-file-hint {
   font-size: 0.875rem;
   color: var(--muted-foreground);
 }
 
-.image-upload-file-preview {
+.zt-tiptap-theme .image-upload-file-preview {
   width: 100%;
   height: 100%;
   overflow: hidden;
   display: block;
 }
 
-.image-upload-file-preview img {
+.zt-tiptap-theme .image-upload-file-preview img {
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -127,7 +127,7 @@
   vertical-align: top;
 }
 
-.image-upload-file-preview-error {
+.zt-tiptap-theme .image-upload-file-preview-error {
   width: 100%;
   height: 100%;
   display: flex;
@@ -141,12 +141,12 @@
   border-radius: 4px;
 }
 
-.image-upload-file-preview-error svg {
+.zt-tiptap-theme .image-upload-file-preview-error svg {
   flex-shrink: 0;
   opacity: 0.8;
 }
 
-.image-upload-url-preview {
+.zt-tiptap-theme .image-upload-url-preview {
   width: 100%;
   height: 140px;
   padding: 0.5rem;
@@ -155,12 +155,12 @@
   background: color-mix(in oklch, var(--muted) 30%, transparent);
 }
 
-.image-upload-file-label.has-preview {
+.zt-tiptap-theme .image-upload-file-label.has-preview {
   padding: 0;
   height: 240px;
 }
 
-.image-upload-file-reselect-hint {
+.zt-tiptap-theme .image-upload-file-reselect-hint {
   margin-top: 0.5rem;
   height: 1.25rem;
   color: var(--muted-foreground);
@@ -173,19 +173,19 @@
   text-align: center;
 }
 
-.image-upload-file-reselect-hint.is-placeholder {
+.zt-tiptap-theme .image-upload-file-reselect-hint.is-placeholder {
   visibility: hidden;
 }
 
-.image-upload-file-reselect-hint.is-error {
+.zt-tiptap-theme .image-upload-file-reselect-hint.is-error {
   color: var(--destructive);
 }
 
-.image-upload-hint-icon {
+.zt-tiptap-theme .image-upload-hint-icon {
   flex-shrink: 0;
 }
 
-.image-upload-hint-text {
+.zt-tiptap-theme .image-upload-hint-text {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -193,7 +193,7 @@
 }
 
 /* 输入框 */
-.image-upload-input {
+.zt-tiptap-theme .image-upload-input {
   width: 100%;
   padding: 0.5rem 0.75rem;
   border: 1px solid var(--border);
@@ -204,81 +204,86 @@
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.image-upload-input:focus {
+.zt-tiptap-theme .image-upload-input:focus {
   outline: none;
   border-color: var(--ring);
   box-shadow: 0 0 0 3px color-mix(in oklch, var(--ring) 15%, transparent);
 }
 
-.image-upload-input::placeholder {
+.zt-tiptap-theme .image-upload-input::placeholder {
   color: var(--muted-foreground);
 }
 
-.image-upload-input:disabled {
+.zt-tiptap-theme .image-upload-input:disabled {
   cursor: not-allowed;
   opacity: 0.75;
 }
 
 /* 对话框内按钮样式增强（与 MathDialog 一致） */
-[data-slot="dialog-footer"] [data-slot="button"][data-variant="outline"] {
+.zt-tiptap-theme.zt-tiptap-dialog-host [data-slot="dialog-footer"] [data-slot="button"][data-variant="outline"] {
   border: 1px solid var(--border);
   background: var(--background);
   color: var(--foreground);
 }
 
-[data-slot="dialog-footer"] [data-slot="button"][data-variant="outline"]:hover {
+.zt-tiptap-theme.zt-tiptap-dialog-host [data-slot="dialog-footer"] [data-slot="button"][data-variant="outline"]:hover {
   background: var(--accent);
   color: var(--accent-foreground);
 }
 
-[data-slot="dialog-footer"] [data-slot="button"][data-variant="default"] {
+.zt-tiptap-theme.zt-tiptap-dialog-host [data-slot="dialog-footer"] [data-slot="button"][data-variant="default"] {
   background: var(--primary);
   color: var(--primary-foreground);
 }
 
-[data-slot="dialog-footer"] [data-slot="button"][data-variant="default"]:hover:not(:disabled) {
+.zt-tiptap-theme.zt-tiptap-dialog-host [data-slot="dialog-footer"] [data-slot="button"][data-variant="default"]:hover:not(:disabled) {
   background: color-mix(in oklch, var(--primary) 90%, black);
 }
 
 /* 内容区滚动条 */
-.image-upload-content {
+.zt-tiptap-theme .image-upload-content {
   scrollbar-width: thin;
   scrollbar-color: var(--ui-scrollbar-thumb) transparent;
 }
 
-.image-upload-content::-webkit-scrollbar {
+.zt-tiptap-theme .image-upload-content::-webkit-scrollbar {
   width: 4px;
 }
 
-.image-upload-content::-webkit-scrollbar-track {
+.zt-tiptap-theme .image-upload-content::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.image-upload-content::-webkit-scrollbar-thumb {
+.zt-tiptap-theme .image-upload-content::-webkit-scrollbar-thumb {
   background-color: var(--ui-scrollbar-thumb);
   border-radius: 2px;
 }
 
-.image-upload-content::-webkit-scrollbar-thumb:hover {
+.zt-tiptap-theme .image-upload-content::-webkit-scrollbar-thumb:hover {
   background-color: var(--ui-scrollbar-thumb-hover);
 }
 
-.dark .image-upload-content::-webkit-scrollbar-thumb {
+.zt-tiptap-theme.dark .image-upload-content::-webkit-scrollbar-thumb {
   background-color: var(--ui-scrollbar-thumb);
 }
 
-.dark .image-upload-content::-webkit-scrollbar-thumb:hover {
+.zt-tiptap-theme.dark .image-upload-content::-webkit-scrollbar-thumb:hover {
   background-color: var(--ui-scrollbar-thumb-hover);
 }
 
 /* 响应式 */
 @media (max-width: 640px) {
-  .image-upload-dialog-content {
+  .zt-tiptap-theme .image-upload-dialog-content {
     max-width: 95%;
   }
 
-  .image-upload-file-label {
+  .zt-tiptap-theme .image-upload-file-label {
     padding: 2rem 1rem;
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .zt-tiptap-theme .image-upload-file-icon-spin {
+    animation: none;
+  }
+}

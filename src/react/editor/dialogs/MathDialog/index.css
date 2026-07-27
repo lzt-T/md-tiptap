@@ -1,40 +1,40 @@
 /* 弹窗内容区滚动条（仅内容区滚动，弹窗本身不滚动） */
-.math-dialog-body {
+.zt-tiptap-theme .math-dialog-body {
   scrollbar-width: thin;
   scrollbar-color: var(--ui-scrollbar-thumb) transparent;
 }
 
-.math-dialog-body::-webkit-scrollbar {
+.zt-tiptap-theme .math-dialog-body::-webkit-scrollbar {
   width: 4px;
 }
 
-.math-dialog-body::-webkit-scrollbar-track {
+.zt-tiptap-theme .math-dialog-body::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.math-dialog-body::-webkit-scrollbar-thumb {
+.zt-tiptap-theme .math-dialog-body::-webkit-scrollbar-thumb {
   background-color: var(--ui-scrollbar-thumb);
   border-radius: 2px;
 }
 
-.math-dialog-body::-webkit-scrollbar-thumb:hover {
+.zt-tiptap-theme .math-dialog-body::-webkit-scrollbar-thumb:hover {
   background-color: var(--ui-scrollbar-thumb-hover);
 }
 
-.dark .math-dialog-body {
+.zt-tiptap-theme.dark .math-dialog-body {
   scrollbar-color: var(--ui-scrollbar-thumb) transparent;
 }
 
-.dark .math-dialog-body::-webkit-scrollbar-thumb {
+.zt-tiptap-theme.dark .math-dialog-body::-webkit-scrollbar-thumb {
   background-color: var(--ui-scrollbar-thumb);
 }
 
-.dark .math-dialog-body::-webkit-scrollbar-thumb:hover {
+.zt-tiptap-theme.dark .math-dialog-body::-webkit-scrollbar-thumb:hover {
   background-color: var(--ui-scrollbar-thumb-hover);
 }
 
 /* LaTeX 输入框 - 使用 var() 直接引用主题色（支持 oklch/hsl） */
-.math-dialog-input {
+.zt-tiptap-theme .math-dialog-input {
   display: block;
   width: 100%;
   max-width: 100%;
@@ -51,14 +51,14 @@
   color: var(--foreground);
 }
 
-.math-dialog-input:focus {
+.zt-tiptap-theme .math-dialog-input:focus {
   outline: none;
   border-color: var(--ring);
   box-shadow: 0 0 0 3px color-mix(in oklch, var(--ring) 15%, transparent);
 }
 
 /* 预览区域 */
-.math-dialog-preview {
+.zt-tiptap-theme .math-dialog-preview {
   box-sizing: border-box;
   max-width: 100%;
   min-height: 100px;
@@ -74,11 +74,11 @@
   transition: border-color 0.2s;
 }
 
-.math-dialog-preview:hover {
+.zt-tiptap-theme .math-dialog-preview:hover {
   border-color: color-mix(in oklch, var(--border) 80%, currentColor);
 }
 
-.math-dialog-preview-content {
+.zt-tiptap-theme .math-dialog-preview-content {
   box-sizing: border-box;
   text-align: center;
   font-size: 1.125rem;
@@ -86,17 +86,17 @@
   max-width: 100%;
 }
 
-.math-dialog-preview-content .katex-display {
+.zt-tiptap-theme .math-dialog-preview-content .katex-display {
   margin: 0;
 }
 
-.math-dialog-preview-placeholder {
+.zt-tiptap-theme .math-dialog-preview-placeholder {
   color: var(--muted-foreground);
   font-size: 0.875rem;
   font-style: italic;
 }
 
-.math-dialog-preview-error {
+.zt-tiptap-theme .math-dialog-preview-error {
   color: var(--destructive);
   font-size: 0.75rem;
   padding: 0.5rem;
@@ -108,32 +108,32 @@
 }
 
 /* 对话框内按钮样式增强（确保在无 Tailwind 或变量未注入时也有清晰边框与主色） */
-[data-slot="dialog-footer"] [data-slot="button"][data-variant="outline"] {
+.zt-tiptap-theme.zt-tiptap-dialog-host [data-slot="dialog-footer"] [data-slot="button"][data-variant="outline"] {
   border: 1px solid var(--border);
   background: var(--background);
   color: var(--foreground);
 }
 
-[data-slot="dialog-footer"] [data-slot="button"][data-variant="outline"]:hover {
+.zt-tiptap-theme.zt-tiptap-dialog-host [data-slot="dialog-footer"] [data-slot="button"][data-variant="outline"]:hover {
   background: var(--accent);
   color: var(--accent-foreground);
 }
 
-[data-slot="dialog-footer"] [data-slot="button"][data-variant="default"] {
+.zt-tiptap-theme.zt-tiptap-dialog-host [data-slot="dialog-footer"] [data-slot="button"][data-variant="default"] {
   background: var(--primary);
   color: var(--primary-foreground);
 }
 
-[data-slot="dialog-footer"] [data-slot="button"][data-variant="default"]:hover {
+.zt-tiptap-theme.zt-tiptap-dialog-host [data-slot="dialog-footer"] [data-slot="button"][data-variant="default"]:hover {
   background: color-mix(in oklch, var(--primary) 90%, black);
 }
 
-[data-slot="dialog-footer"] [data-slot="button"] {
+.zt-tiptap-theme.zt-tiptap-dialog-host [data-slot="dialog-footer"] [data-slot="button"] {
   cursor: pointer;
 }
 
 /* 常用公式分类切换。 */
-.math-dialog-tabs {
+.zt-tiptap-theme .math-dialog-tabs {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -141,7 +141,7 @@
 }
 
 /* 标签栏：复用 SegmentedSwitch，并保留公式弹窗内的宽度约束。 */
-.math-dialog-tabs-list {
+.zt-tiptap-theme .math-dialog-tabs-list {
   box-sizing: border-box;
   flex-shrink: 0;
   width: 100%;
@@ -152,7 +152,7 @@
 }
 
 /* 公式分类文案较长时保持单行省略。 */
-.math-dialog-tabs-list .segmented-switch-option {
+.zt-tiptap-theme .math-dialog-tabs-list .segmented-switch-option {
   min-width: 0;
   max-width: 100%;
   overflow: hidden;
@@ -160,7 +160,7 @@
   white-space: nowrap;
 }
 
-.math-dialog-tabs-content {
+.zt-tiptap-theme .math-dialog-tabs-content {
   padding: 0.75rem;
   border: 1px solid var(--border);
   border-radius: calc(var(--radius) - 2px);
@@ -173,7 +173,7 @@
   overflow: visible; /* 不裁切，靠网格换行 */
 }
 
-.math-dialog-snippets-grid {
+.zt-tiptap-theme .math-dialog-snippets-grid {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
@@ -182,7 +182,7 @@
   box-sizing: border-box;
 }
 
-.math-dialog-snippet {
+.zt-tiptap-theme .math-dialog-snippet {
   appearance: none;
   display: inline-flex;
   flex-direction: column;
@@ -203,42 +203,40 @@
   user-select: none;
 }
 
-.math-dialog-snippet-katex {
+.zt-tiptap-theme .math-dialog-snippet-katex {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   white-space: nowrap;
 }
 
-.math-dialog-snippet-katex .katex {
+.zt-tiptap-theme .math-dialog-snippet-katex .katex {
   font-size: 0.95rem;
 }
 
-.math-dialog-snippet-katex .katex-display {
+.zt-tiptap-theme .math-dialog-snippet-katex .katex-display {
   margin: 0;
   display: inline-block;
 }
 
-.math-dialog-snippet-label {
+.zt-tiptap-theme .math-dialog-snippet-label {
   font-size: 0.65rem;
   line-height: 1;
   color: var(--muted-foreground);
 }
 
-.math-dialog-snippet:hover {
+.zt-tiptap-theme .math-dialog-snippet:hover {
   background: var(--accent);
   border-color: color-mix(in oklch, var(--border) 75%, currentColor);
 }
 
-.math-dialog-snippet:active {
+.zt-tiptap-theme .math-dialog-snippet:active {
   transform: translateY(0.5px);
 }
 
-.math-dialog-snippet:focus-visible {
+.zt-tiptap-theme .math-dialog-snippet:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px color-mix(in oklch, var(--ring) 20%, transparent);
   border-color: var(--ring);
 }
-
-
 
