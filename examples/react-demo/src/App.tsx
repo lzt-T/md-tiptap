@@ -7,16 +7,22 @@ import {
 } from "../../../src/index";
 import "./App.css";
 
+/** 渲染 ReactTiptapEditor 功能演示页面。 */
 function App() {
   // 控制编辑器浅色/深色主题。
   const [editorTheme, setEditorTheme] = useState<EditorTheme>(
     EditorTheme.Light,
   );
+  // 当前编辑器 HTML 内容。
   const [content, setContent] = useState("");
+  // 编辑器内容变更次数。
   const [count, setCount] = useState(0);
+  // 编辑器是否禁用。
   const [disabled, setDisabled] = useState(false);
+  // 当前编辑器模式。
   const [editorMode, setEditorMode] = useState<EditorMode>(EditorMode.Headless);
 
+  /** 切换编辑器模式。 */
   const handleToggleMode = () => {
     setEditorMode((prevMode) =>
       prevMode === EditorMode.Headless
@@ -25,6 +31,7 @@ function App() {
     );
   };
 
+  /** 切换编辑器禁用状态。 */
   const handleToggleDisabled = () => {
     setDisabled((prevDisabled) => !prevDisabled);
   };
@@ -36,6 +43,7 @@ function App() {
     );
   };
 
+  /** 同步编辑器内容与变更次数。 */
   const handleEditorChange = (html: string) => {
     setCount(count + 1);
     setContent(html);
@@ -49,6 +57,7 @@ function App() {
     console.log("✏️ onChange 被触发 - 用户编辑:", html);
   };
 
+  /** 模拟图片预上传并返回图片地址。 */
   const handleImagePreUpload = async (file: File): Promise<string> => {
     console.log("📤 上传图片:", file.name, file.size, "bytes");
     console.log("count", count);
@@ -56,6 +65,7 @@ function App() {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (Math.random() > 0.2) {
+          // 模拟上传成功后的图片地址。
           const mockUrl = `https://picsum.photos/seed/${Date.now()}/300/200`;
           console.log("✅ 上传成功:", mockUrl);
           resolve(mockUrl);
@@ -67,6 +77,7 @@ function App() {
     });
   };
 
+  /** 记录图片确认上传结果。 */
   const onImageUpload = (payload: {
     file: File;
     url: string;
@@ -76,6 +87,7 @@ function App() {
     console.log("✅ 图片 Confirm 回调:", payload);
   };
 
+  /** 模拟附件预上传并返回附件信息。 */
   const onFilePreUpload = async (
     file: File,
   ): Promise<{ url: string; name: string }> => {
@@ -88,11 +100,13 @@ function App() {
     });
   };
 
+  /** 记录附件确认上传结果。 */
   const onFileUpload = (payload: { file: File; url: string; name: string }) => {
     console.log("count", count);
     console.log("✅ 文件 Confirm 回调:", payload);
   };
 
+  /** 记录附件点击信息。 */
   const onFileAttachmentClick = ({
     url,
     name,
@@ -104,6 +118,7 @@ function App() {
     console.log("📤 点击文件:", { url, name });
   };
 
+  /** 记录图片删除信息。 */
   const onImageDelete = (params: {
     src: string;
     alt?: string;
@@ -113,6 +128,7 @@ function App() {
     console.log("🗑️ 删除图片:", params);
   };
 
+  /** 记录附件删除信息。 */
   const onFileDelete = (params: { url: string; name: string }) => {
     console.log("count", count);
     console.log("🗑️ 删除附件:", params);
@@ -146,65 +162,60 @@ function App() {
     <div
       className={`app ${editorTheme === EditorTheme.Dark ? "app-dark" : "app-light"}`}
     >
-      <h1>Tiptap Markdown Editor</h1>
-      <div className="demo-actions">
-        <button
-          type="button"
-          onClick={handleToggleMode}
-          className={`demo-action-btn ${isHeadlessMode ? "is-active" : ""}`}
-        >
-          {modeLabel}
-        </button>
-        <button
-          type="button"
-          onClick={handleToggleDisabled}
-          className={`demo-action-btn ${isEditorDisabled ? "is-active" : ""}`}
-        >
-          {disabledLabel}
-        </button>
-        <button
-          type="button"
-          onClick={handleToggleTheme}
-          className={`demo-action-btn ${!isLightTheme ? "is-active" : ""}`}
-        >
-          {themeLabel}
-        </button>
-      </div>
-      {/*<div onClick={() => setDisabled(true)}>disabled</div>
-      <div onClick={() => setDisabled(false)}> not disabled</div>*/}
-      <div
-        className="flex-1"
-        style={{ height: "calc(100vh - 200px)", width: "100%" }}
-      >
-        <ReactTiptapEditor
-          disabled={disabled}
-          editorMode={editorMode}
-          theme={editorTheme}
-          value={content}
-          onChange={(str: string) => {
-            console.log("str", str);
-            handleEditorChange(str);
-          }}
-          language="en-US"
-          fileUploadTypes={["pdf"]}
-          onImagePreUpload={handleImagePreUpload}
-          onImageUpload={onImageUpload}
-          onImageDelete={onImageDelete}
-          maxHeight="500px"
-          onFilePreUpload={onFilePreUpload}
-          onFileUpload={onFileUpload}
-          onFileDelete={onFileDelete}
-          onFileAttachmentClick={onFileAttachmentClick}
-          // onCodeBlockFormat={onCodeBlockFormat}
-        />
-        <div
-          style={{
-            height: "900px",
-          }}
-        ></div>
-      </div>
+      <main className="demo-shell">
+        <header className="demo-header">
+          <h1>Tiptap Markdown Editor</h1>
+          <div className="demo-actions">
+            <button
+              type="button"
+              onClick={handleToggleMode}
+              className={`demo-action-btn ${isHeadlessMode ? "is-active" : ""}`}
+            >
+              {modeLabel}
+            </button>
+            <button
+              type="button"
+              onClick={handleToggleDisabled}
+              className={`demo-action-btn ${isEditorDisabled ? "is-active" : ""}`}
+            >
+              {disabledLabel}
+            </button>
+            <button
+              type="button"
+              onClick={handleToggleTheme}
+              className={`demo-action-btn ${!isLightTheme ? "is-active" : ""}`}
+            >
+              {themeLabel}
+            </button>
+          </div>
+        </header>
 
-      <div className="h-[900px]"></div>
+        {/*<div onClick={() => setDisabled(true)}>disabled</div>
+        <div onClick={() => setDisabled(false)}> not disabled</div>*/}
+        <div className="demo-workspace">
+          <ReactTiptapEditor
+            disabled={disabled}
+            editorMode={editorMode}
+            theme={editorTheme}
+            value={content}
+            onChange={(str: string) => {
+              console.log("str", str);
+              handleEditorChange(str);
+            }}
+            language="en-US"
+            fileUploadTypes={["pdf"]}
+            onImagePreUpload={handleImagePreUpload}
+            onImageUpload={onImageUpload}
+            onImageDelete={onImageDelete}
+            maxHeight="500px"
+            onFilePreUpload={onFilePreUpload}
+            onFileUpload={onFileUpload}
+            onFileDelete={onFileDelete}
+            onFileAttachmentClick={onFileAttachmentClick}
+            // onCodeBlockFormat={onCodeBlockFormat}
+          />
+        </div>
+      </main>
     </div>
   );
 }
