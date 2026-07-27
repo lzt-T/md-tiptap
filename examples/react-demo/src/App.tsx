@@ -7,6 +7,61 @@ import {
 } from "../../../src/index";
 import "./App.css";
 
+// 覆盖编辑器主要富文本能力的中文演示文档。
+const DEMO_CONTENT = String.raw`
+  <h1>zt-reactjs-tiptap 功能演示</h1>
+  <p>这是一个基于 <strong>React</strong>、<strong>TypeScript</strong> 与 <strong>TipTap</strong> 构建的富文本编辑器。你可以直接修改本文档，体验常用编辑能力。</p>
+  <blockquote><p>提示：切换顶部的模式、只读状态和主题，观察编辑器在不同配置下的表现。</p></blockquote>
+
+  <h2>文本与段落</h2>
+  <p>编辑器支持 <strong>粗体</strong>、<em>斜体</em>、<u>下划线</u>、<s>删除线</s>、<code>行内代码</code>，也可以插入 <a href="https://tiptap.dev/" target="_blank" rel="noopener noreferrer">安全链接</a>。</p>
+  <h3>列表与任务</h3>
+  <ul>
+    <li><p>使用无序列表整理并列信息</p></li>
+    <li><p>通过 Tab 和 Shift + Tab 调整列表层级</p></li>
+  </ul>
+  <ol>
+    <li><p>选中文本并尝试 Bubble Menu</p></li>
+    <li><p>使用工具栏修改格式、颜色和对齐方式</p></li>
+  </ol>
+  <ul data-type="taskList">
+    <li data-type="taskItem" data-checked="true"><p>体验主题与编辑器模式切换</p></li>
+    <li data-type="taskItem" data-checked="false"><p>勾选任务并继续编辑内容</p></li>
+  </ul>
+
+  <h2>代码块</h2>
+  <p>代码块支持语言选择、语法高亮、复制和格式化操作：</p>
+  <pre><code class="language-typescript">type EditorSettings = {
+  language: "zh-CN" | "en-US";
+  disabled: boolean;
+};
+
+const editorSettings: EditorSettings = {
+  language: "zh-CN",
+  disabled: false,
+};</code></pre>
+
+  <h2>表格</h2>
+  <p>点击任意单元格后，可以插入或删除行列，并设置表头与对齐方式。</p>
+  <table>
+    <tbody>
+      <tr><th><p>能力</p></th><th><p>入口</p></th><th><p>状态</p></th></tr>
+      <tr><td><p>文本格式</p></td><td><p>工具栏 / Bubble Menu</p></td><td><p>可直接体验</p></td></tr>
+      <tr><td><p>斜杠命令</p></td><td><p>输入 /</p></td><td><p>Notion-like 模式</p></td></tr>
+      <tr><td><p>图片、视频与附件</p></td><td><p>工具栏 / 斜杠命令</p></td><td><p>支持模拟上传</p></td></tr>
+    </tbody>
+  </table>
+
+  <h2>数学公式</h2>
+  <p>行内公式示例：<span data-type="inline-math" data-latex="E = mc^2"></span>。点击公式可以重新编辑 LaTeX 内容。</p>
+  <div data-type="block-math" data-latex="\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}"></div>
+
+  <hr>
+  <h2>继续探索</h2>
+  <p>切换到 Notion-like 模式后，在空段落中输入 <code>/</code> 打开命令菜单；选中一段文本可打开 Bubble Menu。图片、视频和附件可以通过工具栏或斜杠命令插入。</p>
+  <p>现在就从这里开始编辑吧。</p>
+`;
+
 /** 渲染 ReactTiptapEditor 功能演示页面。 */
 function App() {
   // 控制编辑器浅色/深色主题。
@@ -138,9 +193,7 @@ function App() {
     console.log("📡 准备从接口加载数据...");
     setTimeout(() => {
       console.log("📥 接口数据返回，设置 content（此操作不应触发 onChange）");
-      setContent(
-        '<p>Welcome to Tiptap Editor! asd</p><p></p><div data-latex="\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}" data-type="block-math"></div><p></p>',
-      );
+      setContent(DEMO_CONTENT);
     }, 2000);
   }, []);
 
@@ -202,7 +255,7 @@ function App() {
               console.log("str", str);
               handleEditorChange(str);
             }}
-            language="en-US"
+            language="zh-CN"
             fileUploadTypes={["pdf"]}
             onImagePreUpload={handleImagePreUpload}
             onImageUpload={onImageUpload}

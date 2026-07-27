@@ -29,6 +29,18 @@
   min-width: 0;
 }
 
+/* 清除 NodeView 内层内容段落的默认外边距，使文字首行与复选框对齐。 */
+.zt-tiptap-theme
+  .editor-wrapper
+  .ProseMirror
+  ul[data-type="taskList"]
+  li
+  > div[data-node-view-content]
+  > div[data-node-view-content-react]
+  > p {
+  margin: 0;
+}
+
 /* 任务列表复选框：未勾选为空心方框，勾选为带勾的方框 */
 .zt-tiptap-theme .editor-wrapper .ProseMirror ul[data-type="taskList"] li label input[type="checkbox"] {
   -webkit-appearance: none;

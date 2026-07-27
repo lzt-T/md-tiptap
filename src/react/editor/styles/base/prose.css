@@ -68,6 +68,11 @@
     display: list-item;
 }
 
+/* 清除列表项段落的默认外边距，避免列表行距被重复放大。 */
+.zt-tiptap-theme .editor-wrapper .ProseMirror li > p {
+    margin: 0;
+}
+
 /* 明确设置列表符号，避免被全局 li { list-style: none } 等覆盖 */
 .zt-tiptap-theme .editor-wrapper .ProseMirror ul > li,
 .zt-tiptap-theme .editor-wrapper .ProseMirror ul ul ul ul > li {
@@ -263,4 +268,3 @@
 .zt-tiptap-theme .editor-wrapper .ProseMirror [data-node-view-wrapper] {
     outline: none;
 }
-
