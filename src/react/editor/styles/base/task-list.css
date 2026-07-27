@@ -16,12 +16,12 @@
   gap: 8px;
 }
 
-/* label 约束在首行行高内，使复选框与第一行文字垂直居中 */
+/* label 高度与正文首行行高一致，使复选框与第一行文字垂直居中 */
 .zt-tiptap-theme .editor-wrapper .ProseMirror ul[data-type="taskList"] li > label {
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  height: 1.5em; /* 与行高一致，checkbox 由 align-items: center 居中 */
+  height: 1.7em; /* 与正文行高一致，checkbox 由 align-items: center 居中 */
 }
 
 .zt-tiptap-theme .editor-wrapper .ProseMirror ul[data-type="taskList"] li > div {
